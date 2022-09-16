@@ -1,11 +1,14 @@
 import express from 'express';
-// import rotas from './rotas';
+import routes from './routes/index';
 
-// criação de uma instância do express/servidor http
 const app = express();
+app.use(express.json());
+app.use(routes);
 
-// middleware de tratamento de todas as rotas
-// app.use('/', rotas);
 
-// inicia o servidor http na porta 3000
-app.listen(3000);
+
+export default app;
+
+app.listen(3000, () => {
+  console.log('🏃 ‍Running Server');
+})
