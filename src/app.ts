@@ -9,6 +9,4 @@ app.use(routes);
 
 export default app;
 
-app.listen(3000, () => {
-  console.log('🏃 ‍Running Server');
-})
+app.listen(5432);   

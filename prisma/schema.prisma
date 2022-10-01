@@ -15,14 +15,15 @@ model User {
   endereco String?
   senha String
   Announcement Announcement[]
+  @@map("usuario")
 }
 model Announcement {
   id Int        @id @default(autoincrement())
-  nomeAnunciante String
+  anunciante User @relation(fields: [anuncianteId], references: [id])
+  anuncianteId Int
   veiculo String
   placa String 
   preco Float
   linkSocial String
-  User User[]
-  
+  @@map("anuncio")
 }
