@@ -4,7 +4,7 @@
   "description": "Projeto integrador II e Programação para internet II",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run jest",
     "start": "tsc && node dist/app.ts"
   },
   "author": "",

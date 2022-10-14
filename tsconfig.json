@@ -11,11 +11,11 @@
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
 
     /* Language and Environment */
-    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-     "lib": ["esnext"],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    "target": "esnext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+     "lib": ["es2018"],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
-    // "experimentalDecorators": true,                   /* Enable experimental support for TC39 stage 2 draft decorators. */
-    // "emitDecoratorMetadata": true,                    /* Emit design-type metadata for decorated declarations in source files. */
+    "experimentalDecorators": true,                   /* Enable experimental support for TC39 stage 2 draft decorators. */
+    "emitDecoratorMetadata": true,                    /* Emit design-type metadata for decorated declarations in source files. */
     // "jsxFactory": "",                                 /* Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'. */
     // "jsxFragmentFactory": "",                         /* Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'. */
     // "jsxImportSource": "",                            /* Specify module specifier used to import the JSX factory functions when using 'jsx: react-jsx*'. */
@@ -26,11 +26,16 @@
 
     /* Modules */
     "module": "commonjs",                                /* Specify what module code is generated. */
-     "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-    // "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
-    // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
-    // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
-    // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
+    // "rootDir": "./src",                                  /* Specify the root folder within your source files. */
+    "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
+    "baseUrl": ".",                                  /* Specify the base directory to resolve non-relative module names. */
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "tests/*"
+      ]
+    },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
+    "rootDirs": ["tests", "src"],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
     // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
@@ -99,5 +104,86 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+    },
 }
+
+    // "include": [
+    //   "src/**/*.ts",
+    //   ".env",
+    //   ".env.*",
+    //   "tests/**/*.ts",
+    //   "jest.config.js",
+    // ],
+    // "exclude": [
+    //   "node_modules",
+    // ]
+
+
+
+//     jestConfig
+//     module.exports = {
+//       preset: 'ts-jest',
+//       roots: ['./tests'],
+//       testEnvironment: 'node',
+//       // setupFiles: ['dotenv/config'],
+//     };
+
+
+
+//     codigo tests
+//     import request from 'supertest';
+// import app from '../../src/App';
+// import prisma from '../helpers/Index';
+
+// const API_USERS = '/users';
+
+// beforeAll(async () => {
+//   const removeUsers = prisma.user.deleteMany();
+//   await prisma.$transaction([removeUsers]);
+// });
+
+// afterAll(async () => {
+//   const removeUsers = prisma.user.deleteMany();
+//   await prisma.$transaction([removeUsers]);
+//   await prisma.$disconnect();
+// });
+
+// describe('Test the users path', () => {
+//   test('It should add new user', async () => {
+//     const newUser = {
+//       name: 'User 1',
+//       email: 'user1@email.com',
+//     };
+//     const response = await request(app).post(API_USERS).send(newUser);
+//     expect(response.statusCode).toBe(201);
+//   });
+
+//   test('It should get all users', async () => {
+//     const response = await request(app).get(API_USERS);
+//     const users = response.body;
+//     // console.log('users: ', users);
+//     expect(response.statusCode).toBe(200);
+//     expect(users.length).toBe(1);
+//   });
+// });
+
+
+
+    // dependencias
+    //   "@types/jest": "^29.0.3",
+    //   "@types/node": "^18.7.16",
+    //   "@types/supertest": "^2.0.12",
+    //   "@typescript-eslint/eslint-plugin": "^5.36.2",
+    //   "@typescript-eslint/parser": "^5.36.2",
+    //   "eslint": "^8.23.0",
+    //   "eslint-config-airbnb": "^19.0.4",
+    //   "eslint-config-prettier": "^8.5.0",
+    //   "eslint-plugin-import": "^2.26.0",
+    //   "eslint-plugin-prettier": "^4.2.1",
+    //   "husky": "^8.0.1",
+    //   "jest": "^29.1.1",
+    //   "nodemon": "^2.0.20",
+    //   "prettier": "^2.7.1",
+    //   "prisma": "^4.3.1",
+    //   "supertest": "^6.2.4",
+    //   "ts-jest": "^29.0.2",
