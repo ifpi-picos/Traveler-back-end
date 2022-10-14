@@ -3,7 +3,7 @@
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */
-    // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
+    "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
     // "composite": true,                                /* Enable constraints that allow a TypeScript project to be used with project references. */
     // "tsBuildInfoFile": "./.tsbuildinfo",              /* Specify the path to .tsbuildinfo incremental compilation file. */
     // "disableSourceOfProjectReferenceRedirect": true,  /* Disable preferring source files instead of declaration files when referencing composite projects. */
@@ -52,7 +52,7 @@
     // "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
     // "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
     // "emitDeclarationOnly": true,                      /* Only output d.ts files and not JavaScript files. */
-     "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
+    //  "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
     // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
      "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
     // "removeComments": true,                           /* Disable emitting comments. */
@@ -105,85 +105,16 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
     },
+
+
+    "include": [
+      "src/**/*.ts",
+      ".env",
+      ".env.*",
+      "tests/**/*.ts",
+      "jest.config.js",
+    ],
+    "exclude": [
+      "node_modules",
+    ]
 }
-
-    // "include": [
-    //   "src/**/*.ts",
-    //   ".env",
-    //   ".env.*",
-    //   "tests/**/*.ts",
-    //   "jest.config.js",
-    // ],
-    // "exclude": [
-    //   "node_modules",
-    // ]
-
-
-
-//     jestConfig
-//     module.exports = {
-//       preset: 'ts-jest',
-//       roots: ['./tests'],
-//       testEnvironment: 'node',
-//       // setupFiles: ['dotenv/config'],
-//     };
-
-
-
-//     codigo tests
-//     import request from 'supertest';
-// import app from '../../src/App';
-// import prisma from '../helpers/Index';
-
-// const API_USERS = '/users';
-
-// beforeAll(async () => {
-//   const removeUsers = prisma.user.deleteMany();
-//   await prisma.$transaction([removeUsers]);
-// });
-
-// afterAll(async () => {
-//   const removeUsers = prisma.user.deleteMany();
-//   await prisma.$transaction([removeUsers]);
-//   await prisma.$disconnect();
-// });
-
-// describe('Test the users path', () => {
-//   test('It should add new user', async () => {
-//     const newUser = {
-//       name: 'User 1',
-//       email: 'user1@email.com',
-//     };
-//     const response = await request(app).post(API_USERS).send(newUser);
-//     expect(response.statusCode).toBe(201);
-//   });
-
-//   test('It should get all users', async () => {
-//     const response = await request(app).get(API_USERS);
-//     const users = response.body;
-//     // console.log('users: ', users);
-//     expect(response.statusCode).toBe(200);
-//     expect(users.length).toBe(1);
-//   });
-// });
-
-
-
-    // dependencias
-    //   "@types/jest": "^29.0.3",
-    //   "@types/node": "^18.7.16",
-    //   "@types/supertest": "^2.0.12",
-    //   "@typescript-eslint/eslint-plugin": "^5.36.2",
-    //   "@typescript-eslint/parser": "^5.36.2",
-    //   "eslint": "^8.23.0",
-    //   "eslint-config-airbnb": "^19.0.4",
-    //   "eslint-config-prettier": "^8.5.0",
-    //   "eslint-plugin-import": "^2.26.0",
-    //   "eslint-plugin-prettier": "^4.2.1",
-    //   "husky": "^8.0.1",
-    //   "jest": "^29.1.1",
-    //   "nodemon": "^2.0.20",
-    //   "prettier": "^2.7.1",
-    //   "prisma": "^4.3.1",
-    //   "supertest": "^6.2.4",
-    //   "ts-jest": "^29.0.2",

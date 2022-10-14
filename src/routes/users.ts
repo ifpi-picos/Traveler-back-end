@@ -11,7 +11,8 @@ usersRouter.post("/", (req: Request, res: Response) => {
   });
 
 usersRouter.get("/", (req: Request, res: Response) => {
-    return res.status(200).send(userRepository.findAll());
+    return res.status(200);
+    // .send(userRepository.findAll());
   });
 
 usersRouter.put("/", (req: Request, res:Response) => {
