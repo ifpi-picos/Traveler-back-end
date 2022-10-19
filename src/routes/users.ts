@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { UserRepository } from "../repositories";
+import updateUser from "../services/user/updateUserService";
 import { prisma, PrismaClient, User } from "@prisma/client";
 
 const usersRouter = Router();
@@ -31,8 +32,12 @@ usersRouter.get("/", (req: Request, res: Response) => {
   // .send(userRepository.findAll());
 });
 
-usersRouter.put("/", (req: Request, res: Response) => {
-  return res.status(200).send();
+usersRouter.put("/:id", (req: Request, res: Response) => {
+  const { nome, email } = req.body;
+  const { id } = req.params;
+
+  updateUser({ name, email, id });
+
 });
 usersRouter.delete("/", (req: Request, res: Response) => {
   return res.status(200).send();
