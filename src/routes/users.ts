@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import { UserRepository } from "../repositories";
 import updateUser from "../services/user/updateUserService";
+import deleteUser from "../services/user/deleteUserService";
 import { prisma, PrismaClient, User } from "@prisma/client";
 
 const usersRouter = Router();
@@ -25,22 +26,34 @@ usersRouter.post("/", async (req: Request, res: Response) => {
   }
 });
 
-
-
 usersRouter.get("/", (req: Request, res: Response) => {
   return res.status(200);
   // .send(userRepository.findAll());
 });
 
-usersRouter.put("/:id", (req: Request, res: Response) => {
+usersRouter.put("/:id", async (req: Request, res: Response) => {
   const { nome, email } = req.body;
   const { id } = req.params;
 
-  updateUser({ name, email, id });
+  try{
+  const updateUser = await updateUser({ name, email, id });
+  return res.status(200).json(updateUser);
+  } catch (error => {
+    res.status(400).json(error.message);
+  })
 
 });
-usersRouter.delete("/", (req: Request, res: Response) => {
-  return res.status(200).send();
+
+usersRouter.delete("/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try{
+  await deleteUser({ id });
+
+  return res.status(200).send("Usuário deletado com sucesso!");
+  } catch (error => {
+    res.status(400).json(error.message);
+  })
 });
 
 export default usersRouter;

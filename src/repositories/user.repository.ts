@@ -13,6 +13,23 @@ export class UserRepository implements IUserRepository {
     const result = await this.repository.findFirst({ where });
     return result;
   }
+
+  async function update({ name, email, id}): Promise<User> {
+    const result = await prisma.user.update({
+    where: {
+        id: id
+    },
+    data: {
+        name: name,
+        email: email,
+    }
+  })
+  return result;
+  }
+
+  async selectOne(where: Prisma.UserWhereInput) {
+    this.repository.delete({ where });
+  }
 }
 
 
