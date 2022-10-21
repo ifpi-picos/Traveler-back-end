@@ -1,19 +1,14 @@
-import prisma from "../../dataBase/prismaClient";
-import User from "../../models/user"
-import { UserRepository } from "../repositories";
+import { UpdateUserDTO } from "../../models/updateUser"
+import { UserRepository } from "../../repositories";
 
-interface IRequest {
-    name: string;
-    email:string;
-    id: int;
-}
+const userRepository = new UserRepository();
 
-function async updateUser({ name, email, id }: IRequest): Promise<User> {
-    const userExists = await UserRepository.selectOne({ id })
+async function updateUser({ nome, email, endereco, id }: UpdateUserDTO) {
+    const userExists = await userRepository.selectOne({ email });
 
     if (!userExists) throw new Error("Usuario não encontrado!");
 
-    const user = await UserRepository.update({ name, email, id }: IRequest)
+    const user = await userRepository.update({ nome, email, endereco, id })
 
     return user;
 };

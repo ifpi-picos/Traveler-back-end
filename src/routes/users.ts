@@ -1,11 +1,12 @@
 import { Request, Response, Router } from "express";
 import { UserRepository } from "../repositories";
 import updateUser from "../services/user/updateUserService";
-import deleteUser from "../services/user/deleteUserService";
-import { prisma, PrismaClient, User } from "@prisma/client";
+// import deleteUser from "../services/user/deleteUserService";
+import { User } from "@prisma/client";
+import { UpdateUserDTO } from "../models/updateUser";
+
 
 const usersRouter = Router();
-const Prisma = new PrismaClient();
 const userRepository = new UserRepository();
 
 usersRouter.post("/", async (req: Request, res: Response) => {
@@ -32,28 +33,24 @@ usersRouter.get("/", (req: Request, res: Response) => {
 });
 
 usersRouter.put("/:id", async (req: Request, res: Response) => {
-  const { nome, email } = req.body;
-  const { id } = req.params;
+  const { nome, email, endereco } = req.body;
+  const { idString } = req.params;
+
+  const id = parseInt(idString); 
 
   try{
-  const updateUser = await updateUser({ name, email, id });
-  return res.status(200).json(updateUser);
-  } catch (error => {
-    res.status(400).json(error.message);
-  })
 
+  const user = await updateUser({ nome, email, endereco, id } as UpdateUserDTO);
+
+  return res.status(200).json(user);
+
+  } catch (error: any) {
+    res.status(400).json(error.message);
+  }
 });
 
-usersRouter.delete("/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
+// usersRouter.delete("/:id", async (req: Request, res: Response) => {
 
-  try{
-  await deleteUser({ id });
-
-  return res.status(200).send("Usuário deletado com sucesso!");
-  } catch (error => {
-    res.status(400).json(error.message);
-  })
-});
-
+//   const deleteUser = await deleteUser();
+// })
 export default usersRouter;

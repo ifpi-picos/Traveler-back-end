@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
+import { UpdateUserDTO } from "../models/updateUser";
 import { IUserRepository } from "./interfaces/user.repository.interface";
 
 export class UserRepository implements IUserRepository {
@@ -14,22 +15,16 @@ export class UserRepository implements IUserRepository {
     return result;
   }
 
-  async function update({ name, email, id}): Promise<User> {
-    const result = await prisma.user.update({
-    where: {
-        id: id
-    },
-    data: {
-        name: name,
-        email: email,
-    }
-  })
-  return result;
-  }
-
-  async selectOne(where: Prisma.UserWhereInput) {
-    this.repository.delete({ where });
+  async update({ nome, email, endereco, id }: UpdateUserDTO): Promise<UpdateUserDTO> {
+    const result = await this.repository.update({
+      where: { id },
+      data: {
+        nome,
+        email,
+        endereco,
+        id,
+      },
+    });
+    return result;
   }
 }
-
-
