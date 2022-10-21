@@ -1,9 +1,12 @@
 import { Request, Response, Router } from "express";
 import { UserRepository } from "../repositories";
-import { prisma, PrismaClient, User } from "@prisma/client";
+import updateUser from "../services/user/updateUserService";
+import deleteUser from "../services/user/deleteUserService";
+import { User } from "@prisma/client";
+import { UpdateUserDTO } from "../models/updateUser";
+
 
 const usersRouter = Router();
-const Prisma = new PrismaClient();
 const userRepository = new UserRepository();
 
 usersRouter.post("/", async (req: Request, res: Response) => {
@@ -11,7 +14,7 @@ usersRouter.post("/", async (req: Request, res: Response) => {
     const { nome, email, senha } = req.body;
 
     const userExists = await userRepository.selectOne({ email });
-    if (userExists) throw new Error("Usuario ja cadastrado");
+    if (!userExists) throw new Error("Usuario ja cadastrado");
 
     await userRepository.create({
       nome,
@@ -24,26 +27,37 @@ usersRouter.post("/", async (req: Request, res: Response) => {
   }
 });
 
-
-
 usersRouter.get("/", (req: Request, res: Response) => {
   return res.status(200);
   // .send(userRepository.findAll());
 });
 
-usersRouter.put("/:id", (req: Request, res: Response) => {
-  const { id } = req.params.id;
-  const { name, endereco, email } = req.body;
+usersRouter.put("/:id", async (req: Request, res: Response) => {
+  const { nome, email, endereco } = req.body;
+  const { id } = req.params;
 
   try {
-    const idUser = prisma.User.findUniqueById(id);
-  } catch(error) {
 
+    const user = await updateUser({ nome, email, endereco } as UpdateUserDTO, Number(id));
+
+    return res.status(200).json(user);
+
+  } catch (error: any) {
+    res.status(400).json(error.message);
   }
 });
 
-usersRouter.delete("/", (req: Request, res: Response) => {
-  return res.status(200).send();
-});
+usersRouter.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { idString } = req.params;
+    const id = parseInt(idString);
 
+    const msg = await deleteUser(id);
+
+    res.status(200).end(msg);
+  } catch (error) {
+    res.status(400).end(error);
+  }
+
+});
 export default usersRouter;

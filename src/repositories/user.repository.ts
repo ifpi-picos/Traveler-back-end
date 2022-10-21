@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
+import { UpdateUserDTO } from "../models/updateUser";
 import { IUserRepository } from "./interfaces/user.repository.interface";
 
 export class UserRepository implements IUserRepository {
@@ -13,6 +14,25 @@ export class UserRepository implements IUserRepository {
     const result = await this.repository.findFirst({ where });
     return result;
   }
+
+  async update({ nome, email, endereco }: UpdateUserDTO, id: number): Promise<UpdateUserDTO> {
+    const result = await this.repository.update({
+      where: { id },
+      data: {
+        nome,
+        email,
+        endereco,
+      },
+    });
+    return result;
+  }
+
+  async delete( id: number ): Promise<string> {
+    await this.repository.delete({
+      where:{
+        id: id,
+      }
+    })
+    return "usuario deletado com sucesso!"
+  }
 }
-
-
