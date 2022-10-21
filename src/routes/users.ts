@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { UserRepository } from "../repositories";
 import updateUser from "../services/user/updateUserService";
-// import deleteUser from "../services/user/deleteUserService";
+import deleteUser from "../services/user/deleteUserService";
 import { User } from "@prisma/client";
 import { UpdateUserDTO } from "../models/updateUser";
 
@@ -14,7 +14,7 @@ usersRouter.post("/", async (req: Request, res: Response) => {
     const { nome, email, senha } = req.body;
 
     const userExists = await userRepository.selectOne({ email });
-    if (userExists) throw new Error("Usuario ja cadastrado");
+    if (!userExists) throw new Error("Usuario ja cadastrado");
 
     await userRepository.create({
       nome,
@@ -40,7 +40,7 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
 
   try{
 
-  const user = await updateUser({ nome, email, endereco, id } as UpdateUserDTO);
+  const user = await updateUser({ nome, email, endereco} as UpdateUserDTO, id);
 
   return res.status(200).json(user);
 
@@ -49,8 +49,17 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// usersRouter.delete("/:id", async (req: Request, res: Response) => {
+usersRouter.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { idString } = req.params;
+  const id = parseInt(idString);
 
-//   const deleteUser = await deleteUser();
-// })
+  const msg = await deleteUser( id );
+
+  res.status(200).end(msg);
+  } catch (error) {
+    res.status(400).end(error);
+  }
+  
+})
 export default usersRouter;

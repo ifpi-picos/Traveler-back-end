@@ -1,17 +1,15 @@
-// import prisma from "../../dataBase/prismaClient";
-// import User from "../../models/updateUser"
-// import { UserRepository } from "../repositories";
+import { UserRepository } from "../../repositories";
 
+const userRepository = new UserRepository;
 
-// function async deleteUser({ id }) {
-//     const userExists = await UserRepository.selectOne({ id })
+async function deleteUser( id: number ) {
+    const userExists = await userRepository.selectOne({ id })
 
-//     if (!userExists) throw new Error("Usuario não encontrado!");
+    if (!userExists) throw new Error("Usuario não encontrado!");
 
-//     const user = await UserRepository.delete({ id })
+    const user = await userRepository.delete( id )
 
-//     return user;
-// };
+    return user;
+}
 
-
-// export default deleteUser;
+export default deleteUser;
