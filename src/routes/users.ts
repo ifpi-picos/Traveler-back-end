@@ -31,9 +31,17 @@ usersRouter.get("/", (req: Request, res: Response) => {
   // .send(userRepository.findAll());
 });
 
-usersRouter.put("/", (req: Request, res: Response) => {
-  return res.status(200).send();
+usersRouter.put("/:id", (req: Request, res: Response) => {
+  const { id } = req.params.id;
+  const { name, endereco, email } = req.body;
+
+  try {
+    const idUser = prisma.User.findUniqueById(id);
+  } catch(error) {
+
+  }
 });
+
 usersRouter.delete("/", (req: Request, res: Response) => {
   return res.status(200).send();
 });
