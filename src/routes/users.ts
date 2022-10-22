@@ -14,7 +14,7 @@ usersRouter.post("/", async (req: Request, res: Response) => {
     const { nome, email, senha } = req.body;
 
     const userExists = await userRepository.selectOne({ email });
-    if (!userExists) throw new Error("Usuario ja cadastrado");
+    if (userExists) throw new Error("Usuario ja cadastrado");
 
     await userRepository.create({
       nome,
@@ -37,7 +37,6 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-
     const user = await updateUser({ nome, email, endereco } as UpdateUserDTO, Number(id));
 
     return res.status(200).json(user);
@@ -49,10 +48,9 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
 
 usersRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
-    const { idString } = req.params;
-    const id = parseInt(idString);
+    const { id } = req.params;
 
-    const msg = await deleteUser(id);
+    const msg = await deleteUser(parseInt(id));
 
     res.status(200).end(msg);
   } catch (error) {

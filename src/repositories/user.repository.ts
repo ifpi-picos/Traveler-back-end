@@ -30,7 +30,7 @@ export class UserRepository implements IUserRepository {
   async delete( id: number ): Promise<string> {
     await this.repository.delete({
       where:{
-        id: id,
+        id,
       }
     })
     return "usuario deletado com sucesso!"
