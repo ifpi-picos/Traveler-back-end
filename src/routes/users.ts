@@ -33,11 +33,11 @@ usersRouter.get("/", (req: Request, res: Response) => {
 });
 
 usersRouter.put("/:id", async (req: Request, res: Response) => {
-  const { nome, email, endereco } = req.body;
+  const { nome, email, endereco, senha } = req.body;
   const { id } = req.params;
 
   try {
-    const user = await updateUser({ nome, email, endereco } as UpdateUserDTO, Number(id));
+    const user = await updateUser({ nome, email, endereco, senha } as UpdateUserDTO, Number(id));
 
     return res.status(200).json(user);
 

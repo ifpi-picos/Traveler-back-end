@@ -29,7 +29,7 @@ describe('Test the users path', () => {
     const response = await request(app).post(API_USERS).send(newUser);
 
     const idFinder = prisma.user.findFirst()
-    const [userCreated] = await prisma.$transaction([idFinder])
+    const [userCreated] = await prisma.$transaction([idFinder]);
     id = userCreated?.id as number
 
     expect(response.statusCode).toBe(201);
@@ -42,6 +42,7 @@ describe('Test the users path', () => {
       name: 'User 1',
       email: 'user1@email.com',
       endereco: 'por ali',
+      senha: '123wer',
     };
     const response = await request(app).put(`${API_USERS}/${id}`).send(newUser);
     const user = response.body;

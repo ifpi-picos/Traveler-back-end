@@ -15,13 +15,14 @@ export class UserRepository implements IUserRepository {
     return result;
   }
 
-  async update({ nome, email, endereco }: UpdateUserDTO, id: number): Promise<UpdateUserDTO> {
+  async update({ nome, email, endereco, senha }: UpdateUserDTO, id: number): Promise<UpdateUserDTO> {
     const result = await this.repository.update({
       where: { id },
       data: {
         nome,
         email,
         endereco,
+        senha,
       },
     });
     return result;
