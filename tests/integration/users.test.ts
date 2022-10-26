@@ -25,7 +25,7 @@ describe('Test the users path', () => {
       nome: 'User 1',
       email: 'user1@email.com',
       senha: 'aaa12'
-    };
+    } as User;
     const response = await request(app).post(API_USERS).send(newUser);
 
     const idFinder = prisma.user.findFirst()
@@ -33,7 +33,7 @@ describe('Test the users path', () => {
     id = userCreated?.id as number
 
     expect(response.statusCode).toBe(201);
-  })
+  });
 
 
   test('It should update user', async () => {
