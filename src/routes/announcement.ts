@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
 import { Announcement } from "@prisma/client";
-import { UpdateUserDTO } from "../models/updateUser";
 import { AnnouncementService } from "../services/announcementService";
 
 const announcementService = new AnnouncementService();
@@ -20,27 +19,33 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
 
 announcementRouter.post("/", async (req: Request, res: Response) => {
   try {
-    const { veiculo, placa, preco, linkSocial, anuncianteId  } = req.body;
+    let { veiculo, placa, preco, linkSocial, anuncianteId  } = req.body;
+
+    preco = Number(preco);
+    anuncianteId = Number(anuncianteId);
 
     const announcement = await announcementService.addAnnouncement({ veiculo, placa, preco, linkSocial, anuncianteId  } as Announcement);
     return res.status(201).send("cadastro completo").json(announcement);
 
   } catch (error: any) {
-    return res.status(400).json(error.message);
+    return res.status(400).json(error);
   }
 });
 
 announcementRouter.put("/:id", async (req: Request, res: Response) => {
-  const { veiculo, placa, preco, linkSocial, anuncianteId  } = req.body;
-  const { id } = req.params;
-
   try {
+    let { veiculo, placa, preco, linkSocial, anuncianteId  } = req.body;
+    const { id } = req.params;
+
+    preco = Number(preco);
+    anuncianteId = Number(anuncianteId);
+
     const announcement = await announcementService.updateAnnouncement({ veiculo, placa, preco, linkSocial, anuncianteId  } as Announcement, Number(id));
 
     return res.status(200).json(announcement);
 
   } catch (error: any) {
-    return res.status(400).json(error.message);
+    return res.status(400).json(error);
   }
 });
 
@@ -48,11 +53,11 @@ announcementRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const msg = await announcementService.deleteAnnouncement(parseInt(id));
-    return res.status(200).end(msg);
+    const msg: string = await announcementService.deleteAnnouncement(parseInt(id));
+    return res.status(200).send(msg);
 
   } catch (error) {
-    return res.status(400).end(error);
+    return res.status(400).send(error);
   }
 
 });

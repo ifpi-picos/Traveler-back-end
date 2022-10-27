@@ -7,7 +7,6 @@ import settingsRouter from './settings';
 
 const routes = Router();
 
-
 routes.use('/users', usersRouter);
 routes.use('/announcement', announcementRouter);
 routes.use('/authentication', authenticationRouter);

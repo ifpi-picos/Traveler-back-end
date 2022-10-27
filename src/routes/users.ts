@@ -1,13 +1,13 @@
 import { Request, Response, Router } from "express";
 import { UserRepository } from "../repositories";
-import updateUser from "../services/user/updateUserService";
-import deleteUser from "../services/user/deleteUserService";
+import { UserService } from "../services/userService";
 import { User } from "@prisma/client";
-import { UpdateUserDTO } from "../models/updateUser";
+import { UserDTO } from "../models/user";
 
 
 const usersRouter = Router();
 const userRepository = new UserRepository();
+const userService = new UserService();
 
 usersRouter.post("/", async (req: Request, res: Response) => {
   try {
@@ -37,7 +37,7 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const user = await updateUser({ nome, email, endereco, senha } as UpdateUserDTO, Number(id));
+    const user = await userService.updateUser({ nome, email, endereco, senha } as UserDTO, Number(id));
 
     return res.status(200).json(user);
 
@@ -50,7 +50,7 @@ usersRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const msg = await deleteUser(parseInt(id));
+    const msg = await userService.deleteUser(parseInt(id));
 
     res.status(200).end(msg);
   } catch (error) {

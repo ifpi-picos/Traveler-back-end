@@ -1,4 +1,4 @@
-export interface UpdateUserDTO {
+export interface UserDTO {
   nome: string;
   email: string;
   endereco: string | null;

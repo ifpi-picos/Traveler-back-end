@@ -1,9 +1,9 @@
 import { User, Prisma } from "@prisma/client";
-import { UpdateUserDTO } from "../../models/updateUser";
+import { UserDTO } from "../../models/user";
 
 export interface IUserRepository {
     create(data: User): Promise<User>;
     selectOne(where: Prisma.UserWhereInput): Promise<User | null>;
-    update({ nome, email, endereco, senha }: UpdateUserDTO, id: number): Promise<UpdateUserDTO>;
+    update({ nome, email, endereco, senha }: UserDTO, id: number): Promise<UserDTO>;
     delete( id: number ): Promise<string>;
 }

@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
-import { UpdateUserDTO } from "../models/updateUser";
+import { UserDTO } from "../models/user";
 import { IUserRepository } from "./interfaces/user.repository.interface";
 
 export class UserRepository implements IUserRepository {
@@ -16,7 +16,7 @@ export class UserRepository implements IUserRepository {
     return result;
   }
 
-  async update({ nome, email, endereco, senha }: UpdateUserDTO, id: number): Promise<UpdateUserDTO> {
+  async update({ nome, email, endereco, senha }: UserDTO, id: number): Promise<UserDTO> {
     const result = await this.repository.update({
       where: { id },
       data: {

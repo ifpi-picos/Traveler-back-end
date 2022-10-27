@@ -1,9 +1,10 @@
 import { Announcement, Prisma } from "@prisma/client";
+import { AnnouncementDTO } from "../../models/annoucement";
 
 export interface IAnnouncementRepository{
-  findMany(): Promise<Announcement[]>;
-  create(data: Announcement): Promise<Announcement>;
-  selectOne(where: Prisma.UserWhereInput): Promise<Announcement | null>;
-  update({ veiculo, placa, preco, linkSocial, anuncianteId }: Announcement, id: number): Promise<Announcement>;
+  findMany(): Promise<AnnouncementDTO[]>;
+  create(data: AnnouncementDTO): Promise<AnnouncementDTO>;
+  selectOne(where: Prisma.UserWhereInput): Promise<AnnouncementDTO | null>;
+  update(data: AnnouncementDTO, id: number): Promise<AnnouncementDTO>;
   delete( id: number ): Promise<string>;
 }
