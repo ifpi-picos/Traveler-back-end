@@ -10,6 +10,7 @@ export class UserRepository implements IUserRepository {
     const result = await this.repository.create({ data });
     return result;
   }
+  
   async selectOne(where: Prisma.UserWhereInput): Promise<User | null> {
     const result = await this.repository.findFirst({ where });
     return result;

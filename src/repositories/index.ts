@@ -1,2 +1,2 @@
-export { UserRepository } from "./user.repository";
-export { AnnouncementRepository } from "./announcement.repository";
+export { UserRepository } from "./userRepository";
+export { AnnouncementRepository } from "./announcementRepository";
