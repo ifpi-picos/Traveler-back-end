@@ -1,7 +1,7 @@
 export interface AnnouncementDTO {
-  veiculo: string,
-  placa: string, 
-  preco: number,
-  linkSocial: string,
-  anuncianteId: number,
+  vehicle: string,
+  licensePlate: string, 
+  price: number,
+  socialLink: string,
+  advertiserId: number,
 }

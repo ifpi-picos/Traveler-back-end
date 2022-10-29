@@ -3,6 +3,7 @@ import { UserRepository } from "../repositories";
 import { UserService } from "../services/userService";
 import { User } from "@prisma/client";
 import { UserDTO } from "../models/user";
+// byscript
 
 
 const usersRouter = Router();
@@ -11,15 +12,17 @@ const userService = new UserService();
 
 usersRouter.post("/", async (req: Request, res: Response) => {
   try {
-    const { nome, email, senha } = req.body;
+    const { name, email, password } = req.body;
+
+    // const secretPassword = byscript
 
     const userExists = await userRepository.selectOne({ email });
     if (userExists) throw new Error("Usuario ja cadastrado");
 
     await userRepository.create({
-      nome,
+      name,
       email,
-      senha,
+      password/*: secretPassword*/,
     } as User);
     return res.status(201).send("cadastro completo");
   } catch (error: any) {
@@ -33,16 +36,16 @@ usersRouter.get("/", (req: Request, res: Response) => {
 });
 
 usersRouter.put("/:id", async (req: Request, res: Response) => {
-  const { nome, email, endereco, senha } = req.body;
+  const { name, email, address, password } = req.body;
   const { id } = req.params;
 
   try {
-    const user = await userService.updateUser({ nome, email, endereco, senha } as UserDTO, Number(id));
+    const user = await userService.updateUser({ name, email, address, password } as UserDTO, Number(id));
 
     return res.status(200).json(user);
 
   } catch (error: any) {
-    res.status(400).json(error.message);
+    res.status(400).json(error);
   }
 });
 

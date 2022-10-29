@@ -1,27 +1,28 @@
 import { UserDTO } from "../models/user"
 import { UserRepository } from "../repositories";
+import { UserServiceInterface } from "./interfaces/userServiceInterface";
 
 const userRepository = new UserRepository();
 
-export class UserService {
+export class UserService implements UserServiceInterface {
 
-    async updateUser({ nome, email, endereco, senha }: UserDTO, id: number) {
+    async updateUser({ name, email, address, password }: UserDTO, id: number): Promise<UserDTO> {
         const userExists = await userRepository.selectOne({ id });
 
         if (!userExists) throw new Error("Usuario não encontrado!");
 
-        const user = await userRepository.update({ nome, email, endereco, senha }, id)
+        const user = await userRepository.update({ name, email, address, password }, id)
 
         return user;
     }
 
-    async deleteUser( id: number ) {
+    async deleteUser( id: number ): Promise<string> {
         const userExists = await userRepository.selectOne({ id })
 
         if (!userExists) throw new Error("Usuario não encontrado!");
 
-        const user = await userRepository.delete( id )
+        const msg = await userRepository.delete( id )
 
-        return user;
+        return msg;
     }
 }

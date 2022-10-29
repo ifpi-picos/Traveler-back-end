@@ -22,9 +22,9 @@ describe('Test the users path', () => {
 
   test('It should add new user', async () => {
     const newUser = {
-      nome: 'User 1',
+      name: 'User 1',
       email: 'user1@email.com',
-      senha: 'aaa12'
+      password: 'aaa12'
     } as User;
     const response = await request(app).post(API_USERS).send(newUser);
 
@@ -41,8 +41,8 @@ describe('Test the users path', () => {
     const newUser = {
       name: 'User 1',
       email: 'user1@email.com',
-      endereco: 'por ali',
-      senha: '123wer',
+      address: 'por ali',
+      password: '123wer',
     };
     const response = await request(app).put(`${API_USERS}/${id}`).send(newUser);
     const user = response.body;

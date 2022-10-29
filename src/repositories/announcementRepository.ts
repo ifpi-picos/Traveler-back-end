@@ -1,4 +1,4 @@
-import { IAnnouncementRepository } from "./interfaces/announcement.repository.interface";
+import { IAnnouncementRepository } from "./interfaces/announcementRepositoryInterface";
 import { Announcement, Prisma, PrismaClient } from "@prisma/client";
 import { AnnouncementDTO } from "../models/annoucement";
 
@@ -22,15 +22,15 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     return result;
   }
 
-  async update({ veiculo, placa, preco, linkSocial, anuncianteId }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
+  async update({ vehicle, licensePlate, price, socialLink, advertiserId }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
     const result = await this.repository.update({
       where: { id },
       data: {
-        veiculo,
-        placa,
-        preco,
-        linkSocial,
-        anuncianteId,
+        vehicle,
+        licensePlate,
+        price,
+        socialLink,
+        advertiserId,
       },
     });
     return result;

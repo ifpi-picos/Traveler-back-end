@@ -11,19 +11,19 @@ datasource db {
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
-  nome  String
-  endereco String?
-  senha String
+  name  String
+  address String?
+  password String
   Announcement Announcement[]
-  @@map("usuario")
+  @@map("users")
 }
 model Announcement {
   id Int        @id @default(autoincrement())
-  anunciante User @relation(fields: [anuncianteId], references: [id])
-  anuncianteId Int
-  veiculo String
-  placa String 
-  preco Float
-  linkSocial String
-  @@map("anuncio")
+  advertiser User @relation(fields: [advertiserId], references: [id])
+  advertiserId Int
+  vehicle String
+  licensePlate String 
+  price Float
+  socialLink String
+  @@map("announcements")
 }

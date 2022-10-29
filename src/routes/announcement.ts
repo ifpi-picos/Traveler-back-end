@@ -12,19 +12,19 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
     return res.status(200).json(announcements);
 
   } catch (error: any) {
-    return res.status(400).json(error.message);
+    return res.status(400).json(error);
   }
 
 });
 
 announcementRouter.post("/", async (req: Request, res: Response) => {
   try {
-    let { veiculo, placa, preco, linkSocial, anuncianteId  } = req.body;
+    let { vehicle, licensePlate, price, socialLink, advertiserId  } = req.body;
 
-    preco = Number(preco);
-    anuncianteId = Number(anuncianteId);
+    price = Number(price);
+    advertiserId = Number(advertiserId);
 
-    const announcement = await announcementService.addAnnouncement({ veiculo, placa, preco, linkSocial, anuncianteId  } as Announcement);
+    const announcement = await announcementService.addAnnouncement({ vehicle, licensePlate, price, socialLink, advertiserId  } as Announcement);
     return res.status(201).send("cadastro completo").json(announcement);
 
   } catch (error: any) {
@@ -34,13 +34,13 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
 announcementRouter.put("/:id", async (req: Request, res: Response) => {
   try {
-    let { veiculo, placa, preco, linkSocial, anuncianteId  } = req.body;
+    let { vehicle, licensePlate, price, socialLink, advertiserId  } = req.body;
     const { id } = req.params;
 
-    preco = Number(preco);
-    anuncianteId = Number(anuncianteId);
+    price = Number(price);
+    advertiserId = Number(advertiserId);
 
-    const announcement = await announcementService.updateAnnouncement({ veiculo, placa, preco, linkSocial, anuncianteId  } as Announcement, Number(id));
+    const announcement = await announcementService.updateAnnouncement({ vehicle, licensePlate, price, socialLink, advertiserId  } as Announcement, Number(id));
 
     return res.status(200).json(announcement);
 
