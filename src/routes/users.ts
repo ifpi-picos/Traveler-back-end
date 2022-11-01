@@ -3,7 +3,7 @@ import { UserRepository } from "../repositories";
 import { UserService } from "../services/userService";
 import { User } from "@prisma/client";
 import { UserDTO } from "../models/user";
-// byscript
+import byscript from "bcryptjs";
 
 
 const usersRouter = Router();
@@ -14,7 +14,7 @@ usersRouter.post("/", async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
-    // const secretPassword = byscript
+    const secretPassword = byscript.hashSync(password, 8);
 
     const userExists = await userRepository.selectOne({ email });
     if (userExists) throw new Error("Usuario ja cadastrado");
@@ -22,7 +22,7 @@ usersRouter.post("/", async (req: Request, res: Response) => {
     await userRepository.create({
       name,
       email,
-      password/*: secretPassword*/,
+      password: secretPassword,
     } as User);
     return res.status(201).send("cadastro completo");
   } catch (error: any) {
