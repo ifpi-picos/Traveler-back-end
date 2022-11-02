@@ -1,13 +1,30 @@
-import { Request, Response, Next} from 'express';
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
-export function verifyJWT(req, res, next) {
-    const token = req.headers['x-acess-token'];
+interface tokenInterface {
+     id: number;
+  };
+
+const SECRET = process.env.secret;
+
+export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
+    const token = req.cookies ? req.cookies.token: null;
+
+    if (!token) {
+      return res.status(403).send({
+        auth: false, message: 'No token provided.'
+      })
+    }
   
-    jwt.verify(token, SECRETO, (err, decoded) => {
-      if(err) return res.status(401).end('Você não esta logado!')
-  
-      req.id = decoded.id;
+    jwt.verify(token, `${SECRET}`, (err: any, decoded: any) => {
+      if(err) return res.status(500).send({
+        auth: false, message: 'Fail to authentication. Error ->' + err
+      });
+      
+      const userId = (decoded as tokenInterface).id;
+      
+      return userId;
       next();
     })
   }
-  
+ 
