@@ -2,12 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 interface tokenInterface {
-     id: number;
-  };
+     id: string;
+     iat: number;
+     exp: number;
+  }
 
 const SECRET = process.env.secret;
 
-export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
+export default function verifyJWT(req: Request, res: Response, next: NextFunction ) {
     const token = req.cookies ? req.cookies.token: null;
 
     if (!token) {
@@ -21,9 +23,8 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
         auth: false, message: 'Fail to authentication. Error ->' + err
       });
       
-      const userId = (decoded as tokenInterface).id;
+      req.userId = (decoded as tokenInterface).id;
       
-      return userId;
       next();
     })
   }

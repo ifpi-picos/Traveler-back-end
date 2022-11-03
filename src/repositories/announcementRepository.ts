@@ -1,5 +1,5 @@
 import { IAnnouncementRepository } from "./interfaces/announcementRepositoryInterface";
-import { Announcement, Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { AnnouncementDTO } from "../models/annoucement";
 
 export class AnnouncementRepository implements IAnnouncementRepository {
