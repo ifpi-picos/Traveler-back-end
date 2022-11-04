@@ -5,7 +5,8 @@ import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const API_USERS = '/users';
-let id: number
+let id: number;
+// const myMock = jest.fn().mockReturnValue(201);
 
 beforeAll(async () => {
   const removeUser = prisma.user.deleteMany();
@@ -24,9 +25,9 @@ describe('Test the users path', () => {
     const newUser = {
       name: 'User 1',
       email: 'user1@email.com',
-      password: 'aaa12'
+      password: 'aaa12',
     } as User;
-    const response = await request(app).post(API_USERS).send(newUser);
+    const response = await request(app).post(`${API_USERS}/cadastro`).send(newUser);
 
     const idFinder = prisma.user.findFirst()
     const [userCreated] = await prisma.$transaction([idFinder]);
@@ -45,7 +46,7 @@ describe('Test the users path', () => {
       password: '123wer',
     };
     const response = await request(app).put(`${API_USERS}/${id}`).send(newUser);
-    const user = response.body;
+    
     expect(response.statusCode).toBe(200);
   });
 

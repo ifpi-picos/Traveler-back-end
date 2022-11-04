@@ -10,7 +10,7 @@ const usersRouter = Router();
 const userRepository = new UserRepository();
 const userService = new UserService();
 
-usersRouter.post("/", async (req: Request, res: Response) => {
+usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 

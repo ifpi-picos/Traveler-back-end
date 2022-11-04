@@ -15,7 +15,7 @@ app.use(cors({
 
 app.all('/*', (req: Request, res: Response, next: NextFunction) =>{
     console.log(req.path)
-    const publicRoutes = ['/authentication', '/', '/users'];
+    const publicRoutes = ['/authentication/login', '/users/cadastro'];
     for (let i = 0; i < publicRoutes.length; i +=1) {
         if (req.path === publicRoutes[i]) {
             return next();
