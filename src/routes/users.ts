@@ -1,45 +1,39 @@
 import { Request, Response, Router } from "express";
-import { UserRepository } from "../repositories";
 import { UserService } from "../services/userService";
-import { User } from "@prisma/client";
-import { UserDTO } from "../models/user";
-import byscript from "bcryptjs";
-
+import UserDTO from "../models/user";
 
 const usersRouter = Router();
-const userRepository = new UserRepository();
 const userService = new UserService();
 
 usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, address } = req.body;
 
-    const secretPassword = byscript.hashSync(password, 8);
+    await userService.addUser({ name, email, password, address })
 
-    const userExists = await userRepository.selectOne({ email });
-    if (userExists) throw new Error("Usuario ja cadastrado");
-
-    await userRepository.create({
-      name,
-      email,
-      password: secretPassword,
-    } as User);
     return res.status(201).send("cadastro completo");
   } catch (error: any) {
-    res.status(400).json(error.message);
+    res.status(400).json(error);
   }
 });
 
-usersRouter.get("/", (req: Request, res: Response) => {
-  return res.status(200);
-  // .send(userRepository.findAll());
+usersRouter.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const user = await userService.getById( Number(id) )
+
+    res.status(200).json(user)
+  } catch (error) {
+    res.status(400).json(error)
+  }
 });
 
 usersRouter.put("/:id", async (req: Request, res: Response) => {
-  const { name, email, address, password } = req.body;
-  const { id } = req.params;
-
   try {
+    const { name, email, address, password } = req.body;
+    const { id } = req.params;
+
     const user = await userService.updateUser({ name, email, address, password } as UserDTO, Number(id));
 
     return res.status(200).json(user);
@@ -57,7 +51,7 @@ usersRouter.delete("/:id", async (req: Request, res: Response) => {
 
     res.status(200).end(msg);
   } catch (error) {
-    res.status(400).end(error);
+    res.status(400).json(error);
   }
 
 });
