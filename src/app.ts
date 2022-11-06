@@ -1,8 +1,8 @@
-import express, { NextFunction, Request, Response } from 'express';
-import routes from './routes';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import auth from './middleware/verify';
+import express, { NextFunction, Request, Response } from "express";
+import routes from "./routes";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import auth from "./middleware/verify";
 
 const app = express();
 app.use(express.json());
@@ -14,7 +14,6 @@ app.use(cors({
 }));
 
 app.all('/*', (req: Request, res: Response, next: NextFunction) =>{
-    console.log(req.path)
     const publicRoutes = ['/authentication/login', '/users/cadastro'];
     for (let i = 0; i < publicRoutes.length; i +=1) {
         if (req.path === publicRoutes[i]) {

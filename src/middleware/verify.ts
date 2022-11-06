@@ -1,11 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-
-interface tokenInterface {
-     id: string;
-     iat: number;
-     exp: number;
-  }
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import tokenInterface from "../models/token";
 
 const SECRET = process.env.secret;
 
@@ -18,12 +13,12 @@ export default function verifyJWT(req: Request, res: Response, next: NextFunctio
       })
     }
   
-    jwt.verify(token, `${SECRET}`, (err: any, decoded: any) => {
+    jwt.verify(token, `${SECRET}`, (err: any, decoded: tokenInterface) => {
       if(err) return res.status(500).send({
         auth: false, message: 'Fail to authentication. Error ->' + err
       });
       
-      req.userId = (decoded as tokenInterface).id;
+      req.userId = decoded.id;
       
       next();
     })

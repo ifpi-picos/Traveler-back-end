@@ -1,9 +1,12 @@
 import { Request, Response, Router } from "express";
-import { UserService } from "../services/userService";
+import { UserService } from "../services";
+import { UserRepository } from "../repositories";
+import { IUserServiceInterface } from "../services/interfaces/userServiceInterface";
 import UserDTO from "../models/user";
 
+
 const usersRouter = Router();
-const userService = new UserService();
+const userService: IUserServiceInterface = new UserService(new UserRepository());
 
 usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   try {

@@ -1,7 +1,7 @@
-import { AnnouncementDTO } from "../../models/annoucement";
+import AnnouncementDTO from "../../models/annoucement";
 
 
-export interface AnnouncementServiceInterface {
+export interface IAnnouncementServiceInterface {
     findALLAnnouncement(): Promise<AnnouncementDTO[]>;
     addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId }: AnnouncementDTO): Promise<AnnouncementDTO>;
     updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId }: AnnouncementDTO, id: number): Promise<AnnouncementDTO>;

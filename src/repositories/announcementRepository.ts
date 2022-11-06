@@ -1,6 +1,6 @@
 import { IAnnouncementRepository } from "./interfaces/announcementRepositoryInterface";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { AnnouncementDTO } from "../models/annoucement";
+import AnnouncementDTO from "../models/annoucement";
 
 export class AnnouncementRepository implements IAnnouncementRepository {
     private repository: Prisma.AnnouncementDelegate<

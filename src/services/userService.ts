@@ -1,15 +1,18 @@
-import { UserRepository } from "../repositories";
-import { UserServiceInterface } from "./interfaces/userServiceInterface";
+import { IUserServiceInterface } from "./interfaces/userServiceInterface";
 import bcrypt from "bcryptjs";
 import UserDTO from "../models/user";
+import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
 
 
-const userRepository = new UserRepository();
+export class UserService implements IUserServiceInterface {
+    private userRepository: IUserRepository;
 
-export class UserService implements UserServiceInterface {
+    constructor(iUserRepository: IUserRepository) {
+        this.userRepository = iUserRepository;
+    }
 
-    async getById( id: number ) {
-        const user = await userRepository.selectOne( id );
+    async getById( id: number ): Promise<UserDTO> {
+        const user = await this.userRepository.selectOne( id );
 
         if (!user) throw new Error("Usuario não encontrado!");
 
@@ -18,12 +21,12 @@ export class UserService implements UserServiceInterface {
 
     async addUser({ name, email, password }: UserDTO) {
 
-        const userExists = await userRepository.selectOne({ email });
+        const userExists = await this.userRepository.selectOne({ email });
         if (userExists) throw new Error("Usuario ja cadastrado");
 
         const secretPassword = bcrypt.hashSync(password, 8);
 
-        await userRepository.create({
+        await this.userRepository.create({
           name,
           email,
           password: secretPassword,
@@ -31,21 +34,21 @@ export class UserService implements UserServiceInterface {
     }
 
     async updateUser({ name, email, address, password }: UserDTO, id: number): Promise<UserDTO> {
-        const userExists = await userRepository.selectOne({ id });
+        const userExists = await this.userRepository.selectOne({ id });
 
         if (!userExists) throw new Error("Usuario não encontrado!");
 
-        const user = await userRepository.update({ name, email, address, password }, id)
+        const user = await this.userRepository.update({ name, email, address, password }, id)
 
         return user;
     }
 
     async deleteUser( id: number ): Promise<string> {
-        const userExists = await userRepository.selectOne({ id })
+        const userExists = await this.userRepository.selectOne({ id })
 
         if (!userExists) throw new Error("Usuario não encontrado!");
 
-        const msg = await userRepository.delete( id )
+        const msg = await this.userRepository.delete( id )
 
         return msg;
     }

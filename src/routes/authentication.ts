@@ -1,8 +1,10 @@
-import { Router, Request, Response } from 'express';
-import { AuthService } from '../services/authService';
+import { Router, Request, Response } from "express";
+import { AuthService } from "../services";
+import IAuthServiceInterface from "../services/interfaces/authServiceInterface";
+
 
 const authenticationRouter = Router();
-const authService = new AuthService();
+const authService: IAuthServiceInterface = new AuthService();
 
 authenticationRouter.post('/login', async (req: Request, res: Response) => {
   try {

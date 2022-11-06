@@ -1,4 +1,4 @@
-export interface AnnouncementDTO {
+export default interface AnnouncementDTO {
   vehicle: string,
   licensePlate: string, 
   price: number,

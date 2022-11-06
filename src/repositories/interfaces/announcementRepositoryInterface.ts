@@ -1,5 +1,5 @@
-import { Announcement, Prisma } from "@prisma/client";
-import { AnnouncementDTO } from "../../models/annoucement";
+import { Prisma } from "@prisma/client";
+import AnnouncementDTO from "../../models/annoucement";
 
 export interface IAnnouncementRepository{
   findMany(): Promise<AnnouncementDTO[]>;

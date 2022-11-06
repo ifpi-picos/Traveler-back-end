@@ -1,9 +1,10 @@
 import { Request, Response, Router } from "express";
 import { Announcement } from "@prisma/client";
-import { AnnouncementService } from "../services/announcementService";
-import { AnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
+import { AnnouncementService } from "../services";
+import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
+import { AnnouncementRepository, UserRepository } from "../repositories";
 
-const announcementService:AnnouncementServiceInterface = new AnnouncementService();
+const announcementService: IAnnouncementServiceInterface = new AnnouncementService(new AnnouncementRepository(), new UserRepository);
 const announcementRouter = Router();
 
 
