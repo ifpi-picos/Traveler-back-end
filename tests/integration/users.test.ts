@@ -38,7 +38,7 @@ describe('Test the users path', () => {
 
 
   test('It should update user', async () => {
-
+    
     const newUser = {
       name: 'User 1',
       email: 'user1@email.com',

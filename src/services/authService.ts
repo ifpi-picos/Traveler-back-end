@@ -10,7 +10,7 @@ const SECRET = process.env.secret;
 const userRepository = new UserRepository;
 
 export class AuthService implements IAuthServiceInterface{
-    getToken(user: UserDTO): Promise<tokenInterface> {
+    getToken(user: UserDTO): string {
         const token = jwt.sign({id: user.id}, `${SECRET}`, { expiresIn: '10d'});
         return token;
     }

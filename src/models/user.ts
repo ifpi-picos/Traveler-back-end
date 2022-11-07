@@ -4,4 +4,4 @@ export default interface UserDTO {
   email: string;
   address: string | null;
   password: string;
-};
+}

@@ -12,7 +12,7 @@ export class UserService implements IUserServiceInterface {
     }
 
     async getById( id: number ): Promise<UserDTO> {
-        const user = await this.userRepository.selectOne( id );
+        const user = await this.userRepository.selectOne({ id });
 
         if (!user) throw new Error("Usuario não encontrado!");
 

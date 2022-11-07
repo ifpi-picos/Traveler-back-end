@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import tokenInterface from "../models/token";
 
 const SECRET = process.env.secret;
 
@@ -12,15 +11,19 @@ export default function verifyJWT(req: Request, res: Response, next: NextFunctio
         auth: false, message: 'No token provided.'
       })
     }
-  
-    jwt.verify(token, `${SECRET}`, (err: any, decoded: tokenInterface) => {
-      if(err) return res.status(500).send({
-        auth: false, message: 'Fail to authentication. Error ->' + err
-      });
+    else {
+      const payload = jwt.verify(token, `${SECRET}`);
+
+      if (typeof payload != 'string') {
+        req.userId = payload.id;
       
-      req.userId = decoded.id;
+        next();
+      }
+      else {
+        return res.status(500).send({
+          auth: false, message: 'Fail to authentication.'
+        });
       
-      next();
-    })
-  }
- 
+      }
+    }
+}

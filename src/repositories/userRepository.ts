@@ -7,7 +7,7 @@ export class UserRepository implements IUserRepository {
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   > = new PrismaClient().user;
 
-  async create(data: User): Promise<User> {
+  async create(data: UserDTO): Promise<User> {
     const result = await this.repository.create({ data });
     return result;
   }

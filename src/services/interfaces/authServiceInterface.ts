@@ -4,6 +4,6 @@ import tokenInterface from "../../models/token";
 
 
 export default interface IAuthServiceInterface {
-    getToken(user: UserDTO): Promise<tokenInterface>;
+    getToken(user: UserDTO): string;
     login({email, password}: Auth): Promise<any>;
 }
