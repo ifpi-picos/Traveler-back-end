@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import IAuthServiceInterface from "./interfaces/authServiceInterface";
 import Auth from "../models/auth";
 import UserDTO from "../models/user";
-import tokenInterface from "../models/token";
 import { UserRepository } from "../repositories/userRepository";
 
 const SECRET = process.env.secret;
@@ -15,7 +14,7 @@ export class AuthService implements IAuthServiceInterface{
         return token;
     }
 
-    async login({email, password}: Auth): Promise<any> {
+    async login({email, password}: Auth): Promise<{token: string, userData: { name: string, email: string}}> {
         const user = await userRepository.selectOne({ email });
 
         if (!user) throw Error('Usuário não encontrado!');
