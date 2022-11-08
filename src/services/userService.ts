@@ -21,6 +21,10 @@ export class UserService implements IUserServiceInterface {
 
     async addUser({ name, email, password }: UserDTO) {
 
+        if (name === null || email === null || password.length < 8 || password.length > 20 ) {
+            throw new Error ("Algum campo inválido");
+        }
+
         const userExists = await this.userRepository.selectOne({ email });
         if (userExists) throw new Error("Usuario ja cadastrado");
 
