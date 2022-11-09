@@ -4,6 +4,7 @@
   "description": "Projeto integrador II e Programação para internet II",
   "main": "app.ts",
   "scripts": {
+    "start:dev": "tsc && node dist/src/app.js",
     "test": "jest",
     "build": "tsc",
     "start": "node dist/src/app.js"

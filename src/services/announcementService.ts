@@ -20,7 +20,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
 
     async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
-        if (advertiserId === null || socialLink === null || licensePlate === null || vehicle === null ) {
+        if ( !advertiserId || !socialLink || !licensePlate || !vehicle ) {
             throw new Error ("Algum campo inválido");
         }
 
