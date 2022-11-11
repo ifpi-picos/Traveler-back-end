@@ -26,13 +26,17 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
     price = Number(price);
     advertiserId = Number(advertiserId);
     const smashDate = date.split('/');
-      
+    
+    let dateConvertido = date;
+    if(date){
+    
     const day = smashDate[0];
     const month = smashDate[1];
     const year = smashDate[2];
 
-    const dateConvertido = new Date( year + '/' + month + '/' + day );
+    dateConvertido = new Date( year + '/' + month + '/' + day );
 
+  }
     const announcement = await announcementService.addAnnouncement({
       vehicle, 
       licensePlate, 
