@@ -27,14 +27,14 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
     advertiserId = Number(advertiserId);
     const smashDate = date.split('/');
     
-    let dateConvertido = date;
+    let dateConvertido;
     if(date){
     
-    const day = smashDate[0];
-    const month = smashDate[1];
-    const year = smashDate[2];
+      const day = smashDate[0];
+      const month = smashDate[1];
+      const year = smashDate[2];
 
-    dateConvertido = new Date( year + '/' + month + '/' + day );
+      dateConvertido = new Date( year + '/' + month + '/' + day );
 
   }
     const announcement = await announcementService.addAnnouncement({
@@ -59,11 +59,16 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
     const smashDate = date.split('/');
       
-    const day = smashDate[0];
-    const month = smashDate[1];
-    const year = smashDate[2];
+    let dateConvertido;
+    if(date){
+    
+      const day = smashDate[0];
+      const month = smashDate[1];
+      const year = smashDate[2];
 
-    const dateConvertido = new Date( year + '/' + month + '/' + day );
+      dateConvertido = new Date( year + '/' + month + '/' + day );
+    }
+
     price = Number(price);
     advertiserId = Number(advertiserId);
 
@@ -72,6 +77,7 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
       licensePlate, 
       price, 
       socialLink, 
+      date: dateConvertido,
       advertiserId  
     } as Announcement,
     Number(id));
