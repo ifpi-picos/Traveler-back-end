@@ -21,7 +21,7 @@ export class UserService implements IUserServiceInterface {
 
     async addUser({ name, email, password }: UserDTO) {
 
-        if (!name || !email || password.length < 8 || password.length > 20 ) {
+        if (email.indexOf("@") === -1 || !name || !email || password.length < 8 || password.length > 20 ) {
             throw new Error ("Algum campo inválido");
         }
 
