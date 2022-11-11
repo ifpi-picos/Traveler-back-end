@@ -1,6 +1,6 @@
 import { IUserServiceInterface } from "./interfaces/userServiceInterface";
 import bcrypt from "bcryptjs";
-import UserDTO from "../models/user";
+import UserDTO, { SecureUser } from "../models/user";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
 
 
@@ -11,15 +11,17 @@ export class UserService implements IUserServiceInterface {
         this.userRepository = iUserRepository;
     }
 
-    async getById( id: number ): Promise<UserDTO> {
+    async getById( id: number ): Promise<SecureUser> {
         const user = await this.userRepository.selectOne({ id });
 
         if (!user) throw new Error("Usuario não encontrado!");
 
-        return user;
+        const { email, name, address }: SecureUser = user;
+
+        return { id, email, name, address };
     }
 
-    async addUser({ name, email, password }: UserDTO) {
+    async addUser({ name, email, password }: UserDTO): Promise<string> {
 
         if (!name || !email || password.length < 8 || password.length > 20 ) {
             throw new Error ("Algum campo inválido");
@@ -30,14 +32,16 @@ export class UserService implements IUserServiceInterface {
 
         const secretPassword = bcrypt.hashSync(password, 8);
 
-        await this.userRepository.create({
+        const msg = await this.userRepository.create({
           name,
           email,
           password: secretPassword,
         } as UserDTO);
+        
+        return msg;
     }
 
-    async updateUser({ name, email, address, password }: UserDTO, id: number): Promise<UserDTO> {
+    async updateUser({ name, email, address, password }: UserDTO, id: number): Promise<SecureUser> {
         const userExists = await this.userRepository.selectOne({ id });
 
         if (!userExists) throw new Error("Usuario não encontrado!");

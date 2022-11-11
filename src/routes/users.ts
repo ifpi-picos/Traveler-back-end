@@ -12,11 +12,11 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   try {
     const { name, email, password, address } = req.body;
 
-    await userService.addUser({ name, email, password, address })
+    const msg = await userService.addUser({ name, email, password, address })
 
-    return res.status(201).send("cadastro completo");
+    return res.status(201).send(msg);
   } catch (error: any) {
-    res.status(400).json(error);
+    res.status(400).json(error.message);
   }
 });
 
@@ -27,8 +27,8 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
     const user = await userService.getById( Number(id) )
 
     res.status(200).json(user)
-  } catch (error) {
-    res.status(400).json(error)
+  } catch (error: any) {
+    res.status(400).json(error.message)
   }
 });
 
@@ -42,7 +42,7 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
     return res.status(200).json(user);
 
   } catch (error: any) {
-    res.status(400).json(error);
+    res.status(400).json(error.message);
   }
 });
 
@@ -53,8 +53,8 @@ usersRouter.delete("/:id", async (req: Request, res: Response) => {
     const msg = await userService.deleteUser(parseInt(id));
 
     res.status(200).end(msg);
-  } catch (error) {
-    res.status(400).json(error);
+  } catch (error: any) {
+    res.status(400).json(error.message);
   }
 
 });

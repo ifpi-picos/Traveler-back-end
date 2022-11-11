@@ -18,9 +18,9 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         return Announcements;
     }
 
-    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId }: AnnouncementDTO): Promise<AnnouncementDTO> {
+    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, date }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
-        if ( !advertiserId || !socialLink || !licensePlate || !vehicle ) {
+        if ( !advertiserId || !socialLink || !licensePlate || !vehicle || !date ) {
             throw new Error ("Algum campo inválido");
         }
 
@@ -29,16 +29,32 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
 
         if (!user) throw new Error('Anunciante não encontrado');
 
-        const addAnnouncement = await this.announcementRepository.create({ licensePlate, vehicle, price, socialLink, advertiserId });
+        const addAnnouncement = await this.announcementRepository.create({ 
+            licensePlate, 
+            vehicle, 
+            price, 
+            socialLink, 
+            advertiserId, 
+            date,
+        });
+
         return addAnnouncement;
     }
 
-    async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
+    async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, date }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
         const announcementExist = await this.announcementRepository.selectOne({ id });
 
         if (!announcementExist) throw new Error("Usuario não encontrado!");
 
-        const updateAnnouncement = await this.announcementRepository.update({ licensePlate, vehicle, price, socialLink, advertiserId }, id);
+        const updateAnnouncement = await this.announcementRepository.update({ 
+            licensePlate, 
+            vehicle, 
+            price, 
+            socialLink, 
+            advertiserId,
+            date,
+        }, 
+        id);
         return updateAnnouncement;
     }
 

@@ -4,4 +4,5 @@ export default interface AnnouncementDTO {
   price: number,
   socialLink: string,
   advertiserId: number,
+  date: Date,
 }

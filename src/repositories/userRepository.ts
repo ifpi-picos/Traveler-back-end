@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
-import UserDTO from "../models/user";
+import UserDTO, { SecureUser } from "../models/user";
 import { IUserRepository } from "./interfaces/userRepositoryInterface";
 
 export class UserRepository implements IUserRepository {
@@ -7,9 +7,11 @@ export class UserRepository implements IUserRepository {
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   > = new PrismaClient().user;
 
-  async create(data: UserDTO): Promise<User> {
-    const result = await this.repository.create({ data });
-    return result;
+  async create(data: UserDTO): Promise<string> {
+    await this.repository.create({ data });
+
+    const msg = "cadastro completo";
+    return msg;
   }
   
   async selectOne(where: Prisma.UserWhereInput): Promise<User | null> {
@@ -17,17 +19,20 @@ export class UserRepository implements IUserRepository {
     return result;
   }
 
-  async update({ name, email, address, password }: UserDTO, id: number): Promise<UserDTO> {
+  async update(data: UserDTO, id: number): Promise<SecureUser> {
     const result = await this.repository.update({
       where: { id },
       data: {
-        name,
-        email,
-        address,
-        password,
+        name: data.name,
+        email: data.email,
+        address: data.address,
+        password: data.password,
       },
     });
-    return result;
+
+    const {email, name, address }: SecureUser = result;
+
+    return { id, email, name, address }
   }
 
   async delete( id: number ): Promise<string> {

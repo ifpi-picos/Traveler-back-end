@@ -1,10 +1,11 @@
-import 'jest';
-import request from 'supertest';
-import app from '../../src/app';
-import { PrismaClient, User } from '@prisma/client';
+import "jest";
+import request from "supertest";
+import app from "../../src/app";
+import { PrismaClient, User } from "@prisma/client";
+// import { Auth } from "../models/auth";
 
 const prisma = new PrismaClient();
-const API_USERS = '/users';
+const API_USERS = "/users";
 let id: number;
 // const myMock = jest.fn().mockReturnValue(201);
 
@@ -19,39 +20,49 @@ afterAll(async () => {
   await prisma.$disconnect();
 });
 
-describe('Test the users path', () => {
-
-  test('It should add new user', async () => {
+describe("Test the users path", () => {
+  test("It should add new user", async () => {
     const newUser = {
-      name: 'User 1',
-      email: 'user1@email.com',
-      password: 'aaa12',
+      name: "User 1",
+      email: "user1@email.com",
+      password: "aaa12",
     } as User;
-    const response = await request(app).post(`${API_USERS}/cadastro`).send(newUser);
+    const response = await request(app)
+      .post(`${API_USERS}/cadastro`)
+      .send(newUser);
 
-    const idFinder = prisma.user.findFirst()
+    const idFinder = prisma.user.findFirst();
     const [userCreated] = await prisma.$transaction([idFinder]);
-    id = userCreated?.id as number
+    id = userCreated?.id as number;
 
     expect(response.statusCode).toBe(201);
   });
 
+  // test("it should login user", async() => {
+  //   const loginInfo: Auth = {
+  //     email: 'user1@email.com',
+  //     password: 'aaa12'
+  //   };
+  //   const response = await request(app)
+  //     .post(`${API_USERS}/login`)
+  //     .send(loginInfo);
 
-  test('It should update user', async () => {
-    
-    const newUser = {
-      name: 'User 1',
-      email: 'user1@email.com',
-      address: 'por ali',
-      password: '123wer',
-    };
-    const response = await request(app).put(`${API_USERS}/${id}`).send(newUser);
-    
-    expect(response.statusCode).toBe(200);
-  });
+  // });
 
-  test('It should delete users', async () => {
-    const response = await request(app).delete(`${API_USERS}/${id}`);
-    expect(response.statusCode).toBe(200);
-  });
+//   test("It should update user", async () => {
+//     const newUser = {
+//       name: "User 1",
+//       email: "user1@email.com",
+//       address: "por ali",
+//       password: "123wer",
+//     };
+//     const response = await request(app).put(`${API_USERS}/${id}`).send(newUser);
+
+//     expect(response.statusCode).toBe(200);
+//   });
+
+//   test("It should delete users", async () => {
+//     const response = await request(app).delete(`${API_USERS}/${id}`);
+//     expect(response.statusCode).toBe(200);
+//   });
 });
