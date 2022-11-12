@@ -3,6 +3,7 @@ import { Announcement } from "@prisma/client";
 import { AnnouncementService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
 import { AnnouncementRepository, UserRepository } from "../repositories";
+import AnnouncementDTO from "../models/annoucement";
 
 const announcementService: IAnnouncementServiceInterface = new AnnouncementService(new AnnouncementRepository(), new UserRepository);
 const announcementRouter = Router();
@@ -34,7 +35,7 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
       const month = smashDate[1];
       const year = smashDate[2];
 
-      dateConvertido = new Date( year + '/' + month + '/' + day );
+      dateConvertido = new Date( `${year}-${month}-${day}` );
 
   }
     const announcement = await announcementService.addAnnouncement({
@@ -44,9 +45,9 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
       socialLink, 
       advertiserId, 
       date: dateConvertido
-    } as Announcement);
+    } as AnnouncementDTO);
 
-    return res.status(201).send("cadastro completo").json(announcement);
+    return res.status(201).json("cadastro completo").json(announcement);
 
   } catch (error: any) {
     return res.status(400).json(error.message);
@@ -66,7 +67,7 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
       const month = smashDate[1];
       const year = smashDate[2];
 
-      dateConvertido = new Date( year + '/' + month + '/' + day );
+      dateConvertido = new Date( `${year}/${month}/${day}` );
     }
 
     price = Number(price);
