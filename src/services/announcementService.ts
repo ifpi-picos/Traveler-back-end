@@ -20,10 +20,6 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
 
     async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, date }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
-        if ( !advertiserId || !socialLink || !licensePlate || !vehicle || !date ) {
-            throw new Error ("Algum campo inválido");
-        }
-
         const id = advertiserId;
         const user = await this.userRepository.selectOne({ id })
 

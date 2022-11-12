@@ -1,9 +1,10 @@
-import { Request, Response, Router } from "express";
+import { Request, Response, Router, NextFunction } from "express";
 import { Announcement } from "@prisma/client";
 import { AnnouncementService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
 import { AnnouncementRepository, UserRepository } from "../repositories";
 import AnnouncementDTO from "../models/annoucement";
+import verifyIfNotANumber from "../middleware/verifyIfNotANumber";
 
 const announcementService: IAnnouncementServiceInterface = new AnnouncementService(new AnnouncementRepository(), new UserRepository);
 const announcementRouter = Router();
@@ -20,24 +21,30 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
 
 });
 
-announcementRouter.post("/", async (req: Request, res: Response) => {
+announcementRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     let { vehicle, licensePlate, price, socialLink, advertiserId, date  } = req.body;
+
+    if ( !advertiserId || !socialLink || !licensePlate || !vehicle || !date ) {
+      throw new Error ("Algum campo inválido");
+    }
+
+    await verifyIfNotANumber(advertiserId, next);
+    await verifyIfNotANumber(price, next);
 
     price = Number(price);
     advertiserId = Number(advertiserId);
     const smashDate = date.split('/');
     
-    let dateConvertido;
-    if(date){
-    
-      const day = smashDate[0];
-      const month = smashDate[1];
-      const year = smashDate[2];
+    const day = smashDate[0];
+    const month = smashDate[1];
+    const year = smashDate[2];
 
-      dateConvertido = new Date( `${year}-${month}-${day}` );
+    console.log(date);
+    const dateConvertido = new Date(`${year}/${month}/${day}`);
 
-  }
+    console.log(dateConvertido);
+
     const announcement = await announcementService.addAnnouncement({
       vehicle, 
       licensePlate, 
@@ -54,11 +61,15 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
   }
 });
 
-announcementRouter.put("/:id", async (req: Request, res: Response) => {
+announcementRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     let { vehicle, licensePlate, price, socialLink, advertiserId, date } = req.body;
     const { id } = req.params;
     const smashDate = date.split('/');
+
+    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(price, next);
+    await verifyIfNotANumber(advertiserId, next);
       
     let dateConvertido;
     if(date){
@@ -90,9 +101,11 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-announcementRouter.delete("/:id", async (req: Request, res: Response) => {
+announcementRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
+
+    await verifyIfNotANumber(id, next);
 
     const msg: string = await announcementService.deleteAnnouncement(parseInt(id));
     return res.status(200).send(msg);

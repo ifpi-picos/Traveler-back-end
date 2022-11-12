@@ -1,18 +1,14 @@
-import { Request, Response, Router } from "express";
+import { Request, Response, Router, NextFunction } from "express";
 import { UserService } from "../services";
 import { UserRepository } from "../repositories";
 import { IUserServiceInterface } from "../services/interfaces/userServiceInterface";
 import UserDTO from "../models/user";
+import verifyIfNotANumber from "../middleware/verifyIfNotANumber";
 
 
 const usersRouter = Router();
 const userService: IUserServiceInterface = new UserService(new UserRepository());
 
-function verifyIdNotANumber(id: string) {
-  if(id.indexOf("1" || "2" || "3" || "4" || "5" || "6" || "7" || "8" || "9" || "0") === -1) {
-      throw new Error ("O 'id' passado não é um numero!");
-    }
-}
 
 usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   try {
@@ -26,11 +22,11 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.get("/:id", async (req: Request, res: Response) => {
+usersRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
 
-    await verifyIdNotANumber(id);
+    await verifyIfNotANumber(id, next);
 
     const user = await userService.getById( Number(id) );
 
@@ -40,12 +36,12 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.put("/:id", async (req: Request, res: Response) => {
+usersRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, email, address, password } = req.body;
     const { id } = req.params;
 
-    await verifyIdNotANumber(id);
+    await verifyIfNotANumber(id, next);
 
     const user = await userService.updateUser({ name, email, address, password } as UserDTO, Number(id));
 
@@ -56,11 +52,11 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.delete("/:id", async (req: Request, res: Response) => {
+usersRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
 
-    await verifyIdNotANumber(id);
+    await verifyIfNotANumber(id, next);
 
     const msg = await userService.deleteUser(parseInt(id));
 

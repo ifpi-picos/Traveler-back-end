@@ -12,9 +12,9 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String
-  address String?
+  address Address?
   password String
-  Announcement Announcement[]
+  announcement Announcement[]
   @@map("users")
 }
 model Announcement {
@@ -27,4 +27,14 @@ model Announcement {
   socialLink String
   date DateTime
   @@map("announcements")
+}
+
+model Address {
+  id Int        @id
+  district String
+  street String
+  city String
+  state String
+  user User @relation(fields: [id], references: [id])
+  @@map("addresses")
 }
