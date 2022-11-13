@@ -16,9 +16,9 @@ export class UserService implements IUserServiceInterface {
 
         if (!user) throw new Error("Usuario não encontrado!");
 
-        const { email, name, address }: SecureUser = user;
+        const { email, name }: SecureUser = user;
 
-        return { id, email, name, address };
+        return { id, email, name };
     }
 
     async addUser({ name, email, password }: UserDTO): Promise<string> {
@@ -41,12 +41,12 @@ export class UserService implements IUserServiceInterface {
         return msg;
     }
 
-    async updateUser({ name, email, address, password }: UserDTO, id: number): Promise<SecureUser> {
+    async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
         const userExists = await this.userRepository.selectOne({ id });
 
         if (!userExists) throw new Error("Usuario não encontrado!");
 
-        const user = await this.userRepository.update({ name, email, address, password }, id)
+        const user = await this.userRepository.update({ name, email, password }, id)
 
         return user;
     }

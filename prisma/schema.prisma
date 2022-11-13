@@ -17,6 +17,7 @@ model User {
   announcement Announcement[]
   @@map("users")
 }
+
 model Announcement {
   id Int        @id @default(autoincrement())
   advertiser User @relation(fields: [advertiserId], references: [id])
@@ -25,12 +26,14 @@ model Announcement {
   licensePlate String 
   price Float
   socialLink String
+  startRoute String
+  endRoute String
   date DateTime
   @@map("announcements")
 }
 
 model Address {
-  id Int        @id
+  id Int        @id @unique
   district String
   street String
   city String

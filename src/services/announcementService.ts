@@ -18,7 +18,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         return Announcements;
     }
 
-    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, date }: AnnouncementDTO): Promise<AnnouncementDTO> {
+    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
         const id = advertiserId;
         const user = await this.userRepository.selectOne({ id })
@@ -30,14 +30,16 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
             vehicle, 
             price, 
             socialLink, 
-            advertiserId, 
+            advertiserId,
+            startRoute,
+            endRoute,
             date,
         });
 
         return addAnnouncement;
     }
 
-    async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, date }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
+    async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
         const announcementExist = await this.announcementRepository.selectOne({ id });
 
         if (!announcementExist) throw new Error("Usuario não encontrado!");
@@ -48,6 +50,8 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
             price, 
             socialLink, 
             advertiserId,
+            startRoute,
+            endRoute,
             date,
         }, 
         id);

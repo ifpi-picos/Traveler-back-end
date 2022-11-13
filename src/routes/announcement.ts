@@ -23,9 +23,9 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
 
 announcementRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let { vehicle, licensePlate, price, socialLink, advertiserId, date  } = req.body;
+    let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date  } = req.body;
 
-    if ( !advertiserId || !socialLink || !licensePlate || !vehicle || !date ) {
+    if ( !advertiserId || !socialLink || !licensePlate || !vehicle || !date || !endRoute || !startRoute ) {
       throw new Error ("Algum campo inválido");
     }
 
@@ -51,7 +51,9 @@ announcementRouter.post("/", async (req: Request, res: Response, next: NextFunct
       price, 
       socialLink, 
       advertiserId, 
-      date: dateConvertido
+      date: dateConvertido,
+      startRoute,
+      endRoute,
     } as AnnouncementDTO);
 
     return res.status(201).json("cadastro completo").json(announcement);
@@ -63,7 +65,7 @@ announcementRouter.post("/", async (req: Request, res: Response, next: NextFunct
 
 announcementRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let { vehicle, licensePlate, price, socialLink, advertiserId, date } = req.body;
+    let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date } = req.body;
     const { id } = req.params;
     const smashDate = date.split('/');
 
@@ -90,7 +92,9 @@ announcementRouter.put("/:id", async (req: Request, res: Response, next: NextFun
       price, 
       socialLink, 
       date: dateConvertido,
-      advertiserId  
+      advertiserId,
+      startRoute,
+      endRoute,
     } as Announcement,
     Number(id));
 

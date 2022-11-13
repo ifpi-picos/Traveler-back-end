@@ -25,14 +25,13 @@ export class UserRepository implements IUserRepository {
       data: {
         name: data.name,
         email: data.email,
-        address: data.address,
         password: data.password,
       },
     });
 
-    const {email, name, address }: SecureUser = result;
+    const { email, name, }: SecureUser = result;
 
-    return { id, email, name, address }
+    return { id, email, name }
   }
 
   async delete( id: number ): Promise<string> {

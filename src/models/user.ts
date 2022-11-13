@@ -1,8 +1,10 @@
+import Address from "./address";
+
 export default interface UserDTO {
   id?: number;
   name: string;
   email: string;
-  address: Address | null;
+  address?: Address | null;
   password: string;
 }
 
@@ -15,13 +17,5 @@ export interface SecureUser {
   id: number;
   name: string;
   email: string;
-  address: Address | null;
-}
-
-export interface Address {
-  id: number;
-  district: string;
-  street: string;
-  city: string;
-  state: string;
+  address?: Address | null;
 }

@@ -12,9 +12,9 @@ const userService: IUserServiceInterface = new UserService(new UserRepository())
 
 usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   try {
-    const { name, email, password, address } = req.body;
+    const { name, email, password } = req.body;
 
-    const msg = await userService.addUser({ name, email, password, address })
+    const msg = await userService.addUser({ name, email, password })
 
     return res.status(201).json(msg);
   } catch (error: any) {
@@ -38,12 +38,12 @@ usersRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) 
 
 usersRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, email, address, password } = req.body;
+    const { name, email, password } = req.body;
     const { id } = req.params;
 
     await verifyIfNotANumber(id, next);
 
-    const user = await userService.updateUser({ name, email, address, password } as UserDTO, Number(id));
+    const user = await userService.updateUser({ name, email, password } as UserDTO, Number(id));
 
     return res.status(200).json(user);
 
