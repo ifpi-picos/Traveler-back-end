@@ -17,7 +17,7 @@ authenticationRouter.post('/login', async (req: Request, res: Response) => {
     return res.status(201).json({ auth: true, user: userData });
     
   } catch (error: any) {
-    return res.status(401).json({ auth: false, tuken: null, message: error});
+    return res.status(401).json({ auth: false, token: null, message: error.message});
   }
   
 })

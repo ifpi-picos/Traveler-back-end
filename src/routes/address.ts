@@ -1,5 +1,4 @@
 import { Request, Response, Router, NextFunction } from "express";
-import { Address } from "@prisma/client";
 import { AddressService } from "../services";
 import { IAddressServiceInterface } from "../services/interfaces/addressServiceInterface";
 import { AddressRepository } from "../repositories";
@@ -25,103 +24,68 @@ addressRouter.get("/:id", async (req: Request, res: Response, next: NextFunction
 
 });
 
-// addressRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date  } = req.body;
+addressRouter.post("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let { street, state, district, city } = req.body;
+    const { id } = req.params;
 
-//     if ( !advertiserId || !socialLink || !licensePlate || !vehicle || !date || !endRoute || !startRoute ) {
-//       throw new Error ("Algum campo inválido");
-//     }
+    if ( !city || !state || !street || !street ) {
+      throw new Error ("Algum campo inválido");
+    }
 
-//     await verifyIfNotANumber(advertiserId, next);
-//     await verifyIfNotANumber(price, next);
+    await verifyIfNotANumber(id, next);
 
-//     price = Number(price);
-//     advertiserId = Number(advertiserId);
-//     const smashDate = date.split('/');
-    
-//     const day = smashDate[0];
-//     const month = smashDate[1];
-//     const year = smashDate[2];
 
-//     console.log(date);
-//     const dateConvertido = new Date(`${year}/${month}/${day}`);
+    const address = await addressService.addAddress({
+      street, 
+      state, 
+      district, 
+      city, 
+      id: Number(id),
+    } as AddressDTO);
 
-//     console.log(dateConvertido);
+    return res.status(201).json("cadastro completo").json(address);
 
-//     const announcement = await addressService.addAnnouncement({
-//       vehicle, 
-//       licensePlate, 
-//       price, 
-//       socialLink, 
-//       advertiserId, 
-//       date: dateConvertido,
-//       startRoute,
-//       endRoute,
-//     } as AnnouncementDTO);
+  } catch (error: any) {
+    return res.status(400).json(error.message);
+  }
+});
 
-//     return res.status(201).json("cadastro completo").json(announcement);
+addressRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let { street, state, district, city } = req.body;
+    const { id } = req.params;
 
-//   } catch (error: any) {
-//     return res.status(400).json(error.message);
-//   }
-// });
+    await verifyIfNotANumber(id, next);
 
-// addressRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date } = req.body;
-//     const { id } = req.params;
-//     const smashDate = date.split('/');
+    const address = await addressService.updateAddress({ 
+      street, 
+      state, 
+      district, 
+      city,
+    } as AddressDTO,
+    Number(id));
 
-//     await verifyIfNotANumber(id, next);
-//     await verifyIfNotANumber(price, next);
-//     await verifyIfNotANumber(advertiserId, next);
-      
-//     let dateConvertido;
-//     if(date){
-    
-//       const day = smashDate[0];
-//       const month = smashDate[1];
-//       const year = smashDate[2];
+    return res.status(200).json(address);
 
-//       dateConvertido = new Date( `${year}/${month}/${day}` );
-//     }
+  } catch (error: any) {
+    return res.status(400).json(error.message);
+  }
+});
 
-//     price = Number(price);
-//     advertiserId = Number(advertiserId);
+addressRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
 
-//     const announcement = await addressService.updateAnnouncement({ 
-//       vehicle, 
-//       licensePlate, 
-//       price, 
-//       socialLink, 
-//       date: dateConvertido,
-//       advertiserId,
-//       startRoute,
-//       endRoute,
-//     } as Announcement,
-//     Number(id));
+    await verifyIfNotANumber(id, next);
 
-//     return res.status(200).json(announcement);
+    const msg: string = await addressService.deleteAddress(parseInt(id));
+    return res.status(200).send(msg);
 
-//   } catch (error: any) {
-//     return res.status(400).json(error.message);
-//   }
-// });
+  } catch (error: any) {
+    return res.status(400).json(error.message);
+  }
 
-// addressRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const { id } = req.params;
-
-//     await verifyIfNotANumber(id, next);
-
-//     const msg: string = await addressService.deleteAnnouncement(parseInt(id));
-//     return res.status(200).send(msg);
-
-//   } catch (error: any) {
-//     return res.status(400).json(error.message);
-//   }
-
-// });
+});
 
 export default addressRouter;
