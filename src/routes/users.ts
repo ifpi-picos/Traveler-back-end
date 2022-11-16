@@ -1,4 +1,4 @@
-import { Request, Response, Router, NextFunction } from "express";
+import { Request, Response, Router } from "express";
 import { UserService } from "../services";
 import { UserRepository } from "../repositories";
 import { IUserServiceInterface } from "../services/interfaces/userServiceInterface";
@@ -22,11 +22,11 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+usersRouter.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
     const user = await userService.getById( Number(id) );
 
@@ -36,12 +36,12 @@ usersRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) 
   }
 });
 
-usersRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+usersRouter.put("/:id", async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
     const { id } = req.params;
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
     const user = await userService.updateUser({ name, email, password } as UserDTO, Number(id));
 
@@ -52,11 +52,11 @@ usersRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) 
   }
 });
 
-usersRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+usersRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
     const msg = await userService.deleteUser(parseInt(id));
 

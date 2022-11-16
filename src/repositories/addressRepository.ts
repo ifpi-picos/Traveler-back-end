@@ -7,8 +7,8 @@ export class AddressRepository implements IAddressRepository {
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   > = new PrismaClient().address;
 
-  async create(data: AddressDTO): Promise<Address> {
-    const result = await this.repository.create({ data });
+  async create(data: Address): Promise<Address> {
+    const result = await this.repository.create({ data: data as Address });
 
     return result;
   }

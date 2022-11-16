@@ -3,7 +3,7 @@ import usersRouter from './users';
 import announcementRouter from './announcement';
 import authenticationRouter from './authentication';
 import settingsRouter from './settings';
-import address from './address';
+import addressRouter from './address';
 
 
 const routes = Router();

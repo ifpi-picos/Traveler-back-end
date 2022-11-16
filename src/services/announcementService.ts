@@ -42,7 +42,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
     async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
         const announcementExist = await this.announcementRepository.selectOne({ id });
 
-        if (!announcementExist) throw new Error("Usuario não encontrado!");
+        if (!announcementExist) throw new Error("Anúncio não encontrado!");
 
         const updateAnnouncement = await this.announcementRepository.update({ 
             licensePlate, 
@@ -62,7 +62,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
 
         const announcementExist = await this.announcementRepository.selectOne({ id });
 
-        if (!announcementExist) throw new Error("Usuario não encontrado!");
+        if (!announcementExist) throw new Error("Anúncio não encontrado!");
 
         const msg = await this.announcementRepository.delete( id );
 

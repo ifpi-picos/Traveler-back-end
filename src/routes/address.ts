@@ -1,4 +1,4 @@
-import { Request, Response, Router, NextFunction } from "express";
+import { Request, Response, Router } from "express";
 import { AddressService } from "../services";
 import { IAddressServiceInterface } from "../services/interfaces/addressServiceInterface";
 import { AddressRepository } from "../repositories";
@@ -9,11 +9,11 @@ const addressService: IAddressServiceInterface = new AddressService(new AddressR
 const addressRouter = Router();
 
 
-addressRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+addressRouter.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
     const address = await addressService.getById(Number(id));
     return res.status(200).json(address);
@@ -24,7 +24,7 @@ addressRouter.get("/:id", async (req: Request, res: Response, next: NextFunction
 
 });
 
-addressRouter.post("/:id", async (req: Request, res: Response, next: NextFunction) => {
+addressRouter.post("/:id", async (req: Request, res: Response) => {
   try {
     let { street, state, district, city } = req.body;
     const { id } = req.params;
@@ -33,7 +33,7 @@ addressRouter.post("/:id", async (req: Request, res: Response, next: NextFunctio
       throw new Error ("Algum campo inválido");
     }
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
 
     const address = await addressService.addAddress({
@@ -44,19 +44,19 @@ addressRouter.post("/:id", async (req: Request, res: Response, next: NextFunctio
       id: Number(id),
     } as AddressDTO);
 
-    return res.status(201).json("cadastro completo").json(address);
+    return res.status(201).json(address);
 
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
 });
 
-addressRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+addressRouter.put("/:id", async (req: Request, res: Response) => {
   try {
     let { street, state, district, city } = req.body;
     const { id } = req.params;
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
     const address = await addressService.updateAddress({ 
       street, 
@@ -73,14 +73,14 @@ addressRouter.put("/:id", async (req: Request, res: Response, next: NextFunction
   }
 });
 
-addressRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+addressRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
     const msg: string = await addressService.deleteAddress(parseInt(id));
-    return res.status(200).send(msg);
+    return res.status(200).json(msg);
 
   } catch (error: any) {
     return res.status(400).json(error.message);

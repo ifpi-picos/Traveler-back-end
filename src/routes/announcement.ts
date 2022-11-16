@@ -1,4 +1,4 @@
-import { Request, Response, Router, NextFunction } from "express";
+import { Request, Response, Router } from "express";
 import { Announcement } from "@prisma/client";
 import { AnnouncementService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
@@ -21,7 +21,7 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
 
 });
 
-announcementRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
+announcementRouter.post("/", async (req: Request, res: Response) => {
   try {
     let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date  } = req.body;
 
@@ -29,26 +29,30 @@ announcementRouter.post("/", async (req: Request, res: Response, next: NextFunct
       throw new Error ("Algum campo inválido");
     }
 
-    await verifyIfNotANumber(advertiserId, next);
-    await verifyIfNotANumber(price, next);
+    await verifyIfNotANumber(advertiserId);
+    await verifyIfNotANumber(price);
 
-    price = Number(price);
-    advertiserId = Number(advertiserId);
+    price = await Number(price);
+    advertiserId = await Number(advertiserId);
+    
     const smashDate = date.split('/');
     
     const day = smashDate[0];
     const month = smashDate[1];
     const year = smashDate[2];
 
-    console.log(date);
-    const dateConvertido = new Date(`${year}/${month}/${day}`);
+    await verifyIfNotANumber(day);
+    await verifyIfNotANumber(month);
+    await verifyIfNotANumber(year);
 
-    console.log(dateConvertido);
+    if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
+
+    const dateConvertido = new Date(`${year}/${month}/${day}`);
 
     const announcement = await announcementService.addAnnouncement({
       vehicle, 
       licensePlate, 
-      price, 
+      price,
       socialLink, 
       advertiserId, 
       date: dateConvertido,
@@ -56,23 +60,24 @@ announcementRouter.post("/", async (req: Request, res: Response, next: NextFunct
       endRoute,
     } as AnnouncementDTO);
 
-    return res.status(201).json("cadastro completo").json(announcement);
+    return res.status(201).json(announcement);
 
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
 });
 
-announcementRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+announcementRouter.put("/:id", async (req: Request, res: Response) => {
   try {
     let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date } = req.body;
     const { id } = req.params;
     const smashDate = date.split('/');
 
-    await verifyIfNotANumber(id, next);
-    await verifyIfNotANumber(price, next);
-    await verifyIfNotANumber(advertiserId, next);
-      
+    await verifyIfNotANumber(id);
+    await verifyIfNotANumber(price);
+    await verifyIfNotANumber(advertiserId);
+
+    
     let dateConvertido;
     if(date){
     
@@ -80,6 +85,12 @@ announcementRouter.put("/:id", async (req: Request, res: Response, next: NextFun
       const month = smashDate[1];
       const year = smashDate[2];
 
+      await verifyIfNotANumber(day);
+      await verifyIfNotANumber(month);
+      await verifyIfNotANumber(year);
+
+      if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
+      
       dateConvertido = new Date( `${year}/${month}/${day}` );
     }
 
@@ -105,14 +116,14 @@ announcementRouter.put("/:id", async (req: Request, res: Response, next: NextFun
   }
 });
 
-announcementRouter.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+announcementRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id, next);
+    await verifyIfNotANumber(id);
 
     const msg: string = await announcementService.deleteAnnouncement(parseInt(id));
-    return res.status(200).send(msg);
+    return res.status(200).json(msg);
 
   } catch (error: any) {
     return res.status(400).json(error.message);

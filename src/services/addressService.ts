@@ -1,6 +1,7 @@
 import { IAddressServiceInterface } from "./interfaces/addressServiceInterface";
 import AddressDTO from "../models/address";
 import { IAddressRepository } from "../repositories/interfaces/addressRepositoryInterface";
+import { Address } from "@prisma/client";
 
 
 export class AddressService implements IAddressServiceInterface {
@@ -18,7 +19,7 @@ export class AddressService implements IAddressServiceInterface {
         return address;
     }
 
-    async addAddress({ city, district, state, street, id }: AddressDTO): Promise<string> {
+    async addAddress({ city, district, state, street, id }: AddressDTO): Promise<AddressDTO> {
 
         if ( !city || !district || !street || !id || !state) {
             throw new Error ("Preencha todos os campos obrigatórios.");
@@ -33,7 +34,7 @@ export class AddressService implements IAddressServiceInterface {
           state,
           street,
           id,
-        } as AddressDTO);
+        } as Address);
         
         return address;
     }
