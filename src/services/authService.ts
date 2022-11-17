@@ -19,7 +19,7 @@ export class AuthService implements IAuthServiceInterface {
 
     if (!user) throw Error("Usuário não encontrado!");
 
-    if (!bcrypt.compare(user.password, password))
+    if (await !bcrypt.compare(user.password, password))
       throw Error("Senha incorreta!");
 
     const token = this.getToken(user);
