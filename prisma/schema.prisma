@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,35 +8,38 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String
-  address Address?
-  password String
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  name         String
+  password     String
+  address      Address?
   announcement Announcement[]
+
   @@map("users")
 }
 
 model Announcement {
-  id Int        @id @default(autoincrement())
-  advertiser User @relation(fields: [advertiserId], references: [id])
+  id           Int      @id @default(autoincrement())
   advertiserId Int
-  vehicle String
-  licensePlate String 
-  price Float
-  socialLink String
-  startRoute String
-  endRoute String
-  date DateTime
+  vehicle      String
+  licensePlate String
+  price        Float
+  socialLink   String
+  date         DateTime
+  endRoute     String
+  startRoute   String
+  advertiser   User     @relation(fields: [advertiserId], references: [id])
+
   @@map("announcements")
 }
 
 model Address {
-  id Int        @id @unique
+  id       Int    @id @unique
   district String
-  street String
-  city String
-  state String
-  user User @relation(fields: [id], references: [id])
+  street   String
+  city     String
+  state    String
+  user     User   @relation(fields: [id], references: [id])
+
   @@map("addresses")
 }
