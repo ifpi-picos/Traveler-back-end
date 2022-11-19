@@ -19,12 +19,27 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
     }
 
     async findAnnouncementByFilter({ dateConvertido, startRoute, endRoute }: filterAnnouncement): Promise<AnnouncementDTO[]>{
-       
+ 
+        //separação de filtros
+        let Announcements;
+        if (!startRoute && !endRoute) {
+            Announcements = await this.announcementRepository.findByFilter(dateConvertido);
+        } else if (!startRoute && !dateConvertido) {
+            Announcements = await this.announcementRepository.findByFilter(endRoute);
+        } else if (!endRoute && !dateConvertido) {
+            Announcements = await this.announcementRepository.findByFilter(startRoute);
+        } else if (startRoute && endRoute) {
+            Announcements = await this.announcementRepository.findBy2Filters({ startRoute, endRoute });
+        } else if (startRoute && dateConvertido) {
+            Announcements = await this.announcementRepository.findBy2Filters({ startRoute, dateConvertido });
+        } else if (endRoute && dateConvertido) {
+            Announcements = await this.announcementRepository.findBy2Filters({ endRoute, dateConvertido });
+        } else if (endRoute && dateConvertido && startRoute) {
+            Announcements = await this.announcementRepository.findByAllFilters({ endRoute, dateConvertido, startRoute });
+        } else {
+            throw new Error ("Filtros inválidos");
+        }
 
-        // fazer a separaçao dos filtros
-
-        
-        const Announcements = await this.announcementRepository.findByFilter();
         return Announcements;
     }
 

@@ -25,7 +25,7 @@ announcementRouter.post("/filter", async (req: Request, res: Response) => {
   try {
     const { date, endRoute, startRoute } = req.body;
 
-    if (!date && !endRoute && !startRoute) throw new Error('Nenhum filtro informado.');
+    if (!date && !endRoute && !startRoute) throw new Error("Nenhum filtro informado.");
 
     let dateConvertido;
     if (date) {
