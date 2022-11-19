@@ -1,4 +1,4 @@
-import AnnouncementDTO from "../models/annoucement";
+import AnnouncementDTO, { filterAnnouncement } from "../models/annoucement";
 import { IAnnouncementServiceInterface } from "./interfaces/announcementServiceInterface";
 import { IAnnouncementRepository } from "../repositories/interfaces/announcementRepositoryInterface";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
@@ -15,6 +15,16 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
     
     async findALLAnnouncement(): Promise<AnnouncementDTO[]>{
         const Announcements = await this.announcementRepository.findMany();
+        return Announcements;
+    }
+
+    async findAnnouncementByFilter({ dateConvertido, startRoute, endRoute }: filterAnnouncement): Promise<AnnouncementDTO[]>{
+       
+
+        // fazer a separaçao dos filtros
+
+        
+        const Announcements = await this.announcementRepository.findByFilter();
         return Announcements;
     }
 

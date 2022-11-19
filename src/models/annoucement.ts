@@ -8,3 +8,9 @@ export default interface AnnouncementDTO {
   endRoute: string;
   date: Date;
 }
+
+export interface filterAnnouncement {
+  endRoute?: string;
+  startRoute?: string;
+  dateConvertido?: Date;
+}

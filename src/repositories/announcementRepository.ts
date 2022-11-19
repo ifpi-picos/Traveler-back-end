@@ -12,6 +12,15 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     return result;
   }
 
+  findByFilter(): Promise<AnnouncementDTO[]> {
+    const result = this.repository.findMany({
+      where: {
+        
+      }
+    })
+    return result;
+  }
+
   async create(data: AnnouncementDTO): Promise<AnnouncementDTO> {
     const result = await this.repository.create({ data });
     return result;
