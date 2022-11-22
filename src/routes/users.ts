@@ -1,13 +1,13 @@
 import { Request, Response, Router } from "express";
 import { UserService } from "../services";
-import { UserRepository } from "../repositories";
+import { AnnouncementRepository, UserRepository } from "../repositories";
 import { IUserServiceInterface } from "../services/interfaces/userServiceInterface";
 import UserDTO from "../models/user";
 import verifyIfNotANumber from "../middleware/verifyIfNotANumber";
 
 
 const usersRouter = Router();
-const userService: IUserServiceInterface = new UserService(new UserRepository());
+const userService: IUserServiceInterface = new UserService(new UserRepository(), new AnnouncementRepository);
 
 
 usersRouter.post("/cadastro", async (req: Request, res: Response) => {
@@ -41,7 +41,7 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     const { id } = req.params;
 
-    await verifyIfNotANumber(id);
+    verifyIfNotANumber(id);
 
     const user = await userService.updateUser({ name, email, password } as UserDTO, Number(id));
 
@@ -56,9 +56,9 @@ usersRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id);
+    verifyIfNotANumber(id);
 
-    const msg = await userService.deleteUser(parseInt(id));
+    const msg = await userService.deleteUser(Number(id));
 
     res.status(200).end(msg);
   } catch (error: any) {

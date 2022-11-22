@@ -5,7 +5,7 @@ export interface IAnnouncementRepository{
   findMany(): Promise<AnnouncementDTO[]>;
   findByFilters(data: filterAnnouncement): Promise<AnnouncementDTO[]>;
   create(data: AnnouncementDTO): Promise<AnnouncementDTO>;
-  selectOne(where: Prisma.UserWhereInput): Promise<AnnouncementDTO | null>;
+  selectOne(where: Prisma.AnnouncementWhereInput): Promise<AnnouncementDTO | null>;
   update(data: AnnouncementDTO, id: number): Promise<AnnouncementDTO>;
   delete( id: number ): Promise<string>;
 }

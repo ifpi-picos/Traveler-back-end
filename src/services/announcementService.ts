@@ -20,26 +20,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
 
     async findAnnouncementByFilter({ dateConvertido, startRoute, endRoute }: filterAnnouncement): Promise<AnnouncementDTO[]>{
  
-        const Announcements = await this.announcementRepository.findByFilters({dateConvertido, endRoute, startRoute})
-        //separação de filtros
-    //     let Announcements;
-    //     if (!startRoute && !endRoute) {
-    //         Announcements = await this.announcementRepository.findByFilters({ dateConvertido });
-    //     } else if (!startRoute && !dateConvertido) {
-    //         Announcements = await this.announcementRepository.findByFilters({ endRoute });
-    //     } else if (!endRoute && !dateConvertido) {
-    //         Announcements = await this.announcementRepository.findByFilters({ startRoute });
-    //     } else if (startRoute && endRoute && dateConvertido) {
-    //         Announcements = await this.announcementRepository.findByFilters({ startRoute, endRoute, dateConvertido });
-    //     } else if (startRoute && dateConvertido) {
-    //         Announcements = await this.announcementRepository.findByFilters({ startRoute, dateConvertido });
-    //     } else if (endRoute && dateConvertido) {
-    //         Announcements = await this.announcementRepository.findByFilters({ endRoute, dateConvertido });
-    //     } else if (endRoute && startRoute) {
-    //         Announcements = await this.announcementRepository.findByFilters({ endRoute, startRoute });
-    //     } else {
-    //         throw new Error ("Filtros inválidos");
-    //     }
+        const Announcements = await this.announcementRepository.findByFilters({dateConvertido, endRoute, startRoute});
 
         return Announcements;
     }

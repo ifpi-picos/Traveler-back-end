@@ -13,7 +13,7 @@ addressRouter.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id);
+    verifyIfNotANumber(id);
 
     const address = await addressService.getById(Number(id));
     return res.status(200).json(address);
@@ -33,7 +33,7 @@ addressRouter.post("/:id", async (req: Request, res: Response) => {
       throw new Error ("Algum campo inválido");
     }
 
-    await verifyIfNotANumber(id);
+    verifyIfNotANumber(id);
 
 
     const address = await addressService.addAddress({
@@ -77,7 +77,7 @@ addressRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id);
+    verifyIfNotANumber(id);
 
     const msg: string = await addressService.deleteAddress(parseInt(id));
     return res.status(200).json(msg);

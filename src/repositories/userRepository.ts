@@ -40,7 +40,7 @@ export class UserRepository implements IUserRepository {
         id,
       }
     })
-    const msg = "usuario deletado com sucesso!";
+    const msg = "Usuario deletado com sucesso!";
     return msg;
   }
 }
