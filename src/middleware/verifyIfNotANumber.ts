@@ -1,9 +1,9 @@
 
 export default function verifyIfNotANumber(param: string) {
-    const number = parseInt(param)
+    const number = Number(param)
 
     if (!number) {
-        throw new Error("O 'id' passado não é um numero!");
+        throw new Error("Algum campo inválido!");
     }
     
 }

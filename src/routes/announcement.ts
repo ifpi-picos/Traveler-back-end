@@ -29,7 +29,7 @@ announcementRouter.post("/filter", async (req: Request, res: Response) => {
 
     let dateConvertido;
     if (date) {
-      const smashDate = date.split('/');
+      const smashDate = date.split('-');
     
       const day = smashDate[0];
       const month = smashDate[1];
@@ -67,13 +67,13 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
     price = Number(price);
     advertiserId = Number(advertiserId);
     
-    const smashDate = date.split('/');
+    const smashDate = date.split('-');
     
     const day = smashDate[0];
     const month = smashDate[1];
     const year = smashDate[2];
 
-    verifyIfNotANumber(day);
+    verifyIfNotANumber(day);      
     verifyIfNotANumber(month);
     verifyIfNotANumber(year);
 
@@ -103,16 +103,15 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
   try {
     let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date } = req.body;
     const { id } = req.params;
-    const smashDate = date.split('/');
-
+    
     verifyIfNotANumber(id);
     verifyIfNotANumber(price);
     verifyIfNotANumber(advertiserId);
-
     
     let dateConvertido;
     if(date){
-    
+      const smashDate = date.split('-');
+      
       const day = smashDate[0];
       const month = smashDate[1];
       const year = smashDate[2];
