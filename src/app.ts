@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import routes from "./routes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import auth from "./middleware/verifyToken";
+import { verifyJWT as auth } from "./middleware";
 
 const app = express();
 app.use(express.json());

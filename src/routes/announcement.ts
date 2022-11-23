@@ -4,7 +4,7 @@ import { AnnouncementService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
 import { AnnouncementRepository, UserRepository } from "../repositories";
 import AnnouncementDTO from "../models/annoucement";
-import verifyIfNotANumber from "../middleware/verifyIfNotANumber";
+import { verifyIfNotANumber, verifyIfPastDate} from "../middleware";
 
 const announcementService: IAnnouncementServiceInterface = new AnnouncementService(new AnnouncementRepository(), new UserRepository);
 const announcementRouter = Router();
@@ -79,6 +79,8 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
     if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
 
+    // verifyIfPastDate(day, month, year);
+
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
     const announcement = await announcementService.addAnnouncement({
@@ -121,6 +123,8 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
       verifyIfNotANumber(year);
 
       if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
+
+      // verifyIfPastDate(day, month, year);
       
       dateConvertido = new Date( `${year}/${month}/${day}` );
     }

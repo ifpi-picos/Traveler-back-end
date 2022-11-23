@@ -1,5 +1,5 @@
 
-export default function verifyIfNotANumber(param: string) {
+export function verifyIfNotANumber(param: string) {
     const number = Number(param)
 
     if (!number) {

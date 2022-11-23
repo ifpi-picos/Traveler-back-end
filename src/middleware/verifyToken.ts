@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 const SECRET = process.env.secret;
 
-export default function verifyJWT(req: Request, res: Response, next: NextFunction ) {
+export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
     const token = req.cookies ? req.cookies.token: null;
 
     if (!token) {

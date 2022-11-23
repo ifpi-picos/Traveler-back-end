@@ -3,7 +3,7 @@ import { AddressService } from "../services";
 import { IAddressServiceInterface } from "../services/interfaces/addressServiceInterface";
 import { AddressRepository } from "../repositories";
 import AddressDTO from "../models/address";
-import verifyIfNotANumber from "../middleware/verifyIfNotANumber";
+import { verifyIfNotANumber } from "../middleware";
 
 const addressService: IAddressServiceInterface = new AddressService(new AddressRepository());
 const addressRouter = Router();

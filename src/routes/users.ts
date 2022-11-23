@@ -3,7 +3,7 @@ import { UserService } from "../services";
 import { AnnouncementRepository, UserRepository } from "../repositories";
 import { IUserServiceInterface } from "../services/interfaces/userServiceInterface";
 import UserDTO from "../models/user";
-import verifyIfNotANumber from "../middleware/verifyIfNotANumber";
+import { verifyIfNotANumber } from "../middleware";
 
 
 const usersRouter = Router();
