@@ -31,9 +31,9 @@ announcementRouter.post("/filter", async (req: Request, res: Response) => {
     if (date) {
       const smashDate = date.split('-');
     
-      const day = smashDate[0];
+      const day = smashDate[2];
       const month = smashDate[1];
-      const year = smashDate[2];
+      const year = smashDate[0];
 
       verifyIfNotANumber(day);
       verifyIfNotANumber(month);
@@ -69,9 +69,9 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
     console.log(date)
     const smashDate = date.split('-');
     
-    const day = smashDate[0];
+    const day = smashDate[2];
     const month = smashDate[1];
-    const year = smashDate[2];
+    const year = smashDate[0];
 
     verifyIfNotANumber(day);      
     verifyIfNotANumber(month);
@@ -115,9 +115,9 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
     if(date){
       const smashDate = date.split('-');
       
-      const day = smashDate[0];
+      const day = smashDate[2];
       const month = smashDate[1];
-      const year = smashDate[2];
+      const year = smashDate[0];
 
       verifyIfNotANumber(day);
       verifyIfNotANumber(month);
