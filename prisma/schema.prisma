@@ -25,7 +25,7 @@ model Announcement {
   licensePlate String
   price        Float
   socialLink   String
-  date         DateTime
+  date         DateTime @db.Date
   endRoute     String
   startRoute   String
   advertiser   User     @relation(fields: [advertiserId], references: [id])
