@@ -26,7 +26,7 @@ announcementRouter.post("/filter", async (req: Request, res: Response) => {
     const { date, endRoute, startRoute } = req.body;
 
     if (!date && !endRoute && !startRoute) throw new Error("Nenhum filtro informado.");
-    console.log(date)
+
     let dateConvertido;
     if (date) {
       const smashDate = date.split('-');
@@ -43,7 +43,7 @@ announcementRouter.post("/filter", async (req: Request, res: Response) => {
 
       dateConvertido = new Date(`${year}/${month}/${day}`);
     }
-    console.log(dateConvertido)
+
     const announcements = await announcementService.findAnnouncementByFilter({ dateConvertido, endRoute, startRoute });
     return res.status(200).json(announcements);
 
@@ -66,7 +66,6 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
     price = Number(price);
     advertiserId = Number(advertiserId);
-    console.log(date)
     const smashDate = date.split('-');
     
     const day = smashDate[2];
@@ -83,7 +82,6 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
-    console.log(dateConvertido)
     const announcement = await announcementService.addAnnouncement({
       vehicle, 
       licensePlate, 
