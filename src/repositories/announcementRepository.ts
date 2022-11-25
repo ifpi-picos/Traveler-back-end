@@ -12,7 +12,6 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     return result;
   }
 
-  //testar se filtra so com 2 dados informados, se sim, nao precisa das outras funções
   async findByFilters(data: filterAnnouncement): Promise<AnnouncementDTO[]> {
     const result = await this.repository.findMany({
       where: {
@@ -21,6 +20,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
         startRoute: data.startRoute,
       }
     })
+
     return result;
   }
 

@@ -79,7 +79,7 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
     if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
 
-    // verifyIfPastDate(day, month, year);
+    verifyIfPastDate(day, month, year);
 
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
@@ -125,7 +125,7 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
 
       if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
 
-      // verifyIfPastDate(day, month, year);
+      verifyIfPastDate(day, month, year);
       
       dateConvertido = new Date( `${year}/${month}/${day}` );
     }

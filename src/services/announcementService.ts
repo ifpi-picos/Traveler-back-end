@@ -19,7 +19,9 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
     }
 
     async findAnnouncementByFilter({ dateConvertido, startRoute, endRoute }: filterAnnouncement): Promise<AnnouncementDTO[]>{
- 
+        if (!startRoute) startRoute = undefined;
+        if (!endRoute) endRoute = undefined;
+
         const Announcements = await this.announcementRepository.findByFilters({dateConvertido, endRoute, startRoute});
 
         return Announcements;
