@@ -10,7 +10,7 @@ app.use(cookieParser());
 app.use(cors({
     origin: '*', // url do front
     credentials: true,
-    methods: 'GET, PUT, POST, OPTIONS, DELETE',
+    methods: 'GET, PUT, POST, OPTIONS, DELETE, PATH',
 }));
 
 // app.all('/*', (req: Request, res: Response, next: NextFunction) =>{

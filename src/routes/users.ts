@@ -7,7 +7,7 @@ import { verifyIfNotANumber } from "../middleware";
 
 
 const usersRouter = Router();
-const userService: IUserServiceInterface = new UserService(new UserRepository(), new AnnouncementRepository);
+const userService: IUserServiceInterface = new UserService(new UserRepository(), new AnnouncementRepository());
 
 
 usersRouter.post("/cadastro", async (req: Request, res: Response) => {
