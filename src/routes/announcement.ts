@@ -21,9 +21,10 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
 
 });
 
-announcementRouter.post("/filter", async (req: Request, res: Response) => {
+announcementRouter.get("/filter", async (req: Request, res: Response) => {
   try {
-    const { date, endRoute, startRoute } = req.body;
+
+    const { date, endRoute, startRoute } = req.query ;
 
     if (!date && !endRoute && !startRoute) throw new Error("Nenhum filtro informado.");
 
