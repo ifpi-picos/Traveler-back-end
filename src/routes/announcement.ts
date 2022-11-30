@@ -4,61 +4,77 @@ import { AnnouncementService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
 import { AnnouncementRepository, UserRepository } from "../repositories";
 import AnnouncementDTO from "../models/annoucement";
-import { verifyIfNotANumber, verifyIfPastDate} from "../middleware";
+import { verifyIfNotANumber, verifyIfPastDate } from "../middleware";
 
-const announcementService: IAnnouncementServiceInterface = new AnnouncementService(new AnnouncementRepository(), new UserRepository);
+const announcementService: IAnnouncementServiceInterface =
+  new AnnouncementService(new AnnouncementRepository(), new UserRepository());
 const announcementRouter = Router();
-
 
 announcementRouter.get("/", async (req: Request, res: Response) => {
   try {
     const announcements = await announcementService.findALLAnnouncement();
     return res.status(200).json(announcements);
-
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
-
 });
 
-announcementRouter.post("/filter", async (req: Request, res: Response) => {
+announcementRouter.get("/filter", async (req: Request, res: Response) => {
   try {
-    const { date, endRoute, startRoute } = req.body;
+    const { date, endRoute, startRoute } = req.query;
 
     if (!date && !endRoute && !startRoute) throw new Error("Nenhum filtro informado.");
 
-    let dateConvertido;
+    let dateConvertido: Date | null = null;
     if (date) {
-      const smashDate = date.split('-');
-    
-      const day = smashDate[2];
-      const month = smashDate[1];
-      const year = smashDate[0];
+      const stringDate = String(date);
+      const smashDate = stringDate.split("-");
 
-      verifyIfNotANumber(day);
-      verifyIfNotANumber(month);
-      verifyIfNotANumber(year);
+      const day = verifyIfNotANumber(smashDate[2]);
+      const month = verifyIfNotANumber(smashDate[1]);
+      const year = verifyIfNotANumber(smashDate[0]);
 
-      if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
+      if (day > 31 || month > 12) throw new Error("Informe uma data válida.");
 
-      dateConvertido = new Date(`${year}/${month}/${day}`);
+      dateConvertido = new Date(`${year}/${month}/${day}`)
+      dateConvertido.setHours(-3);
     }
 
-    const announcements = await announcementService.findAnnouncementByFilter({ dateConvertido, endRoute, startRoute });
-    return res.status(200).json(announcements);
+    const announcements = await announcementService.findAnnouncementByFilter({
+      ...(dateConvertido && { dateConvertido }),
+      ...(endRoute && { endRoute: endRoute as string }),
+      ...(startRoute && { startRoute: startRoute as string }),
+    });
 
+    return res.status(200).json(announcements);
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
-
 });
 
 announcementRouter.post("/", async (req: Request, res: Response) => {
   try {
-    let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date  } = req.body;
+    let {
+      vehicle,
+      licensePlate,
+      price,
+      socialLink,
+      advertiserId,
+      startRoute,
+      endRoute,
+      date,
+    } = req.body;
 
-    if ( !advertiserId || !socialLink || !licensePlate || !vehicle || !date || !endRoute || !startRoute ) {
-      throw new Error ("Algum campo inválido");
+    if (
+      !advertiserId ||
+      !socialLink ||
+      !licensePlate ||
+      !vehicle ||
+      !date ||
+      !endRoute ||
+      !startRoute
+    ) {
+      throw new Error("Algum campo inválido");
     }
 
     verifyIfNotANumber(advertiserId);
@@ -66,35 +82,34 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
     price = Number(price);
     advertiserId = Number(advertiserId);
-    const smashDate = date.split('-');
-    
+    const smashDate = date.split("-");
+
     const day = smashDate[2];
     const month = smashDate[1];
     const year = smashDate[0];
 
-    verifyIfNotANumber(day);      
+    verifyIfNotANumber(day);
     verifyIfNotANumber(month);
     verifyIfNotANumber(year);
 
-    if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
+    if (day > 31 || month > 12) throw new Error("Informe uma data válida.");
 
     verifyIfPastDate(day, month, year);
 
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
     const announcement = await announcementService.addAnnouncement({
-      vehicle, 
-      licensePlate, 
+      vehicle,
+      licensePlate,
       price,
-      socialLink, 
-      advertiserId, 
+      socialLink,
+      advertiserId,
       date: dateConvertido,
       startRoute,
       endRoute,
     } as AnnouncementDTO);
 
     return res.status(201).json(announcement);
-
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
@@ -102,17 +117,26 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
 announcementRouter.put("/:id", async (req: Request, res: Response) => {
   try {
-    let { vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date } = req.body;
+    let {
+      vehicle,
+      licensePlate,
+      price,
+      socialLink,
+      advertiserId,
+      startRoute,
+      endRoute,
+      date,
+    } = req.body;
     const { id } = req.params;
-    
+
     verifyIfNotANumber(id);
     verifyIfNotANumber(price);
     verifyIfNotANumber(advertiserId);
-    
+
     let dateConvertido;
-    if(date){
-      const smashDate = date.split('-');
-      
+    if (date) {
+      const smashDate = date.split("-");
+
       const day = smashDate[2];
       const month = smashDate[1];
       const year = smashDate[0];
@@ -121,30 +145,31 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
       verifyIfNotANumber(month);
       verifyIfNotANumber(year);
 
-      if (day > 31 || month > 12) throw new Error ("Informe uma data válida.");
+      if (day > 31 || month > 12) throw new Error("Informe uma data válida.");
 
       verifyIfPastDate(day, month, year);
-      
-      dateConvertido = new Date( `${year}/${month}/${day}` );
+
+      dateConvertido = new Date(`${year}/${month}/${day}`);
     }
 
     price = Number(price);
     advertiserId = Number(advertiserId);
 
-    const announcement = await announcementService.updateAnnouncement({ 
-      vehicle, 
-      licensePlate, 
-      price, 
-      socialLink, 
-      date: dateConvertido,
-      advertiserId,
-      startRoute,
-      endRoute,
-    } as Announcement,
-    Number(id));
+    const announcement = await announcementService.updateAnnouncement(
+      {
+        vehicle,
+        licensePlate,
+        price,
+        socialLink,
+        date: dateConvertido,
+        advertiserId,
+        startRoute,
+        endRoute,
+      } as Announcement,
+      Number(id)
+    );
 
     return res.status(200).json(announcement);
-
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
@@ -156,13 +181,13 @@ announcementRouter.delete("/:id", async (req: Request, res: Response) => {
 
     verifyIfNotANumber(id);
 
-    const msg: string = await announcementService.deleteAnnouncement(parseInt(id));
+    const msg: string = await announcementService.deleteAnnouncement(
+      parseInt(id)
+    );
     return res.status(200).json(msg);
-
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
-
 });
 
 export default announcementRouter;
