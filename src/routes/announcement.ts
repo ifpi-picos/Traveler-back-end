@@ -24,7 +24,7 @@ announcementRouter.get("/filter", async (req: Request, res: Response) => {
     const { date, endRoute, startRoute } = req.query;
 
     if (!date && !endRoute && !startRoute) throw new Error("Nenhum filtro informado.");
-
+    console.log(date)
     let dateConvertido: Date | null = null;
     if (date) {
       const stringDate = String(date);
@@ -37,6 +37,7 @@ announcementRouter.get("/filter", async (req: Request, res: Response) => {
       if (day > 31 || month > 12) throw new Error("Informe uma data válida.");
 
       dateConvertido = new Date(`${year}/${month}/${day}`)
+      console.log(dateConvertido)
       dateConvertido.setHours(-3);
     }
 
