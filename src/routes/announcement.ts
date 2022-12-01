@@ -38,7 +38,6 @@ announcementRouter.get("/filter", async (req: Request, res: Response) => {
 
       dateConvertido = new Date(`${year}/${month}/${day}`)
       console.log(dateConvertido)
-      dateConvertido.setHours(-3);
     }
 
     const announcements = await announcementService.findAnnouncementByFilter({
