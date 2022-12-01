@@ -13,6 +13,9 @@ export class AnnouncementRepository implements IAnnouncementRepository {
   }
 
   async findByFilters(data: filterAnnouncement): Promise<AnnouncementDTO[]> {
+    console.log(data.dateConvertido, typeof(data.dateConvertido))
+    console.log(data.startRoute, typeof(data.startRoute))
+    console.log(data.dateConvertido, typeof(data.dateConvertido))
     const result = await this.repository.findMany({
       where: {
         date: data.dateConvertido,
@@ -21,6 +24,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
       }
     })
 
+    console.log(result)
     return result;
   }
 
