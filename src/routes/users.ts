@@ -4,6 +4,11 @@ import { AnnouncementRepository, UserRepository } from "../repositories";
 import { IUserServiceInterface } from "../services/interfaces/userServiceInterface";
 import UserDTO from "../models/user";
 import { verifyIfNotANumber } from "../middleware";
+import Multer from "multer";
+
+const multer = Multer({
+  storage: Multer.memoryStorage()
+});
 
 
 const usersRouter = Router();
@@ -20,6 +25,10 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json(error.message);
   }
+});
+
+usersRouter.post("/image", multer.single("image"), async (req: Request, res: Response) => {
+  return console.log(req.file);
 });
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {

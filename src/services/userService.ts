@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import UserDTO, { SecureUser } from "../models/user";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
 import { IAnnouncementRepository } from "../repositories/interfaces/announcementRepositoryInterface";
+// import admin from "firebase-admin";
+// import serviceAccount from "../config/firebaseKey.json";
 
 
 export class UserService implements IUserServiceInterface {
@@ -43,6 +45,13 @@ export class UserService implements IUserServiceInterface {
         
         return msg;
     }
+
+    // async addImage() {
+
+    //     admin.initializeApp({
+    //     credential: admin.credential.cert(serviceAccount)
+    //     });
+    // }
 
     async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
         const userExists = await this.userRepository.selectOne({ id });
