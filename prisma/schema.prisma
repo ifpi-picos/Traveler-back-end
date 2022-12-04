@@ -12,6 +12,7 @@ model User {
   email        String         @unique
   name         String
   password     String
+  image        String?
   address      Address?
   announcement Announcement[]
 

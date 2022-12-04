@@ -5,6 +5,7 @@ import { IUserServiceInterface } from "../services/interfaces/userServiceInterfa
 import UserDTO from "../models/user";
 import { verifyIfNotANumber } from "../middleware";
 import Multer from "multer";
+import uploadImage from "../services/firebaseService";
 
 const multer = Multer({
   storage: Multer.memoryStorage()
@@ -27,8 +28,11 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.post("/image", multer.single("image"), async (req: Request, res: Response) => {
-  return console.log(req.file);
+usersRouter.post("/image", multer.single("image"), uploadImage, async (req: Request, res: Response) => {
+
+  const { firebaseUrl } = req.file ? req.file : "";
+
+  //fazer caminho para adicionar url da imagem no banco de dados na tabela de usuario 
 });
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {
