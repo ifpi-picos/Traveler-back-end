@@ -12,7 +12,7 @@ authenticationRouter.post('/login', async (req: Request, res: Response) => {
 
     const {token, userData} = await authService.login({ email, password })
 
-    res.cookie('token', token, { maxAge: 5000000, httpOnly: true, sameSite: 'None', secure: true})
+    res.cookie('token', token, { maxAge: 5000000, httpOnly: true, sameSite: 'none', secure: true})
 
     return res.status(201).json({ auth: true, user: userData });
     
