@@ -28,7 +28,7 @@ export class UserService implements IUserServiceInterface {
 
         if (email.indexOf("@") === -1 || !name || !email || password.length < 8 || password.length > 20 ) {
             throw new Error ("Algum campo inválido");
-        }
+        };
 
         const userExists = await this.userRepository.selectOne({ email });
         if (userExists) throw new Error("Usuário ja cadastrado.");
@@ -42,20 +42,20 @@ export class UserService implements IUserServiceInterface {
         } as UserDTO);
         
         return msg;
-    }
+    };
 
     async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
         const userExists = await this.userRepository.selectOne({ id });
 
         if (!userExists) throw new Error("Usuário não encontrado.");
 
-        const user = await this.userRepository.update({ name, email, password }, id)
+        const user = await this.userRepository.update({ name, email, password }, id);
 
         return user;
-    }
+    };
 
     async deleteUser( id: number ): Promise<string> {
-        const userExists = await this.userRepository.selectOne({ id })
+        const userExists = await this.userRepository.selectOne({ id });
 
         if (!userExists) throw new Error("Usuário não encontrado.");
 
@@ -64,8 +64,17 @@ export class UserService implements IUserServiceInterface {
         
         if(announcementExist) throw new Error ("Usuário não pode ser deletado, pois possui anúncio(s) cadastrado(s).");
 
-        const msg = await this.userRepository.delete( id )
+        const msg = await this.userRepository.delete( id );
 
         return msg;
-    }
-}
+    };
+
+    // perguntar qual a melhor forma de fazer essa funcionalidade
+    async verifyUserExist(id: number): Promise<UserDTO> {
+        const userExists = await this.userRepository.selectOne({ id });
+
+        if (!userExists) throw new Error("Usuário não encontrado.");
+
+        return userExists
+    };
+};
