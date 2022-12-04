@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: '*', // url do front
+    origin: 'https://traveler-io.netlify.app', // url do front
     credentials: true,
     methods: 'GET, PUT, POST, OPTIONS, DELETE, PATH',
 }));
