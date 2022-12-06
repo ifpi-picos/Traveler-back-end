@@ -3,3 +3,11 @@ declare namespace Express {
         userId: string;
     }
 }
+
+//testar
+
+// declare namespace Express.Request {
+//     export interface file {
+//         firebaseUrl: string;
+//     }
+// }

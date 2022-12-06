@@ -1,11 +1,11 @@
-import { Request, Response, Router } from "express";
+import { Request, response, Response, Router } from "express";
 import { UserService } from "../services";
 import { AnnouncementRepository, UserRepository } from "../repositories";
 import { IUserServiceInterface } from "../services/interfaces/userServiceInterface";
 import UserDTO from "../models/user";
 import { verifyIfNotANumber } from "../middleware";
 import Multer from "multer";
-import uploadImage from "../services/firebaseService";
+import { uploadImage } from "../middleware";
 
 const multer = Multer({
   storage: Multer.memoryStorage()
@@ -28,18 +28,28 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.post("/image", multer.single("image"), uploadImage, async (req: Request, res: Response) => {
+usersRouter.post("/image/:id", multer.single("image"), async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const firebaseUrl = uploadImage(req);
+    verifyIfNotANumber(id);
 
-  const { firebaseUrl } = req.file ? req.file : "";
+    if(!firebaseUrl) throw new Error('Erro na hora de atualizar a imagem.')
 
-  //fazer caminho para adicionar url da imagem no banco de dados na tabela de usuario 
+    const updateImage = await userService.addImage(firebaseUrl, Number(id));
+
+    return res.status(200).json(updateImage)
+  } catch (error: any) {
+    return res.status(400).json(error.message)
+  }
 });
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await verifyIfNotANumber(id);
+    verifyIfNotANumber(id);
 
     const user = await userService.getById( Number(id) );
 

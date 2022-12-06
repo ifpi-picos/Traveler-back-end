@@ -13,6 +13,21 @@ export class UserRepository implements IUserRepository {
     const msg = "cadastro completo";
     return msg;
   }
+
+  async createImage(firebaseUrl: string, id: number): Promise<SecureUser> {
+    const result = await this.repository.update({
+      data: {
+        image: firebaseUrl,
+      },
+      where: {
+        id,
+      }
+    })
+
+    const { email, name }: SecureUser = result;
+
+    return { id, email, name };
+  }
   
   async selectOne(where: Prisma.UserWhereInput): Promise<User | null> {
     const result = await this.repository.findFirst({ where });

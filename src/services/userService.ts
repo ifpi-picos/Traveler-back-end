@@ -44,6 +44,12 @@ export class UserService implements IUserServiceInterface {
         return msg;
     }
 
+    async addImage(firebaseUrl: string, id: number): Promise<SecureUser> {
+        const updateUser = await this.userRepository.createImage(firebaseUrl, id);
+
+        return updateUser;
+    }
+
     async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
         const userExists = await this.userRepository.selectOne({ id });
 
