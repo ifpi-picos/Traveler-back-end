@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import serviceAccount from "../config/firebaseKey.json";
+import serviceAccount from "../config/firebaseKey";
 import IUserImageServiceInterface from "./interfaces/userImageServiceInterface";
 import UserDTO, { UserImage } from "../models/user";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
