@@ -14,19 +14,19 @@ export class UserRepository implements IUserRepository {
     return msg;
   }
 
-  async createImage(firebaseUrl: string, id: number): Promise<SecureUser> {
-    const result = await this.repository.update({
+  async createImage(firebaseUrl: string, id: number): Promise<string> {
+    await this.repository.update({
       data: {
         image: firebaseUrl,
       },
       where: {
         id,
       }
-    })
+    });
 
-    const { email, name }: SecureUser = result;
+    const msg = "Imagem salva com sucesso!";
 
-    return { id, email, name };
+    return msg;
   }
   
   async selectOne(where: Prisma.UserWhereInput): Promise<User | null> {

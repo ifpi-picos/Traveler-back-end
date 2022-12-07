@@ -1,4 +1,4 @@
-import { IUserServiceInterface } from "./interfaces/userServiceInterface";
+import IUserServiceInterface from "./interfaces/userServiceInterface";
 import bcrypt from "bcryptjs";
 import UserDTO, { SecureUser } from "../models/user";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
@@ -43,20 +43,6 @@ export class UserService implements IUserServiceInterface {
         
         return msg;
     }
-
-    // async updateImage( id: number): Promise<SecureUser> {
-    //     const userExists = this.userRepository.selectOne({ id });
-
-    //     if(!userExists) throw new Error("Usuário não encontrado.")
-
-    //     const firebaseUrl = await uploadImage(req, id);
-
-    //     if(firebaseUrl === "") throw new Error('Erro na hora de atualizar a imagem.')
-    
-    //     const updateUser = await this.userRepository.createImage(firebaseUrl, id);
-
-    //     return updateUser;
-    // }
 
     async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
         const userExists = await this.userRepository.selectOne({ id });

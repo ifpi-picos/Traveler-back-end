@@ -1,4 +1,4 @@
-import { IAddressServiceInterface } from "./interfaces/addressServiceInterface";
+import IAddressServiceInterface from "./interfaces/addressServiceInterface";
 import AddressDTO from "../models/address";
 import { IAddressRepository } from "../repositories/interfaces/addressRepositoryInterface";
 import { Address } from "@prisma/client";

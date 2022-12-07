@@ -13,8 +13,13 @@ export interface UserAuthInfo {
 }
 
 export interface SecureUser {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   address?: Address | null;
+}
+
+export interface UserImage {
+  firebaseUrl: string;
+  msg: string;
 }

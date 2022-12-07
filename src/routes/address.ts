@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { AddressService } from "../services";
-import { IAddressServiceInterface } from "../services/interfaces/addressServiceInterface";
+import IAddressServiceInterface from "../services/interfaces/addressServiceInterface";
 import { AddressRepository } from "../repositories";
 import AddressDTO from "../models/address";
 import { verifyIfNotANumber } from "../middleware";
