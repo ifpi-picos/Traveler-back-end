@@ -28,22 +28,19 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.post("/image/:id", multer.single("image"), async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    
-    const firebaseUrl = uploadImage(req);
-    verifyIfNotANumber(id);
+// usersRouter.put("/image/:id", multer.single("image"), async (req: Request, res: Response) => {
+//   try {
+//     const { id } = req.params;
 
-    if(!firebaseUrl) throw new Error('Erro na hora de atualizar a imagem.')
+//     verifyIfNotANumber(id);
 
-    const updateImage = await userService.addImage(firebaseUrl, Number(id));
+//     const updateImage = await userService.updateImage( Number(id));
 
-    return res.status(200).json(updateImage)
-  } catch (error: any) {
-    return res.status(400).json(error.message)
-  }
-});
+//     return res.status(200).json(updateImage);
+//   } catch (error: any) {
+//     return res.status(400).json(error.message);
+//   }
+// });
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {
   try {

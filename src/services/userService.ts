@@ -17,7 +17,7 @@ export class UserService implements IUserServiceInterface {
     async getById( id: number ): Promise<SecureUser> {
         const user = await this.userRepository.selectOne({ id });
 
-        if (!user) throw new Error("Usuario não encontrado!");
+        if (!user) throw new Error("Usuário não encontrado!");
 
         const { email, name }: SecureUser = user;
 
@@ -31,7 +31,7 @@ export class UserService implements IUserServiceInterface {
         }
 
         const userExists = await this.userRepository.selectOne({ email });
-        if (userExists) throw new Error("Usuario ja cadastrado");
+        if (userExists) throw new Error("Usuário ja cadastrado.");
 
         const secretPassword = bcrypt.hashSync(password, 8);
 
@@ -44,16 +44,24 @@ export class UserService implements IUserServiceInterface {
         return msg;
     }
 
-    async addImage(firebaseUrl: string, id: number): Promise<SecureUser> {
-        const updateUser = await this.userRepository.createImage(firebaseUrl, id);
+    // async updateImage( id: number): Promise<SecureUser> {
+    //     const userExists = this.userRepository.selectOne({ id });
 
-        return updateUser;
-    }
+    //     if(!userExists) throw new Error("Usuário não encontrado.")
+
+    //     const firebaseUrl = await uploadImage(req, id);
+
+    //     if(firebaseUrl === "") throw new Error('Erro na hora de atualizar a imagem.')
+    
+    //     const updateUser = await this.userRepository.createImage(firebaseUrl, id);
+
+    //     return updateUser;
+    // }
 
     async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
         const userExists = await this.userRepository.selectOne({ id });
 
-        if (!userExists) throw new Error("Usuario não encontrado!");
+        if (!userExists) throw new Error("Usuário não encontrado.");
 
         const user = await this.userRepository.update({ name, email, password }, id)
 
@@ -63,10 +71,11 @@ export class UserService implements IUserServiceInterface {
     async deleteUser( id: number ): Promise<string> {
         const userExists = await this.userRepository.selectOne({ id })
 
-        if (!userExists) throw new Error("Usuario não encontrado!");
+        if (!userExists) throw new Error("Usuário não encontrado.");
 
         const advertiserId = id;
-        const announcementExist = await this.announcementRepository.selectOne({ advertiserId })
+        const announcementExist = await this.announcementRepository.selectOne({ advertiserId });
+        
         if(announcementExist) throw new Error ("Usuário não pode ser deletado, pois possui anúncio(s) cadastrado(s).");
 
         const msg = await this.userRepository.delete( id )

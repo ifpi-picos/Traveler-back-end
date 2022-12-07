@@ -1,1 +1,12 @@
-{"teste": "teste"}
+{
+    "type": "service_account",
+    "project_id": "traveler-image-ad",
+    "private_key_id": "01d185749fe67357ddb9ed96a9d1372243a9880c",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDVf8Q606GlOsht\nhPAv0NszIvwZ+0QdaUY1e9uL5Ey6E/YtHcFieJ9GIaIMXouDg0drfYUSJCy97ByE\nJq18S3Vz/gvu94zKSFXag12Fk4uPmkOwwyqaT2bZ+oiBxNJ+Bvco6ex/3RrCQjXg\nuHrBwZUeQ/rufCgrx9nxxb93vhBdqUd9iqnGCm2gBxTT5pOzZHisyGwVXQsWipfr\nT1K94vUVeoMVWbrIf0fT9fHXZo50DRFgDQxnqoIPUdxDqQfi52MfMrz3UBgIdCNj\nc1Q4qn4CHa3nuEGOmZsZlkDPkjYl9dQ5g1hAiP1QmyQg5qtLk11IZ9PpUDBBtS1k\nBgE915yJAgMBAAECggEAAPHZynDZTEPgUyu9bFi+P5GuD+deu8qVdvMfW5UdCc3A\nzx5MlsT133eSof9hGqngDQe3KQdj80syLRuGtQAYevTq1Jnf051SU+804LxwZ6hF\nGGkkrR4g1GIZbImUbN5XBaVTWJV/4tAsMNxgHq9em42tdJS0EM2Hl1xKppr+s4tk\nJefEvaiTU1sq4fD7BEcHksm0uleH/D9gItHmPjkYwSlBLNalcvjsiiQ66TIpXyvi\natUUUkKXKXYbP5riNvc9sFIFW+6fQTSG3vlCYlj0GE25BUfTTkZYTTj4Y+lr8i2d\ncOXdC+tzGSA0pP811KcMtjvc0/qPnUjiOKWf4EJSiQKBgQDrtuLUH+7Y8lRvWdaw\n6pg+dsp3J6US/sKDKLF53MoG/E4gqR9n1wcBsStUnhgN/eOsanOpGT8gBCTmwI9N\nc8bxNFFemz6ZinapWspVOa4jPnYtLe6LJY++doCX/zDP/nU4zm/KbJ6n9ZdEMDNj\n7tzBhCKg5oY3UjrG/x6FmE1xIwKBgQDn33JMcb7nt9sK5eEi/3zpKIEITpfmog5c\n+VD92NpGJYYhBDhN+7vLX+ey6q1WrYygWq2OQwV+PwV9ti8S18XTaH0EXBW+NAgA\np3EQ/5IIcNYAuQqE4yrl2LFd4jOfAQxrS+k7CjVaJOYQUCqadmtAl6ARmymrY5AF\ntH0XHWt0YwKBgQDPKu4xgd9qzZFoTI1k8MreG4nXMADlsQNEQ3+4m1T0zsvb6Mix\ne0utMQnkVQ7PPVXdM7Jz7LyOZxYHuTY53If9dv4NKGTcjdW9Aw7R2OA0GbHEA5qk\nsV6lB4H+FUvRgtOEGewm/VB0TmWkiLiiHE3pxzioMfPEq4D9ZTxuLm3iAQKBgFOc\nb0rBeWV1FrdHTXehSRmKUXz9WikAJs2/2USv/YVt4n/lVahJLd6YJqSNmxO2YQ8x\no4O5BzIO55v9JdxVkjA5bVs1GWIMwRX7SvomLjJ8/a4lC3X/tGhNSyffeV3Msv29\n0cxIUhS/WXZocfRg3yvbgQzYNp5muHhWLQU4xpahAoGBAK7bCkBjlguMPDa4u5I5\nVj8M+JEp+Q2qOQ0uk7Nlwqo2SKhx5qiftPLBy5zRRtoj4gOvfJEb2dKMU4BMBrKN\n+GNv8bzB0H9BAqOTXkKYetYRPaRoLC5OS+RtBoiOCF+wxe21kOxZujsUgYIZ+PIz\nw89V37+Tm2xW1rgITMtPzNqJ\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-w37uy@traveler-image-ad.iam.gserviceaccount.com",
+    "client_id": "115282720761447632072",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-w37uy%40traveler-image-ad.iam.gserviceaccount.com"
+}
