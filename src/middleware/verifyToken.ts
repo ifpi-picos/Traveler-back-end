@@ -4,14 +4,19 @@ import jwt from "jsonwebtoken";
 const SECRET = process.env.secret;
 
 export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
-    const token = req.cookies ? req.cookies.token: null;
+  try {
+        // const token = req.cookies ? req.cookies.token: null;
 
-    if (!token) {
-      return res.status(403).send({
+    const { authorization } = req.headers;
+  // com cookie seria 'token' em vez de 'authorization'
+    if (!authorization) {
+      return res.status(403).json({
         auth: false, message: 'No token provided.'
-      })
+      });
     }
     else {
+      const [, token] = authorization.split(" ");// localsorage
+
       const payload = jwt.verify(token, `${SECRET}`);
 
       if (typeof payload != 'string') {
@@ -20,10 +25,16 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
         next();
       }
       else {
-        return res.status(500).send({
+        return res.status(500).json({
           auth: false, message: 'Fail to authentication.'
         });
       
-      }
-    }
-}
+      };
+    };
+  } catch (error) {
+    return res.status(500).json({
+      auth: false, message: 'Fail to authentication.'
+    });
+  };
+
+};
