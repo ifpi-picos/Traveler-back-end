@@ -6,4 +6,5 @@ export default interface IUserServiceInterface {
     addUser({ name, email, password }: UserDTO): Promise<string>;
     updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser>;
     deleteUser( id: number ): Promise<string>;
+    verifyUserExist(id: number): Promise<SecureUser>;
 }

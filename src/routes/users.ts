@@ -1,4 +1,4 @@
-import { Request, response, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import { UserService, UserImageService } from "../services";
 import { AnnouncementRepository, UserRepository } from "../repositories";
 import IUserServiceInterface from "../services/interfaces/userServiceInterface";
@@ -38,9 +38,9 @@ usersRouter.put("/image/:id", multer.single("image"), async (req: Request, res: 
     if(!req.file) throw new Error("Arquivo não enviado.");
 
     const image = req.file ;
-    const updateImage = await userImageService.uploadImage(image, id);
+    const updateImageLink = await userImageService.uploadImage(image, id);
 
-    return res.status(200).json({ updateImage });
+    return res.status(200).json({ updateImageLink });
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
