@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
-import UserDTO, { SecureUser } from "../models/user";
+import UserDTO, { FirebaseUrl, SecureUser } from "../models/user";
 import { IUserRepository } from "./interfaces/userRepositoryInterface";
 
 export class UserRepository implements IUserRepository {
@@ -14,19 +14,20 @@ export class UserRepository implements IUserRepository {
     return msg;
   }
 
-  async createImage(firebaseUrl: string, id: number): Promise<string> {
-    await this.repository.update({
+  async updateImage(firebaseUrl: string, id: number): Promise<FirebaseUrl> {
+    const result = await this.repository.update({
       data: {
         image: firebaseUrl,
       },
       where: {
         id,
+      },
+      select: {
+        image: true,
       }
     });
 
-    const msg = "Imagem salva com sucesso!";
-
-    return msg;
+    return result;
   }
   
   async selectOne(where: Prisma.UserWhereInput): Promise<User | null> {
@@ -42,11 +43,15 @@ export class UserRepository implements IUserRepository {
         email: data.email,
         password: data.password,
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        image: true,
+      }
     });
 
-    const { email, name, }: SecureUser = result;
-
-    return { id, email, name }
+    return result;
   }
 
   async delete( id: number ): Promise<string> {

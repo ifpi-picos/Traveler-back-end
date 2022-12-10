@@ -19,7 +19,6 @@ export interface SecureUser {
   address?: Address | null;
 }
 
-export interface UserImage {
-  firebaseUrl: string;
-  msg: string;
+export interface FirebaseUrl {
+  image: string | null;
 }

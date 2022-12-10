@@ -1,7 +1,7 @@
 import admin from "firebase-admin";
 import serviceAccount from "../config/firebaseKey";
 import IUserImageServiceInterface from "./interfaces/userImageServiceInterface";
-import UserDTO, { UserImage } from "../models/user";
+import { SecureUser, FirebaseUrl } from "../models/user";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
 
 const bucketAddress = "traveler-image-ad.appspot.com";
@@ -20,7 +20,7 @@ export class UserImageService implements IUserImageServiceInterface {
         this.userRepository = iUserRepository;
     }
 
-    async uploadImage(image: Express.Multer.File , id: string): Promise<UserImage>{
+    async uploadImage(image: Express.Multer.File , id: string): Promise<FirebaseUrl>{
 
         await this.verifyUserExist(Number(id));
 
@@ -46,12 +46,12 @@ export class UserImageService implements IUserImageServiceInterface {
         firebaseUrl = `https://storage.googleapis.com/${bucketAddress}/${fileName}`;
         
 
-        const msg = await this.userRepository.createImage(firebaseUrl, Number(id));
+        const FirebaseUrl = await this.userRepository.updateImage(firebaseUrl, Number(id));
 
-        return {msg, firebaseUrl};
+        return FirebaseUrl;
     };
 
-    async verifyUserExist(id: number): Promise<UserDTO | null> {
+    async verifyUserExist(id: number): Promise<SecureUser | null> {
         const userExists = await this.userRepository.selectOne({ id });
 
         if(!userExists) throw new Error("Usuário não encontrado.");

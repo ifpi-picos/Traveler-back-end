@@ -15,9 +15,7 @@ export class UserService implements IUserServiceInterface {
     }
 
     async getById( id: number ): Promise<SecureUser> {
-        const user = await this.userRepository.selectOne({ id });
-
-        if (!user) throw new Error("Usuário não encontrado!");
+        const user = await this.verifyUserExist(id);
 
         const { email, name }: SecureUser = user;
 
@@ -45,9 +43,7 @@ export class UserService implements IUserServiceInterface {
     };
 
     async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
-        const userExists = await this.userRepository.selectOne({ id });
-
-        if (!userExists) throw new Error("Usuário não encontrado.");
+        await this.verifyUserExist(id);
 
         const user = await this.userRepository.update({ name, email, password }, id);
 
@@ -55,9 +51,7 @@ export class UserService implements IUserServiceInterface {
     };
 
     async deleteUser( id: number ): Promise<string> {
-        const userExists = await this.userRepository.selectOne({ id });
-
-        if (!userExists) throw new Error("Usuário não encontrado.");
+        await this.verifyUserExist(id);
 
         const advertiserId = id;
         const announcementExist = await this.announcementRepository.selectOne({ advertiserId });
@@ -69,12 +63,13 @@ export class UserService implements IUserServiceInterface {
         return msg;
     };
 
-    // perguntar qual a melhor forma de fazer essa funcionalidade
     async verifyUserExist(id: number): Promise<UserDTO> {
         const userExists = await this.userRepository.selectOne({ id });
 
         if (!userExists) throw new Error("Usuário não encontrado.");
 
-        return userExists
+        return userExists;
     };
 };
+
+// https://docs.google.com/forms/d/e/1FAIpQLSfOWybq0WTCMiwIbsxysWgIsFjkk4JyhpO2PCHkk8an6eYclA/viewform
