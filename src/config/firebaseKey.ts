@@ -21,3 +21,5 @@ export default {
     "auth_provider_x509_cert_url": auth_provider_x509_cert_url,
     "client_x509_cert_url": client_x509_cert_url,
 };
+
+// export default key;

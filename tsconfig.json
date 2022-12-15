@@ -112,7 +112,7 @@
       ".env",
       ".env.*",
       "tests/**/*.ts",
-      "jest.config.js", "src/config/firebaseKey.js", "src/config/firebaseKey.js",
+      "jest.config.js", "src/config/firebaseKey.ts", "src/config/firebaseKey.ts",
     ],
     "exclude": [
       "node_modules",

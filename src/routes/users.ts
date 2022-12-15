@@ -29,7 +29,7 @@ usersRouter.post("/cadastro", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.put("/image/:id", multer.single("image"), async (req: Request, res: Response) => {
+usersRouter.patch("/image/:id", multer.single("image"), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 

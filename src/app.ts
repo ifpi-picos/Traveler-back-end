@@ -11,7 +11,7 @@ app.use(cookieParser());
 app.use(cors({
     origin: process.env.frontUrl, // url do front
     credentials: true,
-    methods: 'GET, PUT, POST, OPTIONS, DELETE, PATH',
+    methods: 'GET, PUT, POST, OPTIONS, DELETE, PACTH',
 }));
 
 app.all('/*', (req: Request, res: Response, next: NextFunction) =>{
