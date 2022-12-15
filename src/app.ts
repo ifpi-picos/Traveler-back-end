@@ -7,21 +7,22 @@ import { verifyJWT as auth } from "./middleware";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(cors({
-    origin: 'https://traveler-io.netlify.app', // url do front
+    origin: process.env.frontUrl, // url do front
     credentials: true,
     methods: 'GET, PUT, POST, OPTIONS, DELETE, PATH',
 }));
 
-// app.all('/*', (req: Request, res: Response, next: NextFunction) =>{
-//     const publicRoutes = ['/authentication/login', '/users/cadastro'];
-//     for (let i = 0; i < publicRoutes.length; i +=1) {
-//         if (req.path === publicRoutes[i]) {
-//             return next();
-//         }
-//     } 
-//     auth(req, res, next);
-// } );
+app.all('/*', (req: Request, res: Response, next: NextFunction) =>{
+    const publicRoutes = ['/authentication/login', '/users/cadastro'];
+    for (let i = 0; i < publicRoutes.length; i +=1) {
+        if (req.path === publicRoutes[i]) {
+            return next();
+        }
+    } 
+    auth(req, res, next);
+} );
 
 app.use('/', routes);
 

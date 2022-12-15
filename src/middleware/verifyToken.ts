@@ -8,6 +8,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
         // const token = req.cookies ? req.cookies.token: null;
 
     const { authorization } = req.headers;
+  
   // com cookie seria 'token' em vez de 'authorization'
     if (!authorization) {
       return res.status(403).json({
@@ -15,8 +16,9 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
       });
     }
     else {
-      const [, token] = authorization.split(" ");// localsorage
+      // const [, token] = authorization.split(" ");// localsorage quando vem do insomnia
 
+      const token = authorization  //localstorage quando vewm do frontend
       const payload = jwt.verify(token, `${SECRET}`);
 
       if (typeof payload != 'string') {

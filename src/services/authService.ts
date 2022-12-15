@@ -10,7 +10,7 @@ const userRepository = new UserRepository();
 
 export class AuthService implements IAuthServiceInterface {
   getToken(user: UserDTO): string {
-    const token = jwt.sign({ id: user.id }, `${SECRET}`, { expiresIn: "10d" });
+    const token = jwt.sign({ id: user.id }, `${SECRET}`, { expiresIn: "1d" });
     return token;
   }
 
