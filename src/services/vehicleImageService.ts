@@ -1,10 +1,11 @@
 import admin from "firebase-admin";
 import serviceAccount from "../config/firebaseKey.json";
-import IUserImageServiceInterface from "./interfaces/userImageServiceInterface";
-import { SecureUser, FirebaseUrl } from "../models/user";
-import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
+import IVehicleImageServiceInterface from "./interfaces/vehicleImageServiceInterface";
+import { FirebaseUrl } from "../models/user";
+import { IAnnouncementRepository } from "../repositories/interfaces/announcementRepositoryInterface";
+import AnnouncementDTO from "../models/annoucement";
 
-// const bucketAddress = "traveler-image-ad.appspot.com/users";
+const bucketAddress = "traveler-image-ad.appspot.com/users";
 const type = process.env.type!;
 const project_id = process.env.project_id!;
 const private_key_id = process.env.private_key_id!;
@@ -32,21 +33,21 @@ serviceAccount.type = type;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-    // storageBucket: bucketAddress,
+    storageBucket: bucketAddress,
 });
 
 const bucket = admin.storage().bucket();
 
-export class UserImageService implements IUserImageServiceInterface {
-    private userRepository: IUserRepository;
+export class VehicleImageService implements IVehicleImageServiceInterface {
+    private announcementRepository: IAnnouncementRepository;
 
-    constructor( iUserRepository: IUserRepository) {
-        this.userRepository = iUserRepository;
+    constructor( iAnnouncementRepository: IAnnouncementRepository) {
+        this.announcementRepository = iAnnouncementRepository;
     }
 
-    async uploadImage(image: Express.Multer.File , id: string): Promise<FirebaseUrl>{
+    async uploadImage(image: Express.Multer.File , id: string): Promise<string>{
 
-        await this.verifyUserExist(Number(id));
+        await this.verifyAnnouncementExist(Number(id));
 
         let firebaseUrl: string = "";
         const fileName =  id + "." + image.originalname.split(".").pop();
@@ -67,20 +68,18 @@ export class UserImageService implements IUserImageServiceInterface {
         await file.makePublic();
 
         // obter a url publica
-        // firebaseUrl = `https://storage.googleapis.com/${bucketAddress}/${fileName}`;
+        firebaseUrl = `https://storage.googleapis.com/${bucketAddress}/${fileName}`;
         
 
-        const FirebaseUrl = await this.userRepository.updateImage(firebaseUrl, Number(id));
-
-        return FirebaseUrl;
+        return firebaseUrl;
     };
 
-    async verifyUserExist(id: number): Promise<SecureUser | null> {
-        const userExists = await this.userRepository.selectOne({ id });
+    async verifyAnnouncementExist(id: number): Promise<AnnouncementDTO | null> {
+        const announcementExists = await this.announcementRepository.selectOne({ id });
 
-        if(!userExists) throw new Error("Usuário não encontrado.");
+        if(!announcementExists) throw new Error("Anúncio não encontrado.");
 
-        return userExists;
+        return announcementExists;
     }
 }
 

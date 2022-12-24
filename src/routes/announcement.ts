@@ -1,13 +1,22 @@
 import { Request, Response, Router } from "express";
 import { Announcement } from "@prisma/client";
-import { AnnouncementService } from "../services";
+import { AnnouncementService, VehicleImageService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
+import IVehicleImageService from "../services/interfaces/vehicleImageServiceInterface";
 import { AnnouncementRepository, UserRepository } from "../repositories";
 import AnnouncementDTO from "../models/annoucement";
 import { verifyIfNotANumber, verifyIfPastDate } from "../middleware";
+import Multer from "multer";
 
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+});
+
+
+const announcementRepository = new AnnouncementRepository()
 const announcementService: IAnnouncementServiceInterface =
-  new AnnouncementService(new AnnouncementRepository(), new UserRepository());
+  new AnnouncementService(announcementRepository, new UserRepository());
+const vehicleImageService: IVehicleImageService = new VehicleImageService(announcementRepository)
 const announcementRouter = Router();
 
 announcementRouter.get("/", async (req: Request, res: Response) => {
@@ -51,8 +60,10 @@ announcementRouter.get("/filter", async (req: Request, res: Response) => {
   }
 });
 
-announcementRouter.post("/", async (req: Request, res: Response) => {
+announcementRouter.post("/", multer.single("image"), async (req: Request, res: Response) => {
   try {
+
+    const Image = req.file;
     let {
       vehicle,
       licensePlate,
@@ -71,7 +82,8 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
       !vehicle ||
       !date ||
       !endRoute ||
-      !startRoute
+      !startRoute ||
+      !Image
     ) {
       throw new Error("Algum campo inválido");
     }
@@ -97,6 +109,8 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
 
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
+    const image = await vehicleImageService.uploadImage(Image, advertiserId);
+
     const announcement = await announcementService.addAnnouncement({
       vehicle,
       licensePlate,
@@ -106,6 +120,7 @@ announcementRouter.post("/", async (req: Request, res: Response) => {
       date: dateConvertido,
       startRoute,
       endRoute,
+      image
     } as AnnouncementDTO);
 
     return res.status(201).json(announcement);

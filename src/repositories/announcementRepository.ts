@@ -1,6 +1,7 @@
 import { IAnnouncementRepository } from "./interfaces/announcementRepositoryInterface";
 import { Prisma, PrismaClient } from "@prisma/client";
 import AnnouncementDTO, { filterAnnouncement } from "../models/annoucement";
+import { FirebaseUrl } from "../models/user";
 
 export class AnnouncementRepository implements IAnnouncementRepository {
     private repository: Prisma.AnnouncementDelegate<
@@ -48,6 +49,22 @@ export class AnnouncementRepository implements IAnnouncementRepository {
         date,
       },
     });
+    return result;
+  }
+
+  async updateImage(firebaseUrl: string, id: number): Promise<FirebaseUrl> {
+    const result = await this.repository.update({
+      data: {
+        image: firebaseUrl,
+      },
+      where: {
+        id,
+      },
+      select: {
+        image: true,
+      }
+    });
+
     return result;
   }
 

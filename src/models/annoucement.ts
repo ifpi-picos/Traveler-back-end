@@ -7,6 +7,7 @@ export default interface AnnouncementDTO {
   startRoute: string;
   endRoute: string;
   date: Date;
+  image: string
 }
 
 export interface filterAnnouncement {
