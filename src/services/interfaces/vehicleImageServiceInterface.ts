@@ -3,6 +3,5 @@ import { FirebaseUrl } from "../../models/user";
 
 
 export default interface IVehicleImageServiceInterface {
-    uploadImage(image: Express.Multer.File , id: string): Promise<string>;
-    verifyAnnouncementExist(id: number): Promise<AnnouncementDTO | null>;
+    uploadImage(image: Express.Multer.File): Promise<string>;
 }

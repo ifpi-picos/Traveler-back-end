@@ -12,11 +12,9 @@ const multer = Multer({
   storage: Multer.memoryStorage(),
 });
 
-
-const announcementRepository = new AnnouncementRepository()
 const announcementService: IAnnouncementServiceInterface =
-  new AnnouncementService(announcementRepository, new UserRepository());
-const vehicleImageService: IVehicleImageService = new VehicleImageService(announcementRepository)
+  new AnnouncementService(new AnnouncementRepository(), new UserRepository());
+const vehicleImageService: IVehicleImageService = new VehicleImageService()
 const announcementRouter = Router();
 
 announcementRouter.get("/", async (req: Request, res: Response) => {
@@ -109,7 +107,7 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
 
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
-    const image = await vehicleImageService.uploadImage(Image, advertiserId);
+    const image = await vehicleImageService.uploadImage(Image);
 
     const announcement = await announcementService.addAnnouncement({
       vehicle,
@@ -129,8 +127,9 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
   }
 });
 
-announcementRouter.put("/:id", async (req: Request, res: Response) => {
+announcementRouter.put("/:id", multer.single("image"), async (req: Request, res: Response) => {
   try {
+    const Image = req.file;
     let {
       vehicle,
       licensePlate,
@@ -169,6 +168,11 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
     price = Number(price);
     advertiserId = Number(advertiserId);
 
+    let image: string | undefined;
+    if (Image) {
+      image = await vehicleImageService.uploadImage(Image);
+    }
+
     const announcement = await announcementService.updateAnnouncement(
       {
         vehicle,
@@ -179,6 +183,7 @@ announcementRouter.put("/:id", async (req: Request, res: Response) => {
         advertiserId,
         startRoute,
         endRoute,
+        image,
       } as Announcement,
       Number(id)
     );

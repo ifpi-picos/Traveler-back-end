@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: process.env.frontUrl, // url do front
+    origin: process.env.frontUrl || "*", // url do front
     credentials: true,
     methods: 'GET, PUT, POST, OPTIONS, DELETE, PACTH',
 }));

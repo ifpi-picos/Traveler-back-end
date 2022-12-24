@@ -27,7 +27,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         return Announcements;
     }
 
-    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date }: AnnouncementDTO): Promise<AnnouncementDTO> {
+    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date, image }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
         const id = advertiserId;
         const user = await this.userRepository.selectOne({ id })
@@ -43,11 +43,12 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
             startRoute,
             endRoute,
             date,
+            image,
         });
         return addAnnouncement;
     }
 
-    async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
+    async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date, image }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
         await this.verifyAnnouncementExist(id);
 
         const updateAnnouncement = await this.announcementRepository.update({ 
@@ -59,6 +60,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
             startRoute,
             endRoute,
             date,
+            image,
         }, 
         id);
         return updateAnnouncement;
