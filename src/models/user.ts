@@ -22,5 +22,5 @@ export interface SecureUser {
 
 export interface FirebaseUrl {
   image: string | null;
-  name: string | null;
+  id: number | null;
 }

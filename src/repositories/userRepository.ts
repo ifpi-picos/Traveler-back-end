@@ -24,7 +24,7 @@ export class UserRepository implements IUserRepository {
       },
       select: {
         image: true,
-        name: true,
+        id: true,
       }
     });
 
