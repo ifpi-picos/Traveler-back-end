@@ -24,6 +24,7 @@ export class UserRepository implements IUserRepository {
       },
       select: {
         image: true,
+        name: true,
       }
     });
 
@@ -42,6 +43,7 @@ export class UserRepository implements IUserRepository {
         name: data.name,
         email: data.email,
         password: data.password,
+        active: data.active,
       },
       select: {
         id: true,
@@ -55,9 +57,12 @@ export class UserRepository implements IUserRepository {
   }
 
   async delete( id: number ): Promise<string> {
-    await this.repository.delete({
+    await this.repository.update({
       where:{
         id,
+      },
+      data: {
+        active: false,
       }
     })
     const msg = "Usuario deletado com sucesso!";

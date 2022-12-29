@@ -16,6 +16,7 @@ export class UserService implements IUserServiceInterface {
 
     async getById( id: number ): Promise<SecureUser> {
         const user = await this.verifyUserExist(id);
+        if (!this.userActive(user)) throw new Error("Usuário inativo.");
 
         const { email, name }: SecureUser = user;
 
@@ -28,10 +29,19 @@ export class UserService implements IUserServiceInterface {
             throw new Error ("Algum campo inválido");
         };
 
-        const userExists = await this.userRepository.selectOne({ email });
-        if (userExists) throw new Error("Usuário ja cadastrado.");
-
         const secretPassword = bcrypt.hashSync(password, 8);
+
+        const userExists = await this.userRepository.selectOne({ email });
+
+        if (userExists) { 
+            if (!this.userActive(userExists)) {
+                const id = userExists.id
+                await this.userRepository.update({ name, email, password: secretPassword, active: true }, id);
+                return "Bem vindo de volta " + email + "!";
+            } else {
+                throw new Error("Usuário ja cadastrado.");
+            }
+        }
 
         const msg = await this.userRepository.create({
           name,
@@ -43,7 +53,9 @@ export class UserService implements IUserServiceInterface {
     };
 
     async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
-        await this.verifyUserExist(id);
+        const userExists = await this.verifyUserExist(id);
+
+        if (!this.userActive(userExists)) throw new Error("Usuário inativo.");
 
         const user = await this.userRepository.update({ name, email, password }, id);
 
@@ -51,7 +63,9 @@ export class UserService implements IUserServiceInterface {
     };
 
     async deleteUser( id: number ): Promise<string> {
-        await this.verifyUserExist(id);
+        const user = await this.verifyUserExist(id);
+
+        if (!this.userActive(user)) throw new Error("Usuário já deletado.");
 
         const advertiserId = id;
         const announcementExist = await this.announcementRepository.selectOne({ advertiserId });
@@ -70,6 +84,11 @@ export class UserService implements IUserServiceInterface {
 
         return userExists;
     };
+
+    userActive(user: UserDTO): boolean | undefined {
+        const active = user.active;
+        return active;
+    }
 };
 
 // https://docs.google.com/forms/d/e/1FAIpQLSfOWybq0WTCMiwIbsxysWgIsFjkk4JyhpO2PCHkk8an6eYclA/viewform

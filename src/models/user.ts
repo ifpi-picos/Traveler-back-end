@@ -5,6 +5,7 @@ export default interface UserDTO {
   name: string;
   email: string;
   password: string;
+  active?: boolean;
 }
 
 export interface UserAuthInfo {
@@ -21,4 +22,5 @@ export interface SecureUser {
 
 export interface FirebaseUrl {
   image: string | null;
+  name: string | null;
 }

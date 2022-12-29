@@ -18,6 +18,8 @@ export class AuthService implements IAuthServiceInterface {
     const user = await userRepository.selectOne({ email });
 
     if (!user) throw Error("Usuário não encontrado!");
+    
+    this.userActive(user);
 
     const equalsPassword = bcrypt.compareSync(password,user.password);
 
@@ -27,5 +29,11 @@ export class AuthService implements IAuthServiceInterface {
     const token = this.getToken(user);
     const { name } = user;
     return { token, userData: { name, email } };
+  }
+
+  userActive(user: UserDTO): boolean {
+    const active = user.active;
+    if(!active) throw new Error("Usuário não encontrado.");
+    return active;
   }
 }

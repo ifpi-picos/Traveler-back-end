@@ -13,6 +13,7 @@ model User {
   name         String
   password     String
   image        String?
+  active       Boolean        @default(true)
   address      Address?
   announcement Announcement[]
 

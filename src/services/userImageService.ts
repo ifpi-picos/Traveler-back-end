@@ -1,7 +1,7 @@
 import admin from "firebase-admin";
 import serviceAccount from "../config/firebaseKey.json";
 import IUserImageServiceInterface from "./interfaces/userImageServiceInterface";
-import { SecureUser, FirebaseUrl } from "../models/user";
+import UserDTO, { SecureUser, FirebaseUrl } from "../models/user";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
 
 const bucketAddress = "traveler-image-ad.appspot.com";
@@ -30,7 +30,8 @@ export class UserImageService implements IUserImageServiceInterface {
 
     async uploadImage(image: Express.Multer.File , id: string): Promise<FirebaseUrl>{
 
-        await this.verifyUserExist(Number(id));
+        const user = await this.verifyUserExist(Number(id));
+        this.userActive(user);
 
         let firebaseUrl: string = "";
         const fileName =  id + "." + image.originalname.split(".").pop();
@@ -59,12 +60,18 @@ export class UserImageService implements IUserImageServiceInterface {
         return FirebaseUrl;
     };
 
-    async verifyUserExist(id: number): Promise<SecureUser | null> {
+    async verifyUserExist(id: number): Promise<UserDTO> {
         const userExists = await this.userRepository.selectOne({ id });
 
         if(!userExists) throw new Error("Usuário não encontrado.");
 
         return userExists;
+    }
+
+    
+    userActive(user: UserDTO): boolean {
+        if(!user.active) throw new Error("Usuário inativo.");
+        return user.active;
     }
 }
 

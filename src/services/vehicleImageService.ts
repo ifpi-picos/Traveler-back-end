@@ -1,7 +1,5 @@
 import admin from "firebase-admin";
-import serviceAccount from "../config/firebaseKey.json";
 import IVehicleImageServiceInterface from "./interfaces/vehicleImageServiceInterface";
-import { IAnnouncementRepository } from "../repositories/interfaces/announcementRepositoryInterface";
 
 const bucketAddress = "traveler-image-ad.appspot.com";
 const bucket = admin.storage().bucket();
@@ -28,14 +26,15 @@ export class VehicleImageService implements IVehicleImageServiceInterface {
             
             //tornar o arquivo publico
             await file.makePublic();
+            // obter a url publica
+            const firebaseUrl = `https://storage.googleapis.com/${bucketAddress}/${fileName}`;
+        
+            return firebaseUrl;
         } catch (error: any) {
             return error.message;
         }
   
-        // obter a url publica
-        const firebaseUrl = `https://storage.googleapis.com/${bucketAddress}/${fileName}`;
         
-        return firebaseUrl;
     };
 
 }

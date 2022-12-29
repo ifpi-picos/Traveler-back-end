@@ -143,8 +143,12 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
     const { id } = req.params;
 
     verifyIfNotANumber(id);
-    verifyIfNotANumber(price);
-    verifyIfNotANumber(advertiserId);
+    if(price){
+      price = verifyIfNotANumber(price);
+    }
+    if(advertiserId) {
+      advertiserId = verifyIfNotANumber(advertiserId);
+    }
 
     let dateConvertido;
     if (date) {
@@ -164,9 +168,6 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
 
       dateConvertido = new Date(`${year}/${month}/${day}`);
     }
-
-    price = Number(price);
-    advertiserId = Number(advertiserId);
 
     let image: string | undefined;
     if (Image) {

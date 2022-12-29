@@ -35,7 +35,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     return result;
   }
 
-  async update({ vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
+  async update({ vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date, image }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
     const result = await this.repository.update({
       where: { id },
       data: {
@@ -47,24 +47,9 @@ export class AnnouncementRepository implements IAnnouncementRepository {
         startRoute,
         endRoute,
         date,
+        image,
       },
     });
-    return result;
-  }
-
-  async updateImage(firebaseUrl: string, id: number): Promise<FirebaseUrl> {
-    const result = await this.repository.update({
-      data: {
-        image: firebaseUrl,
-      },
-      where: {
-        id,
-      },
-      select: {
-        image: true,
-      }
-    });
-
     return result;
   }
 
