@@ -48,11 +48,13 @@ export class UserImageService implements IUserImageServiceInterface {
 
         stream.end(image.buffer);
 
+        await file.save(image.buffer)
+
         //tornar o arquivo publico
         await file.makePublic();
 
         // obter a url publica
-        firebaseUrl = `https://storage.googleapis.com/${bucketAddress}/${fileName}`;
+        firebaseUrl = file.publicUrl();
         
 
         const FirebaseUrl = await this.userRepository.updateImage(firebaseUrl, Number(id));

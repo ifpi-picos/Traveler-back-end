@@ -24,10 +24,13 @@ export class VehicleImageService implements IVehicleImageServiceInterface {
     
             stream.end(image.buffer);
             
+            await file.save(image.buffer)
+
             //tornar o arquivo publico
             await file.makePublic();
+            
             // obter a url publica
-            const firebaseUrl = `https://storage.googleapis.com/${bucketAddress}/${fileName}`;
+            const firebaseUrl = file.publicUrl();
         
             return firebaseUrl;
         } catch (error: any) {
