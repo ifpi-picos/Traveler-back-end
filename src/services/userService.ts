@@ -18,9 +18,9 @@ export class UserService implements IUserServiceInterface {
         const user = await this.verifyUserExist(id);
         if (!this.userActive(user)) throw new Error("Usuário inativo.");
 
-        const { email, name }: SecureUser = user;
+        const { email, name, image  }: SecureUser = user;
 
-        return { id, email, name };
+        return { id, email, name, image };
     }
 
     async addUser({ name, email, password }: UserDTO): Promise<string> {

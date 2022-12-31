@@ -27,8 +27,8 @@ export class AuthService implements IAuthServiceInterface {
     
 
     const token = this.getToken(user);
-    const { name } = user;
-    return { token, userData: { name, email } };
+    const { name, id } = user;
+    return { token, userData: { name, email, id } };
   }
 
   userActive(user: UserDTO): boolean {

@@ -34,7 +34,7 @@ export class UserImageService implements IUserImageServiceInterface {
         this.userActive(user);
 
         let firebaseUrl: string = "";
-        const fileName =  id + "." + image.originalname.split(".").pop();
+        const fileName =  `${Date.now()}=`+ id + "." + image.originalname.split(".").pop();
         const file = bucket.file("user/" + fileName);
         const stream = file.createWriteStream({
             metadata: {
@@ -48,7 +48,7 @@ export class UserImageService implements IUserImageServiceInterface {
 
         stream.end(image.buffer);
 
-        await file.save(image.buffer)
+        await file.save(image.buffer);
 
         //tornar o arquivo publico
         await file.makePublic();

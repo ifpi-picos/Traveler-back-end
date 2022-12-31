@@ -11,16 +11,17 @@ export default interface UserDTO {
 export interface UserAuthInfo {
   name: string;
   email: string;
+  id: number;
 }
 
 export interface SecureUser {
   id?: number;
   name: string;
   email: string;
+  image?: string;
   address?: Address | null;
 }
 
 export interface FirebaseUrl {
   image: string | null;
-  id: number | null;
 }

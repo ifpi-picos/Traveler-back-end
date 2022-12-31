@@ -40,7 +40,7 @@ usersRouter.patch("/image/:id", multer.single("image"), async (req: Request, res
     const image = req.file ;
     const updateImageLink = await userImageService.uploadImage(image, id);
 
-    return res.status(200).json({ updateImageLink });
+    return res.status(200).json(updateImageLink);
   } catch (error: any) {
     return res.status(400).json(error.message);
   }
