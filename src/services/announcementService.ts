@@ -13,17 +13,10 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         this.userRepository = iUserRepository;
     }
     
-    async findALLAnnouncement(): Promise<AnnouncementDTO[]>{
-        const Announcements = await this.announcementRepository.findMany();
-        return Announcements;
-    }
-
-    async findAnnouncementByFilter({ dateConvertido, startRoute, endRoute }: filterAnnouncement): Promise<AnnouncementDTO[]>{
+    async findAnnouncement({dateConvertido, startRoute, endRoute}: filterAnnouncement): Promise<AnnouncementDTO[]>{
         if (!startRoute) startRoute = undefined;
         if (!endRoute) endRoute = undefined;
-
-        const Announcements = await this.announcementRepository.findByFilters({dateConvertido, endRoute, startRoute});
-
+        const Announcements = await this.announcementRepository.findMany({dateConvertido, endRoute, startRoute});
         return Announcements;
     }
 

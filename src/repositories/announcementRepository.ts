@@ -1,27 +1,20 @@
 import { IAnnouncementRepository } from "./interfaces/announcementRepositoryInterface";
 import { Prisma, PrismaClient } from "@prisma/client";
 import AnnouncementDTO, { filterAnnouncement } from "../models/annoucement";
-import { FirebaseUrl } from "../models/user";
 
 export class AnnouncementRepository implements IAnnouncementRepository {
     private repository: Prisma.AnnouncementDelegate<
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   > = new PrismaClient().announcement;
 
-  async findMany(): Promise<AnnouncementDTO[]>{
-    const result = await this.repository.findMany();
-    return result;
-  }
-
-  async findByFilters(data: filterAnnouncement): Promise<AnnouncementDTO[]> {
+  async findMany(data: filterAnnouncement): Promise<AnnouncementDTO[]>{
     const result = await this.repository.findMany({
       where: {
         date: data.dateConvertido,
         endRoute: data.endRoute,
         startRoute: data.startRoute,
       }
-    })
-
+    });
     return result;
   }
 

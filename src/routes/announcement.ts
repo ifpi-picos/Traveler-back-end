@@ -20,18 +20,7 @@ const announcementRouter = Router();
 
 announcementRouter.get("/", async (req: Request, res: Response) => {
   try {
-    const announcements = await announcementService.findALLAnnouncement();
-    return res.status(200).json(announcements);
-  } catch (error: any) {
-    return res.status(400).json(error.message);
-  }
-});
-
-announcementRouter.get("/filter", async (req: Request, res: Response) => {
-  try {
     const { date, endRoute, startRoute } = req.query;
-
-    if (!date && !endRoute && !startRoute) throw new Error("Nenhum filtro informado.");
 
     let dateConvertido: Date | null = null;
     if (date) {
@@ -47,11 +36,11 @@ announcementRouter.get("/filter", async (req: Request, res: Response) => {
       dateConvertido = new Date(`${year}/${month}/${day}`)
     }
 
-    const announcements = await announcementService.findAnnouncementByFilter({
+    const announcements = await announcementService.findAnnouncement({
       ...(dateConvertido && { dateConvertido }),
       ...(endRoute && { endRoute: endRoute as string }),
       ...(startRoute && { startRoute: startRoute as string }),
-    });
+    })
 
     return res.status(200).json(announcements);
   } catch (error: any) {
