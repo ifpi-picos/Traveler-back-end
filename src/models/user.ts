@@ -8,6 +8,14 @@ export default interface UserDTO {
   active?: boolean;
 }
 
+export interface UserUpdate {
+  id: number;
+  name?: string;
+  email?: string;
+  password?: string;
+  active?: boolean;
+}
+
 export interface UserAuthInfo {
   name: string;
   email: string;

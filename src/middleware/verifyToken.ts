@@ -31,12 +31,12 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
           auth: false, message: 'Fail to authentication.'
         });
       
-      };
-    };
+      }
+    }
   } catch (error) {
     return res.status(500).json({
       auth: false, message: 'Fail to authentication.'
     });
-  };
+  }
 
-};
+}

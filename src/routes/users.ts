@@ -62,12 +62,12 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
 
 usersRouter.put("/:id", async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, newPassword } = req.body;
     const { id } = req.params;
 
     verifyIfNotANumber(id);
 
-    const user = await userService.updateUser({ name, email, password } as UserDTO, Number(id));
+    const user = await userService.updateUser({ name, email, password } as UserDTO, newPassword, Number(id));
 
     return res.status(200).json(user);
 

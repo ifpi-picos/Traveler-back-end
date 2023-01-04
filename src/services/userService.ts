@@ -27,7 +27,7 @@ export class UserService implements IUserServiceInterface {
 
         if (email.indexOf("@") === -1 || !name || !email || password.length < 8 || password.length > 20 ) {
             throw new Error ("Algum campo inválido");
-        };
+        }
 
         const secretPassword = bcrypt.hashSync(password, 8);
 
@@ -36,7 +36,7 @@ export class UserService implements IUserServiceInterface {
         if (userExists) { 
             if (!this.userActive(userExists)) {
                 const id = userExists.id
-                await this.userRepository.update({ name, email, password: secretPassword, active: true }, id);
+                await this.userRepository.update({ name, email, password: secretPassword, active: true, id });
                 return "Bem vindo de volta " + email + "!";
             } else {
                 throw new Error("Usuário ja cadastrado.");
@@ -50,17 +50,31 @@ export class UserService implements IUserServiceInterface {
         } as UserDTO);
         
         return msg;
-    };
+    }
 
-    async updateUser({ name, email, password }: UserDTO, id: number): Promise<SecureUser> {
+    async updateUser({ name, email, password }: UserDTO, newPassword: string, id: number): Promise<SecureUser> {
         const userExists = await this.verifyUserExist(id);
 
         if (!this.userActive(userExists)) throw new Error("Usuário inativo.");
 
-        const user = await this.userRepository.update({ name, email, password }, id);
+        let secretPassword: string | null = null;
+        if(newPassword){
+            if (newPassword.length < 8 || newPassword.length > 20 ) {
+                throw new Error ("A nova senha precisa ter entre 8 a 20 caracteres.");
+            }
+
+            if(!bcrypt.compareSync(password, userExists.password)) throw new Error("Senha atual incorreta.");
+            secretPassword = bcrypt.hashSync(newPassword, 8);
+        }
+
+        if(email) {
+            if(email.indexOf("@") === -1) throw new Error("E-mail incorreto.");
+        }
+
+        const user = await this.userRepository.update({ id, ...(name && { name }), ...(email && { email }), ...(secretPassword && { password: secretPassword as string }) });
 
         return user;
-    };
+        }
 
     async deleteUser( id: number ): Promise<string> {
         const user = await this.verifyUserExist(id);
@@ -75,7 +89,7 @@ export class UserService implements IUserServiceInterface {
         const msg = await this.userRepository.delete( id );
 
         return msg;
-    };
+    }
 
     async verifyUserExist(id: number): Promise<UserDTO> {
         const userExists = await this.userRepository.selectOne({ id });
@@ -83,12 +97,12 @@ export class UserService implements IUserServiceInterface {
         if (!userExists) throw new Error("Usuário não encontrado.");
 
         return userExists;
-    };
+    }
 
     userActive(user: UserDTO): boolean | undefined {
         const active = user.active;
         return active;
     }
-};
+}
 
 // https://docs.google.com/forms/d/e/1FAIpQLSfOWybq0WTCMiwIbsxysWgIsFjkk4JyhpO2PCHkk8an6eYclA/viewform

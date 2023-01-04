@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { Request, Response, Router } from "express";
 import { Announcement } from "@prisma/client";
 import { AnnouncementService, VehicleImageService } from "../services";
