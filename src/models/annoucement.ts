@@ -14,4 +14,5 @@ export interface filterAnnouncement {
   endRoute?: string;
   startRoute?: string;
   dateConvertido?: Date;
+  advertiserId?: number;
 }

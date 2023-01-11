@@ -21,6 +21,7 @@ const announcementRouter = Router();
 announcementRouter.get("/", async (req: Request, res: Response) => {
   try {
     const { date, endRoute, startRoute } = req.query;
+    let userId = req.query.userId;
 
     let dateConvertido: Date | null = null;
     if (date) {
@@ -36,10 +37,13 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
       dateConvertido = new Date(`${year}/${month}/${day}`)
     }
 
+    const advertiserId = verifyIfNotANumber(userId as string);
+
     const announcements = await announcementService.findAnnouncement({
       ...(dateConvertido && { dateConvertido }),
       ...(endRoute && { endRoute: endRoute as string }),
       ...(startRoute && { startRoute: startRoute as string }),
+      ...(advertiserId && { advertiserId }),
     })
 
     return res.status(200).json(announcements);

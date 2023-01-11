@@ -13,6 +13,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
         date: data.dateConvertido,
         endRoute: data.endRoute,
         startRoute: data.startRoute,
+        advertiserId: data.advertiserId,
       }
     });
     return result;
