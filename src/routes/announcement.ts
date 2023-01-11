@@ -37,7 +37,10 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
       dateConvertido = new Date(`${year}/${month}/${day}`)
     }
 
-    const advertiserId = verifyIfNotANumber(userId as string);
+    let advertiserId: number | null= null;
+    if(userId) {
+      advertiserId = verifyIfNotANumber(userId as string);
+    }
 
     const announcements = await announcementService.findAnnouncement({
       ...(dateConvertido && { dateConvertido }),
