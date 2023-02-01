@@ -1,5 +1,7 @@
 import IUserServiceInterface from "./interfaces/userServiceInterface";
 import bcrypt from "bcryptjs";
+import * as nodemailer from "nodemailer";
+import crypto from "crypto";
 import UserDTO, { SecureUser } from "../models/user";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
 import { IAnnouncementRepository } from "../repositories/interfaces/announcementRepositoryInterface";
@@ -89,6 +91,45 @@ export class UserService implements IUserServiceInterface {
         const msg = await this.userRepository.delete( id );
 
         return msg;
+    }
+
+    async forgotPasswordUploadEmail (email: string): Promise<string> {
+        const user = await this.userRepository.selectOne({ email });
+
+        if (!user || !this.userActive(user)) throw new Error ("Usuário não encontrado.")
+
+        const transport = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+            },
+        });
+
+        const newPassword = crypto.randomBytes(4).toString("hex");
+
+        await transport.sendMail({
+            from: "Traveler <wesleyvc2110@gmail.com>",
+            to: email,
+            subject: "Recuperação de senha.",
+            html: `<h3>Olá, tudo bem ${user.name}?</h3> 
+            <p>Se você esqueceu sua senha do Traveler e tentou recuperar sua conta, aqui está sua nova senha: <b>${newPassword}<b/>.</p>
+            <br/>
+            <a href='https://traveler-io.netlify.app/'>Traveler<a/>
+            <br/>
+            <p><b>DICA:</b></p>
+            <p>Você poderá redefiní-la no Traveler em seu perfil!<p/>
+            <br/>
+            <br/>
+            Atenciosamente equipe Traveler.`
+        });
+        const passwordHash = bcrypt.hashSync(newPassword, 8);
+            
+        await this.userRepository.update({ id: user.id, password: passwordHash });
+
+        return "Nova senha foi enviada para seu e-mail."
     }
 
     async verifyUserExist(id: number): Promise<UserDTO> {

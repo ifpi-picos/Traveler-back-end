@@ -90,4 +90,17 @@ usersRouter.delete("/:id", async (req: Request, res: Response) => {
   }
 
 });
+
+usersRouter.patch("/forgotPassword", async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    const msg = await userService.forgotPasswordUploadEmail(email);
+    
+    return res.status(200).json(msg);
+  } catch (error: any) {
+    return res.status(400).json(error.message);
+  }
+})
+
 export default usersRouter;

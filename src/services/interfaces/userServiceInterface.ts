@@ -7,5 +7,6 @@ export default interface IUserServiceInterface {
     updateUser({ name, email, password }: UserDTO, newPassword: string, id: number): Promise<SecureUser>;
     deleteUser( id: number ): Promise<string>;
     verifyUserExist(id: number): Promise<SecureUser>;
+    forgotPasswordUploadEmail (email: string): Promise<string>;
     userActive(user: UserDTO): boolean | undefined;
 }
