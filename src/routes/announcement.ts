@@ -20,7 +20,7 @@ const announcementRouter = Router();
 
 announcementRouter.get("/", async (req: Request, res: Response) => {
   try {
-    const { date, endRoute, startRoute } = req.query;
+    const { date, endCity, startCity } = req.query;
     let userId = req.query.userId;
 
     let convertedDate: Date | null = null;
@@ -44,10 +44,10 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
 
     const announcements = await announcementService.findAnnouncement({
       ...(convertedDate && { convertedDate }),
-      ...(endRoute && { endRoute: endRoute as string }),
-      ...(startRoute && { startRoute: startRoute as string }),
+      ...(endCity && { endCity: endCity as string }),
+      ...(startCity && { startCity: startCity as string }),
       ...(advertiserId && { advertiserId }),
-    })
+    });
 
     return res.status(200).json(announcements);
   } catch (error: any) {
@@ -65,8 +65,16 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       price,
       socialLink,
       advertiserId,
-      startRoute,
-      endRoute,
+      endDistrict,
+      endStreet,
+      endCity,
+      endState,
+      endCep,
+      startDistrict,
+      startStreet,
+      startCity,
+      startState,
+      startCep,
       date,
     } = req.body;
 
@@ -76,9 +84,19 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       !licensePlate ||
       !vehicle ||
       !date ||
-      !endRoute ||
-      !startRoute ||
-      !Image
+      !endDistrict ||
+      !endStreet ||
+      !endCity ||
+      !endState ||
+      !endCep ||
+      !startDistrict ||
+      !startStreet ||
+      !startCity ||
+      !startState ||
+      !startCep ||
+      !Image ||
+      startCep.length != 8 ||
+      endCep.length != 8
     ) {
       throw new Error("Algum campo inválido");
     }
@@ -113,8 +131,16 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       socialLink,
       advertiserId,
       date: dateConvertido,
-      startRoute,
-      endRoute,
+      endDistrict,
+      endStreet,
+      endCity,
+      endState,
+      endCep,
+      startDistrict,
+      startStreet,
+      startCity,
+      startState,
+      startCep,
       image
     } as AnnouncementDTO);
 
@@ -133,8 +159,16 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
       price,
       socialLink,
       advertiserId,
-      startRoute,
-      endRoute,
+      endDistrict,
+      endStreet,
+      endCity,
+      endState,
+      endCep,
+      startDistrict,
+      startStreet,
+      startCity,
+      startState,
+      startCep,
       date,
     } = req.body;
     const { id } = req.params;
@@ -179,8 +213,16 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
         socialLink,
         date: dateConvertido,
         advertiserId,
-        startRoute,
-        endRoute,
+        endDistrict,
+        endStreet,
+        endCity,
+        endState,
+        endCep,
+        startDistrict,
+        startStreet,
+        startCity,
+        startState,
+        startCep,
         image,
       } as Announcement,
       Number(id)

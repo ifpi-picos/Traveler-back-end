@@ -13,15 +13,15 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         this.userRepository = iUserRepository;
     }
     
-    async findAnnouncement({convertedDate, startRoute, endRoute, advertiserId}: filterAnnouncement): Promise<AnnouncementDTO[]>{
-        if (!startRoute) startRoute = undefined;
-        if (!endRoute) endRoute = undefined;
+    async findAnnouncement({convertedDate, startCity, endCity, advertiserId}: filterAnnouncement): Promise<AnnouncementDTO[]>{
+        if (!startCity) startCity = undefined;
+        if (!endCity) endCity = undefined;
         
-        const Announcements = await this.announcementRepository.findMany({convertedDate, endRoute, startRoute, advertiserId});
+        const Announcements = await this.announcementRepository.findMany({convertedDate, endCity, startCity, advertiserId});
         return Announcements;
     }
 
-    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date, image }: AnnouncementDTO): Promise<AnnouncementDTO> {
+    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, endDistrict, endStreet, endCity, endState, endCep, startDistrict, startStreet, startCity, startState, startCep, date, image }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
         const id = advertiserId;
         const user = await this.userRepository.selectOne({ id })
@@ -34,15 +34,41 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
             price, 
             socialLink, 
             advertiserId,
-            startRoute,
-            endRoute,
+            endDistrict,
+            endStreet,
+            endCity,
+            endState,
+            endCep,
+            startDistrict,
+            startStreet,
+            startCity,
+            startState,
+            startCep,
             date,
             image,
         });
         return addAnnouncement;
     }
 
-    async updateAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, startRoute, endRoute, date, image }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
+    async updateAnnouncement({
+        licensePlate,
+        vehicle,
+        price,
+        socialLink,
+        advertiserId,
+        endDistrict,
+        endStreet,
+        endCity,
+        endState,
+        endCep,
+        startDistrict,
+        startStreet,
+        startCity,
+        startState,
+        startCep,
+        date,
+        image
+    }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
         await this.verifyAnnouncementExist(id);
 
         const updateAnnouncement = await this.announcementRepository.update({ 
@@ -51,8 +77,16 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
             price, 
             socialLink, 
             advertiserId,
-            startRoute,
-            endRoute,
+            endDistrict,
+            endStreet,
+            endCity,
+            endState,
+            endCep,
+            startDistrict,
+            startStreet,
+            startCity,
+            startState,
+            startCep,
             date,
             image,
         }, 

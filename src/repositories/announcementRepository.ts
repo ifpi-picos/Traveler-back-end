@@ -11,8 +11,8 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     const result = await this.repository.findMany({
       where: {
         date: data.convertedDate,
-        endRoute: data.endRoute,
-        startRoute: data.startRoute,
+        endCity: data.endCity,
+        startCity: data.startCity,
         advertiserId: data.advertiserId,
       }
     });
@@ -29,7 +29,24 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     return result;
   }
 
-  async update({ vehicle, licensePlate, price, socialLink, advertiserId, startRoute, endRoute, date, image }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
+  async update({ vehicle,
+    licensePlate,
+    price,
+    socialLink,
+    advertiserId,
+    endDistrict,
+    endStreet,
+    endCity,
+    endState,
+    endCep,
+    startDistrict,
+    startStreet,
+    startCity,
+    startState,
+    startCep,
+    date,
+    image
+  }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
     const result = await this.repository.update({
       where: { id },
       data: {
@@ -38,8 +55,16 @@ export class AnnouncementRepository implements IAnnouncementRepository {
         price,
         socialLink,
         advertiserId,
-        startRoute,
-        endRoute,
+        endDistrict,
+        endStreet,
+        endCity,
+        endState,
+        endCep,
+        startDistrict,
+        startStreet,
+        startCity,
+        startState,
+        startCep,
         date,
         image,
       },

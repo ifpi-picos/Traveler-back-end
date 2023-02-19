@@ -16,9 +16,9 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction ) {
       });
     }
     else {
-      // const [, token] = authorization.split(" ");// localsorage quando vem do insomnia
+      const [, token] = authorization.split(" ");// localsorage quando vem do insomnia
 
-      const token = authorization  //localstorage quando vem do frontend
+      // const token = authorization  //localstorage quando vem do frontend
       const payload = jwt.verify(token, `${SECRET}`);
 
       if (typeof payload != 'string') {
