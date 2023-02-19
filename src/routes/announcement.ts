@@ -23,7 +23,7 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
     const { date, endRoute, startRoute } = req.query;
     let userId = req.query.userId;
 
-    let dateConvertido: Date | null = null;
+    let convertedDate: Date | null = null;
     if (date) {
       const stringDate = String(date);
       const smashDate = stringDate.split("-");
@@ -34,7 +34,7 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
 
       if (day > 31 || month > 12) throw new Error("Informe uma data válida.");
 
-      dateConvertido = new Date(`${year}/${month}/${day}`)
+      convertedDate = new Date(`${year}/${month}/${day}`);
     }
 
     let advertiserId: number | null= null;
@@ -43,7 +43,7 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
     }
 
     const announcements = await announcementService.findAnnouncement({
-      ...(dateConvertido && { dateConvertido }),
+      ...(convertedDate && { convertedDate }),
       ...(endRoute && { endRoute: endRoute as string }),
       ...(startRoute && { startRoute: startRoute as string }),
       ...(advertiserId && { advertiserId }),

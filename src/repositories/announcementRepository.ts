@@ -10,7 +10,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
   async findMany(data: filterAnnouncement): Promise<AnnouncementDTO[]>{
     const result = await this.repository.findMany({
       where: {
-        date: data.dateConvertido,
+        date: data.convertedDate,
         endRoute: data.endRoute,
         startRoute: data.startRoute,
         advertiserId: data.advertiserId,

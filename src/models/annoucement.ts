@@ -13,6 +13,6 @@ export default interface AnnouncementDTO {
 export interface filterAnnouncement {
   endRoute?: string;
   startRoute?: string;
-  dateConvertido?: Date;
+  convertedDate?: Date;
   advertiserId?: number;
 }

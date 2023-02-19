@@ -25,7 +25,6 @@ export class AuthService implements IAuthServiceInterface {
 
     if (!equalsPassword) throw Error("Senha incorreta!");
     
-
     const token = this.getToken(user);
     const { name, id } = user;
     return { token, userData: { name, email, id } };
