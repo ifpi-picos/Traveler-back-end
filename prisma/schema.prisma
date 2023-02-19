@@ -28,10 +28,18 @@ model Announcement {
   price        Float
   socialLink   String
   date         DateTime @db.Date
-  endRoute     String
-  startRoute   String
-  image        String
-  advertiser   User     @relation(fields: [advertiserId], references: [id])
+  endDistrict   String
+  endStreet     String
+  endCity       String
+  endState      String
+  endCep        String
+  startDistrict String
+  startStreet   String
+  startCity     String
+  startState    String
+  startCep      String
+  image         String
+  advertiser    User     @relation(fields: [advertiserId], references: [id])
 
   @@map("announcements")
 }
