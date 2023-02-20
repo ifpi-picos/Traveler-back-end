@@ -8,12 +8,14 @@ export default interface AnnouncementDTO {
   endStreet:     string;
   endCity:       string;
   endState:      string;
-  endCep:        string;
+  endZipCode:        string;
+  endReferencePoint?: string | null;
   startDistrict: string;
   startStreet:   string;
   startCity:     string;
   startState:    string;
-  startCep:      string;
+  startZipCode:      string;
+  startReferencePoint?: string | null;
   date:          Date;
   image:         string;
 }

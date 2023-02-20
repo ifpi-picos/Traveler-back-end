@@ -21,25 +21,27 @@ model User {
 }
 
 model Announcement {
-  id           Int      @id @default(autoincrement())
-  advertiserId Int
-  vehicle      String
-  licensePlate String
-  price        Float
-  socialLink   String
-  date         DateTime @db.Date
-  endDistrict   String
-  endStreet     String
-  endCity       String
-  endState      String
-  endCep        String
-  startDistrict String
-  startStreet   String
-  startCity     String
-  startState    String
-  startCep      String
-  image         String
-  advertiser    User     @relation(fields: [advertiserId], references: [id])
+  id                  Int      @id @default(autoincrement())
+  advertiserId        Int
+  vehicle             String
+  licensePlate        String
+  price               Float
+  socialLink          String
+  date                DateTime @db.Date
+  image               String
+  endCity             String
+  endDistrict         String
+  endState            String
+  endStreet           String
+  endReferencePoint   String?
+  endZipCode          String
+  startCity           String
+  startDistrict       String
+  startState          String
+  startStreet         String
+  startReferencePoint String?
+  startZipCode        String
+  advertiser          User     @relation(fields: [advertiserId], references: [id])
 
   @@map("announcements")
 }
