@@ -1,21 +1,21 @@
 import { Request, Response, Router } from "express";
 import { AddressService } from "../services";
 import IAddressServiceInterface from "../services/interfaces/addressServiceInterface";
-import { AddressRepository } from "../repositories";
+import { AddressRepository, UserRepository } from "../repositories";
 import AddressDTO from "../models/address";
 import { verifyIfNotANumber } from "../middleware";
 
-const addressService: IAddressServiceInterface = new AddressService(new AddressRepository());
+const addressService: IAddressServiceInterface = new AddressService(new AddressRepository(), new UserRepository());
 const addressRouter = Router();
 
 
-addressRouter.get("/:id", async (req: Request, res: Response) => {
+addressRouter.get("/user/:userId", async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
 
-    verifyIfNotANumber(id);
+    verifyIfNotANumber(userId);
 
-    const address = await addressService.getById(Number(id));
+    const address = await addressService.getByUserId(Number(userId));
     return res.status(200).json(address);
 
   } catch (error: any) {
@@ -24,25 +24,24 @@ addressRouter.get("/:id", async (req: Request, res: Response) => {
 
 });
 
-addressRouter.post("/:id", async (req: Request, res: Response) => {
+addressRouter.post("/user/:userId", async (req: Request, res: Response) => {
   try {
-    let { street, state, district, city } = req.body;
-    const { id } = req.params;
+    const { street, state, district, city, zipCode, referencePoint } = req.body;
+    const { userId } = req.params;
 
-    if ( !city || !state || !street || !street ) {
-      throw new Error ("Algum campo inválido");
-    }
-
-    verifyIfNotANumber(id);
+    verifyIfNotANumber(userId);
 
 
-    const address = await addressService.addAddress({
+    const address = await addressService.addUserAddress({
       street, 
       state, 
       district, 
-      city, 
-      id: Number(id),
-    } as AddressDTO);
+      city,
+      referencePoint,
+      zipCode
+    } as AddressDTO,
+    Number(userId),
+    );
 
     return res.status(201).json(address);
 
@@ -51,12 +50,12 @@ addressRouter.post("/:id", async (req: Request, res: Response) => {
   }
 });
 
-addressRouter.put("/:id", async (req: Request, res: Response) => {
+addressRouter.put("/user/:userId", async (req: Request, res: Response) => {
   try {
-    let { street, state, district, city } = req.body;
-    const { id } = req.params;
+    const { street, state, district, city } = req.body;
+    const { userId } = req.params;
 
-    await verifyIfNotANumber(id);
+    verifyIfNotANumber(userId);
 
     const address = await addressService.updateAddress({ 
       street, 
@@ -64,7 +63,7 @@ addressRouter.put("/:id", async (req: Request, res: Response) => {
       district, 
       city,
     } as AddressDTO,
-    Number(id));
+    Number(userId));
 
     return res.status(200).json(address);
 
@@ -73,13 +72,13 @@ addressRouter.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-addressRouter.delete("/:id", async (req: Request, res: Response) => {
+addressRouter.delete("/:userId", async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
 
-    verifyIfNotANumber(id);
+    verifyIfNotANumber(userId);
 
-    const msg: string = await addressService.deleteAddress(parseInt(id));
+    const msg: string = await addressService.deleteAddress(parseInt(userId));
     return res.status(200).json(msg);
 
   } catch (error: any) {

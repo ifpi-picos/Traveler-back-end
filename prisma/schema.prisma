@@ -14,7 +14,8 @@ model User {
   password                String
   image                   String?
   active                  Boolean        @default(true)
-  address                 Address?
+  address                 Address?       @relation(fields: [addressId], references: [id])
+  addressId               Int?           @unique
   announcement            Announcement[]
   assessmentReted         Assessment[] @relation("rated")
   assessmentReter         Assessment[] @relation("rater")
@@ -46,14 +47,14 @@ model Announcement {
 }
 
 model Address {
-  id                     Int    @id @unique
+  id                     Int    @id @unique @default(autoincrement())
   zipCode                String?
   referencePoint         String?
   district               String?
   street                 String?
   city                   String?
   state                  String?
-  user                   User?   @relation(fields: [id], references: [id])
+  user                   User?
   announcementStart      Announcement? @relation("addressOrigin")
   announcementEnd        Announcement? @relation("addressDestination")
 

@@ -43,6 +43,7 @@ export class UserRepository implements IUserRepository {
         email: data.email,
         password: data.password,
         active: data.active,
+        addressId: data.addressId,
       },
       select: {
         id: true,

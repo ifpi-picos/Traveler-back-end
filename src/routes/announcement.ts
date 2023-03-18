@@ -144,7 +144,7 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       startZipCode,
       startReferencePoint,
       image
-    } as AnnouncementDTO);
+    } as unknown as AnnouncementDTO);
 
     return res.status(201).json(announcement);
   } catch (error: any) {
@@ -161,18 +161,6 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
       price,
       socialLink,
       advertiserId,
-      endDistrict,
-      endStreet,
-      endCity,
-      endState,
-      endZipCode,
-      endReferencePoint,
-      startDistrict,
-      startStreet,
-      startCity,
-      startState,
-      startZipCode,
-      startReferencePoint,
       date,
     } = req.body;
     const { id } = req.params;
@@ -217,20 +205,8 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
         socialLink,
         date: dateConvertido,
         advertiserId,
-        endDistrict,
-        endStreet,
-        endCity,
-        endState,
-        endZipCode,
-        endReferencePoint,
-        startDistrict,
-        startStreet,
-        startCity,
-        startState,
-        startZipCode,
-        startReferencePoint,
         image,
-      } as Announcement,
+      } as AnnouncementDTO,
       Number(id)
     );
 

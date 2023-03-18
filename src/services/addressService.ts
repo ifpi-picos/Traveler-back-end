@@ -2,46 +2,63 @@ import IAddressServiceInterface from "./interfaces/addressServiceInterface";
 import AddressDTO from "../models/address";
 import { IAddressRepository } from "../repositories/interfaces/addressRepositoryInterface";
 import { Address } from "@prisma/client";
+import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
 
 
 export class AddressService implements IAddressServiceInterface {
     private addressRepository: IAddressRepository;
+    private userRepository: IUserRepository;
 
-    constructor(iAddressRepository: IAddressRepository) {
+    constructor(iAddressRepository: IAddressRepository, iUserRepository: IUserRepository) {
         this.addressRepository = iAddressRepository;
+        this.userRepository = iUserRepository;
     }
 
-    async getById( id: number ): Promise<AddressDTO> {
-        const address = await this.addressRepository.selectOne({ id });
+    async getByUserId( userId: number ): Promise<AddressDTO> {
+        const user = await this.userRepository.selectOne({ id: userId });
 
-        if (!address) throw new Error("Nenhum endereço cadastrado!");
+        if (!user) throw new Error("Nenhum usuário encontrado");
+        if (!user.addressId) throw new Error("Usuário não possui endereço cadastrado.");
+
+        const address = await this.addressRepository.selectOne({id: user.addressId});
+
+        if (!address) throw new Error("Endereço não encontrado.");
 
         return address;
     }
 
-    async addAddress({ city, district, state, street, id }: AddressDTO): Promise<AddressDTO> {
+    async addUserAddress({ city, district, state, street, referencePoint, zipCode }: AddressDTO, userId: number): Promise<AddressDTO> {
 
-        if ( !city || !district || !street || !id || !state) {
+        if ( !city || !userId || !state) {
             throw new Error ("Preencha todos os campos obrigatórios.");
         }
 
-        const addressExists = await this.addressRepository.selectOne({ id });
-        if (addressExists) throw new Error("Usuário ja possui um Endereço.");
+        const user = await this.userRepository.selectOne({ id: userId });
+        if(user){
+            if (user.addressId) throw new Error("Usuário já possui um Endereço.");
+        } else throw new Error("Usuário não encontrado.");
 
         const address = await this.addressRepository.create({
           city,
           district,
           state,
           street,
-          id,
+          referencePoint,
+          zipCode,
         } as Address);
+
+        await this.userRepository.update({addressId: address.id, id: userId});
         
         return address;
     }
 
-    async updateAddress({ city, district, state, street }: AddressDTO, id: number): Promise<AddressDTO> {
+    async updateAddress({ city, district, state, street, referencePoint, zipCode }: AddressDTO, userId: number): Promise<AddressDTO> {
 
-        const address = await this.addressRepository.update({ city, district, state, street }, id)
+        const user = await this.userRepository.selectOne({id: userId});
+        if(!user) throw new Error ('Usuário não encontrado.');
+        if (!user.addressId) throw new Error("Usuário não possui endereço cadastrado.");
+ 
+        const address = await this.addressRepository.update({ city, district, state, street, referencePoint, zipCode }, user.addressId);
 
         return address;
     }

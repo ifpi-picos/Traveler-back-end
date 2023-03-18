@@ -11,8 +11,6 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     const result = await this.repository.findMany({
       where: {
         date: data.convertedDate,
-        endCity: data.endCity,
-        startCity: data.startCity,
         advertiserId: data.advertiserId,
       }
     });
@@ -34,18 +32,6 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     price,
     socialLink,
     advertiserId,
-    endDistrict,
-    endStreet,
-    endCity,
-    endState,
-    endZipCode,
-    endReferencePoint,
-    startDistrict,
-    startStreet,
-    startCity,
-    startState,
-    startZipCode,
-    startReferencePoint,
     date,
     image
   }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
@@ -57,18 +43,6 @@ export class AnnouncementRepository implements IAnnouncementRepository {
         price,
         socialLink,
         advertiserId,
-        endDistrict,
-        endStreet,
-        endCity,
-        endState,
-        endZipCode,
-        endReferencePoint,
-        startDistrict,
-        startStreet,
-        startCity,
-        startState,
-        startZipCode,
-        startReferencePoint,
         date,
         image,
       },

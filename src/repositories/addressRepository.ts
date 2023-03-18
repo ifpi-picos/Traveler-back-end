@@ -8,7 +8,10 @@ export class AddressRepository implements IAddressRepository {
   > = new PrismaClient().address;
 
   async create(data: Address): Promise<Address> {
-    const result = await this.repository.create({ data: data as Address });
+    console.log('data:', data);
+    const result = await this.repository.create({ data });
+    console.log('result:', result);
+
 
     return result;
   }

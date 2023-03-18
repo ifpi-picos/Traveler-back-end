@@ -13,6 +13,7 @@ export interface UserUpdate {
   name?: string;
   email?: string;
   password?: string;
+  addressId?: number;
   active?: boolean;
 }
 

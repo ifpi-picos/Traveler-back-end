@@ -21,7 +21,7 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         return Announcements;
     }
 
-    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, endDistrict, endStreet, endCity, endState, endZipCode, endReferencePoint, startDistrict, startStreet, startCity, startState, startZipCode, startReferencePoint, date, image }: AnnouncementDTO): Promise<AnnouncementDTO> {
+    async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, date, image, vacancy, destinationAddressId, originAddressId }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
         const id = advertiserId;
         const user = await this.userRepository.selectOne({ id })
@@ -34,20 +34,11 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
             price, 
             socialLink, 
             advertiserId,
-            endDistrict,
-            endStreet,
-            endCity,
-            endState,
-            endZipCode,
-            endReferencePoint,
-            startDistrict,
-            startStreet,
-            startCity,
-            startState,
-            startZipCode,
-            startReferencePoint,
             date,
             image,
+            vacancy,
+            originAddressId,
+            destinationAddressId,
         });
         return addAnnouncement;
     }
@@ -58,43 +49,22 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         price,
         socialLink,
         advertiserId,
-        endDistrict,
-        endStreet,
-        endCity,
-        endState,
-        endZipCode,
-        endReferencePoint,
-        startDistrict,
-        startStreet,
-        startCity,
-        startState,
-        startZipCode,
-        startReferencePoint,
         date,
         image
     }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
         await this.verifyAnnouncementExist(id);
 
-        const updateAnnouncement = await this.announcementRepository.update({ 
-            licensePlate, 
-            vehicle, 
-            price, 
-            socialLink, 
+        const updateAnnouncement = await this.announcementRepository.update({
+            licensePlate,
+            vehicle,
+            price,
+            socialLink,
             advertiserId,
-            endDistrict,
-            endStreet,
-            endCity,
-            endState,
-            endZipCode,
-            endReferencePoint,
-            startDistrict,
-            startStreet,
-            startCity,
-            startState,
-            startZipCode,
-            startReferencePoint,
             date,
             image,
+            vacancy: 0,
+            originAddressId: 0,
+            destinationAddressId: 0
         }, 
         id);
         return updateAnnouncement;

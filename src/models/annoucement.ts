@@ -4,19 +4,10 @@ export default interface AnnouncementDTO {
   price:         number;
   socialLink:    string;
   advertiserId:  number;
-  endDistrict:   string;
-  endStreet:     string;
-  endCity:       string;
-  endState:      string;
-  endZipCode:        string;
-  endReferencePoint?: string | null;
-  startDistrict: string;
-  startStreet:   string;
-  startCity:     string;
-  startState:    string;
-  startZipCode:      string;
-  startReferencePoint?: string | null;
+  vacancy:       number;
   date:          Date;
+  originAddressId: number;
+  destinationAddressId: number;
   image:         string;
 }
 
