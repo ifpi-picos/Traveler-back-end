@@ -8,51 +8,65 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  email        String         @unique
-  name         String
-  password     String
-  image        String?
-  active       Boolean        @default(true)
-  address      Address?
-  announcement Announcement[]
+  id                      Int            @id @default(autoincrement())
+  email                   String         @unique
+  name                    String
+  password                String
+  image                   String?
+  active                  Boolean        @default(true)
+  address                 Address?
+  announcement            Announcement[]
+  assessmentReted         Assessment[] @relation("rated")
+  assessmentReter         Assessment[] @relation("rater")
 
   @@map("users")
 }
 
 model Announcement {
-  id                  Int      @id @default(autoincrement())
-  advertiserId        Int
-  vehicle             String
-  licensePlate        String
-  price               Float
-  socialLink          String
-  date                DateTime @db.Date
-  image               String
-  endCity             String
-  endDistrict         String
-  endState            String
-  endStreet           String
-  startCity           String
-  startDistrict       String
-  startState          String
-  startStreet         String
-  endReferencePoint   String?
-  endZipCode          String
-  startReferencePoint String?
-  startZipCode        String
-  advertiser          User     @relation(fields: [advertiserId], references: [id])
+  id                      Int      @id @default(autoincrement())
+  vacancy                 Int
+  vehicle                 String
+  licensePlate            String
+  socialLink              String
+  image                   String
+  price                   Float
+  date                    DateTime @db.Date
+  active                  Boolean  @default(true)
+
+  originAddress           Address @relation(fields: [originAddressId], references: [id], name: "addressOrigin")
+  originAddressId         Int     @unique
+
+  destinationAddress      Address @relation(fields: [destinationAddressId], references: [id], name: "addressDestination")
+  destinationAddressId    Int     @unique
+
+  advertiser              User    @relation(fields: [advertiserId], references: [id])
+  advertiserId            Int
 
   @@map("announcements")
 }
 
 model Address {
-  id       Int    @id @unique
-  district String
-  street   String
-  city     String
-  state    String
-  user     User   @relation(fields: [id], references: [id])
+  id                     Int    @id @unique
+  zipCode                String?
+  referencePoint         String?
+  district               String?
+  street                 String?
+  city                   String?
+  state                  String?
+  user                   User?   @relation(fields: [id], references: [id])
+  announcementStart      Announcement? @relation("addressOrigin")
+  announcementEnd        Announcement? @relation("addressDestination")
 
   @@map("addresses")
+}
+
+model Assessment {
+  description       String?
+  stars             Float
+
+  rated             User    @relation(fields: [ratedId], references: [id], name: "rated")
+  ratedId           Int       @id @unique
+
+  rater             User    @relation(fields: [raterId], references: [id], name: "rater")
+  raterId           Int
 }

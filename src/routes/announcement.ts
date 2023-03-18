@@ -69,12 +69,14 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       endStreet,
       endCity,
       endState,
-      endCep,
+      endZipCode,
+      endReferencePoint,
       startDistrict,
       startStreet,
       startCity,
       startState,
-      startCep,
+      startZipCode,
+      startReferencePoint,
       date,
     } = req.body;
 
@@ -88,15 +90,13 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       !endStreet ||
       !endCity ||
       !endState ||
-      !endCep ||
       !startDistrict ||
       !startStreet ||
       !startCity ||
       !startState ||
-      !startCep ||
       !Image ||
-      startCep.length != 8 ||
-      endCep.length != 8
+      startZipCode.length != 8 ||
+      endZipCode.length != 8
     ) {
       throw new Error("Algum campo inválido");
     }
@@ -135,12 +135,14 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       endStreet,
       endCity,
       endState,
-      endCep,
+      endZipCode,
+      endReferencePoint,
       startDistrict,
       startStreet,
       startCity,
       startState,
-      startCep,
+      startZipCode,
+      startReferencePoint,
       image
     } as AnnouncementDTO);
 
@@ -163,12 +165,14 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
       endStreet,
       endCity,
       endState,
-      endCep,
+      endZipCode,
+      endReferencePoint,
       startDistrict,
       startStreet,
       startCity,
       startState,
-      startCep,
+      startZipCode,
+      startReferencePoint,
       date,
     } = req.body;
     const { id } = req.params;
@@ -217,12 +221,14 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
         endStreet,
         endCity,
         endState,
-        endCep,
+        endZipCode,
+        endReferencePoint,
         startDistrict,
         startStreet,
         startCity,
         startState,
-        startCep,
+        startZipCode,
+        startReferencePoint,
         image,
       } as Announcement,
       Number(id)
