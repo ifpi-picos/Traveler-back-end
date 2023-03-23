@@ -72,7 +72,7 @@ addressRouter.put("/user/:userId", async (req: Request, res: Response) => {
   }
 });
 
-addressRouter.delete("/:userId", async (req: Request, res: Response) => {
+addressRouter.delete("user/:userId", async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 

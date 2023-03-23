@@ -63,12 +63,12 @@ export class AddressService implements IAddressServiceInterface {
         return address;
     }
 
-    async deleteAddress( id: number ): Promise<string> {
-        const addressExists = await this.addressRepository.selectOne({ id })
+    async deleteAddress( userId: number ): Promise<string> {
+        const user = await this.userRepository.selectOne({id: userId});
+        if(!user) throw new Error ('Usuário não encontrado.');
+        if (!user.addressId) throw new Error("Usuário não possui endereço para ser deletado.");
 
-        if (!addressExists) throw new Error("Usuário não possui endereço para ser deletado.");
-
-        const msg = await this.addressRepository.delete( id )
+        const msg = await this.addressRepository.delete( user.addressId );
 
         return msg;
     }
