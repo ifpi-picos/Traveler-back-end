@@ -33,7 +33,13 @@ export class AnnouncementRepository implements IAnnouncementRepository {
   }
 
   async selectOne(where: Prisma.AnnouncementWhereInput): Promise<AnnouncementDTO | null> {
-    const result = await this.repository.findFirst({ where });
+    const result = await this.repository.findFirst({ 
+      where,
+      include: {
+        originAddress: true,
+        destinationAddress: true,
+      }
+    });
     return result;
   }
 

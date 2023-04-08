@@ -1,6 +1,5 @@
 /* eslint-disable prefer-const */
 import { Request, Response, Router } from "express";
-import { Announcement } from "@prisma/client";
 import { AddressService, AnnouncementService, VehicleImageService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
 import IVehicleImageService from "../services/interfaces/vehicleImageServiceInterface";
@@ -57,6 +56,20 @@ announcementRouter.get("/", async (req: Request, res: Response) => {
     return res.status(200).json(announcements);
   } catch (error: any) {
     return res.status(400).json(error.message);
+  }
+});
+
+announcementRouter.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    verifyIfNotANumber(id);
+
+    const user = await announcementService.getById( Number(id) );
+
+    res.status(200).json(user);
+  } catch (error: any) {
+    res.status(400).json(error.message);
   }
 });
 
@@ -258,6 +271,7 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
   }
 });
 
+// FALTA aaaakkkkkkkkiiiiiiiiiiiiiiiii
 announcementRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

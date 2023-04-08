@@ -24,6 +24,15 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         return Announcements;
     }
 
+    async getById( id: number ): Promise<AnnouncementDTO> {
+
+        const announcement = await this.announcementRepository.selectOne({ id });
+
+        if (!announcement) throw new Error("Anúncio não encontrado!");
+
+        return announcement;
+    }
+
     async addAnnouncement({ licensePlate, vehicle, price, socialLink, advertiserId, date, image, vacancy, destinationAddressId, originAddressId }: AnnouncementDTO): Promise<AnnouncementDTO> {
 
         const id = advertiserId;
