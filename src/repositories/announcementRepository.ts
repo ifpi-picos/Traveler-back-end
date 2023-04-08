@@ -18,6 +18,10 @@ export class AnnouncementRepository implements IAnnouncementRepository {
         destinationAddress: {
           city: data.endCity
         }
+      },
+      include: {
+        originAddress: true,
+        destinationAddress: true,
       }
     });
     return result;
