@@ -74,7 +74,7 @@ export class AddressService implements IAddressServiceInterface {
 
             }else if(startOrEndRoute === 'end'){
                 if (!announcement.originAddressId) throw new Error("Anúncio não possui endereço cadastrado.");
-                address = await this.addressRepository.update({ city, district, state, street, referencePoint, zipCode }, announcement.originAddressId);
+                address = await this.addressRepository.update({ city, district, state, street, referencePoint, zipCode }, announcement.destinationAddressId);
             } else{
                 throw new Error("Endereço de anúncio não encontrado.")
             }
