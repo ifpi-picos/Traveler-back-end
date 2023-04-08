@@ -67,6 +67,7 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
     let {
       vehicle,
       licensePlate,
+      vacancy,
       price,
       socialLink,
       advertiserId,
@@ -90,6 +91,7 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       !socialLink ||
       !licensePlate ||
       !vehicle ||
+      !vacancy ||
       !date ||
       !endDistrict ||
       !endStreet ||
@@ -108,8 +110,10 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
 
     verifyIfNotANumber(advertiserId);
     verifyIfNotANumber(price);
+    verifyIfNotANumber(vacancy);
 
     price = Number(price);
+    vacancy = Number(vacancy);
     advertiserId = Number(advertiserId);
     const smashDate = date.split("-");
 
@@ -128,7 +132,7 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
     const image = await vehicleImageService.uploadImage(Image);
-    console.log('1')
+
     const originAddressId = await addressService.addAnnouncementAddress({
       ...(startCity && { city: startCity }),
       ...(startState && { state: startState }),
@@ -137,7 +141,6 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       ...(startZipCode && { zipCode: startZipCode }),
       ...(startReferencePoint && { referencePoint: startReferencePoint }),
     });
-    console.log('1')
 
     const destinationAddressId = await addressService.addAnnouncementAddress({
       ...(endCity && { city: endCity }),
@@ -150,6 +153,7 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
 
     const announcement = await announcementService.addAnnouncement({
       vehicle,
+      vacancy,
       licensePlate,
       price,
       socialLink,
