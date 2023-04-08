@@ -1,11 +1,11 @@
 import { Request, Response, Router } from "express";
 import { AddressService } from "../services";
 import IAddressServiceInterface from "../services/interfaces/addressServiceInterface";
-import { AddressRepository, UserRepository } from "../repositories";
+import { AddressRepository, AnnouncementRepository, UserRepository } from "../repositories";
 import AddressDTO from "../models/address";
 import { verifyIfNotANumber } from "../middleware";
 
-const addressService: IAddressServiceInterface = new AddressService(new AddressRepository(), new UserRepository());
+const addressService: IAddressServiceInterface = new AddressService(new AddressRepository(), new UserRepository(), new AnnouncementRepository());
 const addressRouter = Router();
 
 
@@ -57,13 +57,16 @@ addressRouter.put("/user/:userId", async (req: Request, res: Response) => {
 
     verifyIfNotANumber(userId);
 
+    const isUserAddress = true;
+
     const address = await addressService.updateAddress({ 
       street, 
       state, 
       district, 
       city,
     } as AddressDTO,
-    Number(userId));
+    Number(userId),
+    isUserAddress);
 
     return res.status(200).json(address);
 

@@ -1,21 +1,26 @@
 /* eslint-disable prefer-const */
 import { Request, Response, Router } from "express";
 import { Announcement } from "@prisma/client";
-import { AnnouncementService, VehicleImageService } from "../services";
+import { AddressService, AnnouncementService, VehicleImageService } from "../services";
 import { IAnnouncementServiceInterface } from "../services/interfaces/announcementServiceInterface";
 import IVehicleImageService from "../services/interfaces/vehicleImageServiceInterface";
-import { AnnouncementRepository, UserRepository } from "../repositories";
-import AnnouncementDTO from "../models/annoucement";
+import { AddressRepository, AnnouncementRepository, UserRepository } from "../repositories";
+import AnnouncementDTO, { AnnouncementUpdate } from "../models/annoucement";
 import { verifyIfNotANumber, verifyIfPastDate } from "../middleware";
 import Multer from "multer";
+import IAddressServiceInterface from "../services/interfaces/addressServiceInterface";
 
 const multer = Multer({
   storage: Multer.memoryStorage(),
 });
 
+
+const vehicleImageService: IVehicleImageService = new VehicleImageService();
+const addressService: IAddressServiceInterface = 
+  new AddressService(new AddressRepository(), new UserRepository(), new AnnouncementRepository());
 const announcementService: IAnnouncementServiceInterface =
-  new AnnouncementService(new AnnouncementRepository(), new UserRepository());
-const vehicleImageService: IVehicleImageService = new VehicleImageService()
+  new AnnouncementService(new AnnouncementRepository(), new UserRepository(), addressService);
+
 const announcementRouter = Router();
 
 announcementRouter.get("/", async (req: Request, res: Response) => {
@@ -123,6 +128,25 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
     const dateConvertido = new Date(`${year}/${month}/${day}`);
 
     const image = await vehicleImageService.uploadImage(Image);
+    console.log('1')
+    const originAddressId = await addressService.addAnnouncementAddress({
+      ...(startCity && { city: startCity }),
+      ...(startState && { state: startState }),
+      ...(startDistrict && { district: startDistrict }),
+      ...(startStreet && { street: startStreet }),
+      ...(startZipCode && { zipCode: startZipCode }),
+      ...(startReferencePoint && { referencePoint: startReferencePoint }),
+    });
+    console.log('1')
+
+    const destinationAddressId = await addressService.addAnnouncementAddress({
+      ...(endCity && { city: endCity }),
+      ...(endState && { state: endState }),
+      ...(endDistrict && { district: endDistrict }),
+      ...(endStreet && { street: endStreet }),
+      ...(endZipCode && { zipCode: endZipCode }),
+      ...(endReferencePoint && { referencePoint: endReferencePoint })
+    });
 
     const announcement = await announcementService.addAnnouncement({
       vehicle,
@@ -131,18 +155,8 @@ announcementRouter.post("/", multer.single("image"), async (req: Request, res: R
       socialLink,
       advertiserId,
       date: dateConvertido,
-      endDistrict,
-      endStreet,
-      endCity,
-      endState,
-      endZipCode,
-      endReferencePoint,
-      startDistrict,
-      startStreet,
-      startCity,
-      startState,
-      startZipCode,
-      startReferencePoint,
+      destinationAddressId,
+      originAddressId,
       image
     } as unknown as AnnouncementDTO);
 
@@ -162,6 +176,18 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
       socialLink,
       advertiserId,
       date,
+      endDistrict,
+      endStreet,
+      endCity,
+      endState,
+      endReferencePoint,
+      startDistric,
+      startStreet,
+      startCity,
+      startState, 
+      startReferencePoint,
+      startZipCode,
+      endZipCode,
     } = req.body;
     const { id } = req.params;
 
@@ -206,7 +232,19 @@ announcementRouter.put("/:id", multer.single("image"), async (req: Request, res:
         date: dateConvertido,
         advertiserId,
         image,
-      } as AnnouncementDTO,
+        endDistrict,
+        endStreet,
+        endCity,
+        endState,
+        endReferencePoint,
+        startDistric,
+        startStreet,
+        startCity,
+        startState, 
+        startReferencePoint,
+        startZipCode,
+        endZipCode,
+      } as unknown as AnnouncementUpdate,
       Number(id)
     );
 

@@ -12,6 +12,12 @@ export class AnnouncementRepository implements IAnnouncementRepository {
       where: {
         date: data.convertedDate,
         advertiserId: data.advertiserId,
+        originAddress: {
+          city: data.startCity
+        },
+        destinationAddress: {
+          city: data.endCity
+        }
       }
     });
     return result;

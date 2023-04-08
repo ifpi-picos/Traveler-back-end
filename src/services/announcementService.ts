@@ -1,16 +1,19 @@
-import AnnouncementDTO, { filterAnnouncement } from "../models/annoucement";
+import AnnouncementDTO, { AnnouncementUpdate, filterAnnouncement } from "../models/annoucement";
 import { IAnnouncementServiceInterface } from "./interfaces/announcementServiceInterface";
 import { IAnnouncementRepository } from "../repositories/interfaces/announcementRepositoryInterface";
 import { IUserRepository } from "../repositories/interfaces/userRepositoryInterface";
+import IAddressServiceInterface from "./interfaces/addressServiceInterface";
 
 
 export class AnnouncementService implements IAnnouncementServiceInterface{
     private announcementRepository: IAnnouncementRepository;
     private userRepository: IUserRepository;
+    private addressService: IAddressServiceInterface;
 
-    constructor(iAnnouncementRepository: IAnnouncementRepository, iUserRepository: IUserRepository) {
+    constructor(iAnnouncementRepository: IAnnouncementRepository, iUserRepository: IUserRepository, iAddressService: IAddressServiceInterface) {
         this.announcementRepository = iAnnouncementRepository;
         this.userRepository = iUserRepository;
+        this.addressService = iAddressService;
     }
     
     async findAnnouncement({convertedDate, startCity, endCity, advertiserId}: filterAnnouncement): Promise<AnnouncementDTO[]>{
@@ -50,9 +53,37 @@ export class AnnouncementService implements IAnnouncementServiceInterface{
         socialLink,
         advertiserId,
         date,
-        image
-    }: AnnouncementDTO, id: number): Promise<AnnouncementDTO> {
-        await this.verifyAnnouncementExist(id);
+        image,
+        endDistrict,
+        endStreet,
+        endCity,
+        endState,
+        endReferencePoint,
+        startDistrict,
+        startStreet,
+        startCity,
+        startState,
+        startReferencePoint,
+        startZipCode,
+        endZipCode,
+    }: AnnouncementUpdate, id: number): Promise<AnnouncementDTO> {
+        const announcement = await this.verifyAnnouncementExist(id);
+
+        const isNotUserAddress = false;
+
+        if (endZipCode){
+            const destinationAddressId = await this.addressService.updateAddress({
+              city: endCity ,
+              state: endState,
+              district: endDistrict,
+              street: endStreet,
+              zipCode: endZipCode,
+              referencePoint: endReferencePoint,
+              startOrEndRoute: 'end',
+            },
+            id,
+            isNotUserAddress);
+          }
 
         const updateAnnouncement = await this.announcementRepository.update({
             licensePlate,

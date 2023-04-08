@@ -6,4 +6,5 @@ export default interface AddressDTO {
     state: string | null;
     zipCode: string | null;
     referencePoint: string | null;
+    startOrEndRoute?: 'start' | 'end';
   }
